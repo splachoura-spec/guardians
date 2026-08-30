@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Εκπαίδευση Φύλακα · Για τον εκπαιδευτικό</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Nunito:wght@400;600;700;800;900;1000&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FDF3E7; --cream-2:#FCE9D6; --card:#fff; --ink:#3A2A22; --ink-soft:#8A6F60;
+    --forest:#2E7D5B; --forest-2:#1F5F45; --forest-soft:#DCEFE0; --coral:#FF6A3D; --coral-deep:#F04E2A;
+    --amber:#C8892E; --terra:#C86B4A; --ok:#5FB85B; --no:#D9534F;
+    --owl:#C8892E; --bear:#EF5B4C; --deer:#17B8A6; --hare:#F45D9C; --turtle:#6BBE5A;
+    --line:rgba(58,42,34,.14); --shadow:0 16px 38px -18px rgba(58,42,34,.32);
+  }
+  *{box-sizing:border-box}
+  body{margin:0; font-family:"Nunito",system-ui,sans-serif; color:var(--ink); background:var(--cream); -webkit-font-smoothing:antialiased; line-height:1.55}
+  h1,h2,h3,h4{margin:0; font-weight:1000; line-height:1.12}
+  button{font-family:inherit; cursor:pointer}
+  a{color:inherit}
+  .wrap{max-width:1040px; margin:0 auto; padding:0 20px}
+
+  .topbar{position:sticky; top:0; z-index:30; display:flex; align-items:center; gap:12px; padding:12px 18px;
+    background:rgba(253,243,231,.92); backdrop-filter:blur(6px); border-bottom:2px solid var(--cream-2)}
+  .back{display:inline-flex; align-items:center; gap:6px; font-weight:900; text-decoration:none; background:#fff; border:2px solid var(--cream-2); padding:8px 14px; border-radius:999px; font-size:.88rem}
+  .brand{font-weight:1000; color:var(--forest-2); display:flex; align-items:center; gap:8px}
+  .brand .dot{width:26px;height:26px;border-radius:50%;background:var(--forest-soft);border:2px solid var(--forest);display:grid;place-items:center;font-size:.9rem}
+  .prog{margin-left:auto; display:flex; align-items:center; gap:10px; font-weight:900; color:var(--forest-2); font-size:.85rem}
+  .ptrack{width:120px; height:9px; border-radius:99px; background:var(--forest-soft); overflow:hidden}
+  .pfill{height:100%; width:0; background:linear-gradient(90deg,var(--forest),var(--ok)); transition:width .5s}
+  @media(max-width:520px){.prog .plbl{display:none} .ptrack{width:80px}}
+
+  /* hero */
+  .hero{text-align:center; padding:38px 0 8px}
+  .eyebrow{display:inline-block; font-weight:900; letter-spacing:.08em; text-transform:uppercase; font-size:.7rem; color:var(--forest-2); background:var(--forest-soft); padding:6px 14px; border-radius:999px}
+  .hero h1{font-size:clamp(2rem,5.5vw,3rem); color:var(--forest-2); margin:14px 0 6px}
+  .hero .sub{font-family:"Caveat",cursive; font-weight:700; color:var(--amber); font-size:clamp(1.4rem,3.4vw,2rem)}
+  .hero p{color:var(--ink-soft); font-weight:600; max-width:62ch; margin:12px auto 0}
+
+  /* station map */
+  .map{display:grid; gap:14px; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); padding:30px 0 26px}
+  .st{position:relative; text-align:left; background:var(--card); border:1px solid var(--line); border-radius:18px; padding:18px 18px 16px; box-shadow:var(--shadow); cursor:pointer; transition:transform .18s, box-shadow .2s; border-top:5px solid var(--stc,var(--forest))}
+  .st:hover{transform:translateY(-4px); box-shadow:0 22px 44px -20px rgba(58,42,34,.4)}
+  .st .n{font-family:"Nunito"; font-weight:1000; font-size:.78rem; color:#fff; background:var(--stc,var(--forest)); padding:3px 10px; border-radius:999px}
+  .st h3{font-size:1.12rem; margin:10px 0 4px}
+  .st .t{font-size:.78rem; color:var(--ink-soft); font-weight:800}
+  .st .tags{display:flex; flex-wrap:wrap; gap:4px; margin-top:10px}
+  .st .tg{font-size:.62rem; font-weight:900; letter-spacing:.02em; color:var(--ink-soft); background:var(--cream-2); border-radius:999px; padding:3px 8px}
+  .st .done{position:absolute; top:14px; right:14px; width:26px; height:26px; border-radius:50%; background:var(--ok); color:#fff; display:none; place-items:center; font-weight:900}
+  .st.done .done{display:grid}
+  .st.done{border-top-color:var(--ok)}
+  .st .cf{position:absolute; top:15px; right:46px; font-size:1rem; opacity:.9}
+
+  /* readiness panel */
+  .ready{background:var(--card); border:1px solid var(--line); border-radius:20px; padding:22px; box-shadow:var(--shadow); margin:6px 0 60px}
+  .ready h3{font-size:1.3rem; color:var(--forest-2)}
+  .ready .sub2{color:var(--ink-soft); font-weight:700; margin:4px 0 16px}
+  .rlist{display:grid; gap:8px}
+  .rrow{display:flex; align-items:center; gap:10px; padding:9px 12px; border:1px solid var(--line); border-radius:12px; background:#fff}
+  .rrow .rk{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:.8rem;flex:0 0 auto;background:var(--cream-2);color:var(--ink-soft)}
+  .rrow.ok .rk{background:var(--ok);color:#fff}
+  .rrow .rt{font-weight:900; font-size:.92rem}
+  .rrow .rc{margin-left:auto; font-size:.95rem; letter-spacing:1px}
+  .readbar{height:12px;border-radius:99px;background:var(--forest-soft);overflow:hidden;margin:16px 0 6px}
+  .readbar span{display:block;height:100%;background:linear-gradient(90deg,var(--forest),var(--ok));width:0;transition:width .5s}
+  .ready .gate{margin-top:16px; display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+  .ready .gmsg{font-weight:800; color:var(--ink-soft); font-size:.9rem}
+
+  /* station view */
+  .view{display:none} .view.on{display:block}
+  .sv-head{border-radius:20px; padding:24px 26px; color:#fff; position:relative; overflow:hidden; box-shadow:var(--shadow); background:var(--svc,var(--forest)); margin:22px 0 16px}
+  .sv-head .n{font-size:.78rem; font-weight:900; letter-spacing:.08em; text-transform:uppercase; opacity:.9}
+  .sv-head h2{font-size:clamp(1.5rem,4vw,2.2rem); margin:4px 0}
+  .sv-head .t{font-weight:800; opacity:.95}
+  .sv-head .intro{font-weight:700; opacity:.96; margin-top:8px; max-width:62ch}
+  .backrow{margin:20px 0 0}
+  .lnk{background:#fff; border:2px solid var(--cream-2); border-radius:999px; padding:8px 16px; font-weight:900; color:var(--ink)}
+
+  /* generic interactive block */
+  .blk{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px 18px 16px; box-shadow:var(--shadow); margin:0 0 14px; border-top:4px solid var(--bkc,var(--forest))}
+  .blk .kick{font-size:.7rem; font-weight:900; letter-spacing:.07em; text-transform:uppercase; color:var(--bkc,var(--forest-2)); display:flex; align-items:center; gap:7px; margin-bottom:6px}
+  .blk .kick .ic{font-size:.95rem}
+  .blk .q{font-weight:1000; font-size:1.08rem; margin:2px 0 12px}
+  .blk .q small{display:block; font-weight:700; color:var(--ink-soft); font-size:.82rem; margin-top:4px}
+  .solved{display:inline-flex; align-items:center; gap:6px; margin-left:auto; font-size:.72rem; font-weight:900; color:var(--ok); background:color-mix(in srgb,var(--ok) 14%,#fff); padding:3px 10px; border-radius:999px}
+  .blk .kickrow{display:flex; align-items:center; gap:8px; margin-bottom:6px}
+
+  /* options (quiz / find-error / dodont-as-choice) */
+  .opts{display:flex; flex-direction:column; gap:9px}
+  .opt{position:relative; text-align:left; background:#fff; border:2px solid var(--cream-2); border-radius:12px; padding:12px 14px; font-weight:800; transition:border-color .15s, background .15s; display:flex; gap:10px; align-items:flex-start}
+  .opt:hover:not(:disabled){border-color:var(--bkc,var(--forest))}
+  .opt .mk{width:20px;height:20px;border-radius:50%;border:2px solid var(--line);flex:0 0 auto;margin-top:1px;display:grid;place-items:center;font-size:.72rem;font-weight:900;color:#fff}
+  .opt.ok{border-color:var(--ok); background:color-mix(in srgb,var(--ok) 12%,#fff)} .opt.ok .mk{background:var(--ok);border-color:var(--ok)}
+  .opt.no{border-color:var(--no); background:color-mix(in srgb,var(--no) 9%,#fff)} .opt.no .mk{background:var(--no);border-color:var(--no)}
+  .opt.dim{opacity:.5}
+  .exp{margin-top:9px; border-radius:12px; padding:11px 13px; font-weight:700; font-size:.92rem; display:none}
+  .exp.show{display:block}
+  .exp.good{background:color-mix(in srgb,var(--ok) 12%,#fff); border-left:4px solid var(--ok); color:#2f6b2c}
+  .exp.bad{background:color-mix(in srgb,var(--terra) 10%,#fff); border-left:4px solid var(--terra); color:#7a3f28}
+  .exp b{color:var(--ink)} .exp .cite{display:block; margin-top:6px; font-size:.76rem; font-weight:900; color:var(--forest-2); letter-spacing:.02em}
+  .exp.bad .cite{color:var(--terra)}
+
+  /* myth or truth */
+  .mtcard{border:1px solid var(--line); border-radius:14px; padding:14px 16px; background:#fff; margin-bottom:10px}
+  .mtcard .claim{font-weight:900; font-size:1rem; margin-bottom:10px}
+  .mtbtns{display:flex; gap:8px}
+  .mtb{flex:1; border:2px solid var(--cream-2); background:#fff; border-radius:11px; padding:9px 10px; font-weight:900; font-size:.9rem}
+  .mtb.myth:hover{border-color:var(--no)} .mtb.truth:hover{border-color:var(--ok)}
+  .mtb.sel-ok{background:var(--ok);color:#fff;border-color:var(--ok)} .mtb.sel-no{background:var(--no);color:#fff;border-color:var(--no)} .mtb.dim{opacity:.4}
+
+  /* put in order */
+  .orderl{display:flex; flex-direction:column; gap:8px; margin-bottom:10px}
+  .oitem{display:flex; align-items:center; gap:10px; background:#fff; border:2px solid var(--cream-2); border-radius:12px; padding:10px 12px; font-weight:800}
+  .oitem .idx{width:24px;height:24px;border-radius:50%;background:var(--forest-soft);color:var(--forest-2);display:grid;place-items:center;font-weight:900;font-size:.8rem;flex:0 0 auto}
+  .oitem .txt{flex:1; font-size:.92rem}
+  .oitem .arrs{display:flex; flex-direction:column; gap:2px}
+  .oitem .arrs button{width:26px;height:20px;border:1px solid var(--line);background:var(--cream);border-radius:6px;font-size:.7rem;line-height:1;color:var(--ink)}
+  .oitem .arrs button:disabled{opacity:.3}
+  .oitem.right{border-color:var(--ok); background:color-mix(in srgb,var(--ok) 10%,#fff)} .oitem.right .idx{background:var(--ok);color:#fff}
+  .oitem.wrongpos{border-color:var(--terra)}
+
+  /* matching */
+  .matchg{display:grid; grid-template-columns:1fr 1fr; gap:18px}
+  .mcol{display:flex; flex-direction:column; gap:8px}
+  .mcol .h{font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft)}
+  .mitem{text-align:left; border:2px solid var(--cream-2); background:#fff; border-radius:11px; padding:10px 12px; font-weight:800; font-size:.88rem; transition:.15s; display:flex; align-items:center; gap:8px}
+  .mitem .pin{width:14px;height:14px;border-radius:4px;flex:0 0 auto;background:var(--cream-2)}
+  .mitem.active{border-color:var(--forest); box-shadow:0 0 0 3px var(--forest-soft)}
+  .mitem.matched{border-color:var(--matc); background:color-mix(in srgb,var(--matc) 12%,#fff); cursor:default}
+  .mitem.matched .pin{background:var(--matc)}
+  .mitem.shake{animation:shk .35s}
+  @keyframes shk{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+
+  /* do / don't */
+  .ddchips{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px}
+  .ddchip{border:2px solid var(--cream-2); background:#fff; border-radius:999px; padding:8px 13px; font-weight:800; font-size:.86rem; transition:.15s}
+  .ddchip.active{border-color:var(--forest); box-shadow:0 0 0 3px var(--forest-soft)}
+  .ddchip.placed{display:none}
+  .ddzones{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+  .ddzone{border:2px dashed var(--zc); border-radius:14px; padding:12px; min-height:90px; background:color-mix(in srgb,var(--zc) 6%,#fff)}
+  .ddzone.hl{background:color-mix(in srgb,var(--zc) 14%,#fff)}
+  .ddzone .zh{font-weight:1000; font-size:.9rem; color:var(--zc); display:flex; align-items:center; gap:6px; margin-bottom:8px}
+  .ddzone .drop{display:flex; flex-wrap:wrap; gap:6px}
+  .placedchip{border-radius:999px; padding:6px 11px; font-weight:800; font-size:.82rem; border:2px solid}
+  .placedchip.good{background:color-mix(in srgb,var(--ok) 14%,#fff); border-color:var(--ok); color:#2f6b2c}
+  .placedchip.bad{background:color-mix(in srgb,var(--terra) 12%,#fff); border-color:var(--terra); color:#7a3f28}
+
+  /* branching scenario */
+  .branch .narr{background:var(--forest-soft); border-radius:12px; padding:12px 14px; font-weight:700; margin-bottom:10px; color:var(--forest-2)}
+  .branch.terra .narr{background:color-mix(in srgb,var(--terra) 12%,#fff); color:#7a3f28}
+  .branch .fb2{margin-top:10px; font-weight:800; font-size:.92rem; min-height:1.2em}
+  .branch .step-badge{font-size:.68rem;font-weight:900;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);margin-bottom:6px}
+
+  /* referral flow */
+  .flow{display:flex; flex-direction:column; gap:0}
+  .fstep{position:relative; padding-left:34px; padding-bottom:14px}
+  .fstep::before{content:""; position:absolute; left:12px; top:26px; bottom:-2px; width:3px; background:var(--cream-2)}
+  .fstep:last-child::before{display:none}
+  .fstep .dot{position:absolute; left:2px; top:2px; width:24px; height:24px; border-radius:50%; background:var(--cream-2); color:var(--ink-soft); display:grid; place-items:center; font-weight:900; font-size:.78rem; border:2px solid #fff}
+  .fbtn{text-align:left; width:100%; border:2px solid var(--cream-2); background:#fff; border-radius:12px; padding:11px 13px; font-weight:900; font-size:.92rem; display:flex; align-items:center; gap:8px}
+  .fstep.open .dot{background:var(--terra); color:#fff}
+  .fstep.open .fbtn{border-color:var(--terra)}
+  .fstep.danger.open .dot{background:var(--no)} .fstep.danger.open .fbtn{border-color:var(--no)}
+  .fdetail{max-height:0; overflow:hidden; transition:max-height .3s; font-weight:700; font-size:.88rem; color:#5a463c}
+  .fstep.open .fdetail{max-height:220px; padding:8px 2px 2px}
+  .fdetail .cite{display:block;margin-top:6px;font-size:.74rem;font-weight:900;color:var(--terra)}
+
+  /* slider */
+  .slwrap{padding:6px 2px}
+  .slrow{display:flex; align-items:center; gap:12px}
+  .slrow input[type=range]{flex:1; accent-color:var(--forest)}
+  .slval{font-weight:1000; font-size:1.15rem; color:var(--forest-2); min-width:78px; text-align:center; background:var(--forest-soft); border-radius:10px; padding:5px 8px}
+  .slscale{display:flex; justify-content:space-between; font-size:.72rem; font-weight:800; color:var(--ink-soft); margin-top:4px}
+  .slbtn{margin-top:12px}
+  .slreveal{margin-top:12px}
+
+  /* reflect */
+  .reflect textarea{width:100%; border:2px solid var(--cream-2); border-radius:12px; padding:12px; font-family:inherit; font-weight:600; font-size:.95rem; min-height:80px; resize:vertical; outline:none; color:var(--ink)}
+  .reflect textarea:focus{border-color:var(--forest)}
+  .reflect .saved{font-size:.76rem; font-weight:900; color:var(--ok); margin-top:6px; height:1em; opacity:0; transition:.2s}
+  .reflect .saved.on{opacity:1}
+
+  /* confidence */
+  .conf{background:color-mix(in srgb,var(--forest) 7%,#fff); border:1px solid var(--line); border-left:5px solid var(--forest); border-radius:14px; padding:16px 18px; margin-top:14px}
+  .conf .q{font-weight:1000; margin-bottom:10px}
+  .cfaces{display:flex; gap:8px; flex-wrap:wrap}
+  .cface{border:2px solid var(--cream-2); background:#fff; border-radius:12px; padding:8px 12px; font-weight:900; font-size:.86rem; display:flex; align-items:center; gap:7px}
+  .cface .em{font-size:1.15rem}
+  .cface.sel{border-color:var(--forest); background:var(--forest); color:#fff}
+
+  /* theory reveal (η θεωρία από κάτω) */
+  .thead{font-weight:1000; color:var(--forest-2); margin:22px 0 8px; display:flex; align-items:center; gap:8px; font-size:1.05rem}
+  .rc{background:var(--card); border:1px solid var(--line); border-left:5px solid var(--rcc,var(--forest)); border-radius:14px; margin-bottom:10px; overflow:hidden}
+  .rc>button{width:100%; text-align:left; background:none; border:0; padding:14px 18px; display:flex; align-items:center; gap:12px; font-weight:900; font-size:1rem}
+  .rc .chev{margin-left:auto; transition:.25s; color:var(--ink-soft)}
+  .rc.open .chev{transform:rotate(180deg)}
+  .rc .body{max-height:0; overflow:hidden; transition:max-height .35s ease}
+  .rc .inner{padding:2px 18px 16px; color:#5a463c; font-weight:600}
+  .rc .inner b{color:var(--ink)}
+  .rc .inner ul{margin:8px 0 0 18px} .rc .inner li{margin-bottom:5px}
+
+  .callout{border-radius:14px; padding:14px 16px; margin:0 0 14px; font-weight:700; border:1px solid var(--line)}
+  .callout.warn{background:color-mix(in srgb,var(--terra) 10%,#fff); border-left:5px solid var(--terra); color:#7a3f28}
+  .callout.warn b{color:var(--terra)}
+
+  .dl{display:inline-flex; align-items:center; gap:8px; background:#fff; border:2px solid var(--forest); color:var(--forest-2); font-weight:900; border-radius:999px; padding:9px 16px; margin:4px 6px 0 0}
+
+  .btn{border:0; border-radius:999px; font-weight:1000; padding:12px 24px; font-size:1rem}
+  .btn.primary{background:var(--forest); color:#fff; box-shadow:0 10px 20px -8px var(--forest)}
+  .btn.primary:disabled{background:var(--cream-2); color:var(--ink-soft); box-shadow:none; cursor:not-allowed}
+  .btn.ghost{background:var(--cream-2); color:var(--ink); border:1px solid var(--line)}
+  .btn.sm{padding:9px 16px; font-size:.9rem}
+  .nextrow{display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin:18px 0 40px}
+  .nexthint{font-weight:800; color:var(--ink-soft); font-size:.86rem}
+
+  /* chatbot */
+  .fab{position:fixed; right:18px; bottom:18px; z-index:40; background:var(--forest); color:#fff; border:0; border-radius:999px; padding:13px 20px; font-weight:1000; box-shadow:0 12px 26px -10px var(--forest); display:flex; align-items:center; gap:9px}
+  .fab .av{width:26px;height:26px}
+  .chatwin{position:fixed; right:18px; bottom:78px; z-index:40; width:min(380px,92vw); background:#fff; border:2px solid var(--forest-soft); border-radius:20px; box-shadow:0 24px 60px -20px rgba(0,0,0,.45); display:none; overflow:hidden}
+  .chatwin.on{display:block}
+  .chathead{background:var(--forest); color:#fff; padding:12px 16px; font-weight:900; display:flex; align-items:center; gap:10px}
+  .chathead .av{width:30px;height:30px}
+  .chatbody{max-height:min(52vh,440px); overflow:auto; padding:14px}
+  .msg{display:flex; gap:8px; margin-bottom:10px} .msg .av{width:30px;height:30px;flex:0 0 auto}
+  .bub{background:var(--forest-soft); color:var(--forest-2); font-weight:700; font-size:.9rem; padding:9px 13px; border-radius:14px; border-top-left-radius:4px; max-width:80%}
+  .msg.me{justify-content:flex-end} .msg.me .bub{background:var(--cream-2); color:var(--ink); border-top-left-radius:14px; border-top-right-radius:4px}
+  .qbtns{display:flex; flex-direction:column; gap:7px; padding:0 14px 14px}
+  .qbtn{text-align:left; background:#fff; border:2px solid var(--cream-2); border-radius:12px; padding:9px 12px; font-weight:800; font-size:.86rem}
+  .qbtn:hover{border-color:var(--forest)}
+  .chatinput{display:flex; gap:8px; padding:10px 14px 4px}
+  .chatinput input{flex:1; border:2px solid var(--cream-2); border-radius:999px; padding:10px 14px; font-family:inherit; font-weight:700; font-size:.9rem; outline:none}
+  .chatinput input:focus{border-color:var(--forest)}
+  .chatinput button{background:var(--forest); color:#fff; border:0; border-radius:50%; width:40px; height:40px; font-size:1.1rem; font-weight:900; flex:0 0 auto}
+  .bub .src{display:block; font-size:.68rem; font-weight:900; color:var(--forest-2); text-transform:uppercase; letter-spacing:.04em; margin-bottom:4px}
+  .bub .more{margin-top:8px; font-size:.78rem; font-weight:800}
+  .bub .more button{background:none; border:0; color:var(--forest-2); text-decoration:underline; cursor:pointer; font-weight:900; padding:0}
+
+  footer{text-align:center; padding:24px; color:var(--ink-soft); font-size:.8rem; border-top:1px solid var(--line)}
+  @media(max-width:560px){.matchg{grid-template-columns:1fr} .ddzones{grid-template-columns:1fr}}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important; animation:none!important}}
+  :focus-visible{outline:3px solid var(--forest); outline-offset:3px; border-radius:10px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back" href="index.html">← Χάρτης</a>
+  <span class="brand"><span class="dot">🌲</span> Εκπαίδευση Φύλακα</span>
+  <div class="prog"><span class="plbl">Πρόοδος</span> <span id="ptxt">0/9</span><span class="ptrack"><span class="pfill" id="pfill"></span></span></div>
+</div>
+
+<!-- MAP -->
+<section class="view on" id="v-map">
+  <div class="wrap">
+    <div class="hero">
+      <span class="eyebrow">Στρώση Α · Προετοιμασία · ~5 ώρες</span>
+      <h1>Πρώτα εσείς, μετά τα παιδιά</h1>
+      <p class="sub">Δεν διαβάζετε — δοκιμάζετε.</p>
+      <p>Εννέα σταθμοί. Σε καθέναν <b>ξεκινάτε με μια πρόκληση</b> — ένα quiz, ένα σενάριο, ένα «μύθος ή αλήθεια» — και η θεωρία ξεκλειδώνει ως εξήγηση από κάτω. Ολοκληρώστε τους πριν τη Στρώση Β. Η πρόοδός σας αποθηκεύεται σε αυτόν τον υπολογιστή.</p>
+    </div>
+    <div class="map" id="map"></div>
+    <div class="ready" id="ready"></div>
+  </div>
+</section>
+
+<!-- STATION -->
+<section class="view" id="v-station"><div class="wrap">
+  <div class="backrow"><button class="lnk" onclick="goMap()">← Όλοι οι σταθμοί</button></div>
+  <div class="sv-head" id="svhead"></div>
+  <div id="svbody"></div>
+  <div class="nextrow">
+    <button class="btn ghost" onclick="goMap()">← Σταθμοί</button>
+    <button class="btn primary" id="nextBtn"></button>
+    <span class="nexthint" id="nexthint"></span>
+  </div>
+</div></section>
+
+<!-- chatbot -->
+<button class="fab" id="fab" aria-expanded="false"><span class="av" id="favav"></span> Ρώτησε τον βοηθό</button>
+<div class="chatwin" id="chatwin" role="dialog" aria-label="Βοηθός εκπαιδευτικού">
+  <div class="chathead"><span class="av" id="chav"></span> Βοηθός · συχνές ερωτήσεις <button style="margin-left:auto;background:none;border:0;color:#fff;font-size:1.2rem" onclick="toggleChat(false)">✕</button></div>
+  <div class="chatbody" id="chatbody"></div>
+  <div class="chatinput"><input id="chatq" type="text" placeholder="Γράψε την ερώτησή σου…" autocomplete="off"><button id="chatsend" aria-label="Αποστολή">→</button></div>
+  <div class="qbtns" id="qbtns"></div>
+</div>
+
+<footer>Οι Φύλακες του Δάσους · Εκπαίδευση εκπαιδευτικού · Πανεπιστήμιο Πειραιώς</footer>
+
+<script>
+/* ================= ΔΕΔΟΜΕΝΑ ΣΤΑΘΜΩΝ =================
+   Κάθε σταθμός: blocks[] = οι προκλήσεις (πρώτα διάδραση),
+   theory[] = «η θεωρία πίσω από αυτά» (ξεκλειδώνει από κάτω). */
+
+const STATIONS=[
+
+/* ---------- Α0 · ΕΙΣΑΓΩΓΗ ---------- */
+{id:'Α0', c:'var(--forest)', title:'Εισαγωγή στην ανθεκτικότητα', time:'~40′',
+ tags:['Μύθος/Αλήθεια','Αντιστοίχιση','Quiz'],
+ intro:'Πριν διαβάσετε τι είναι η ανθεκτικότητα — δοκιμάστε τι πιστεύετε ήδη.',
+ blocks:[
+  {type:'myth', kick:'Μύθος ή αλήθεια;', q:'Τέσσερις φράσεις για την ανθεκτικότητα. Ποιες στέκουν;',
+   cards:[
+    {claim:'«Ανθεκτικό παιδί είναι αυτό που δεν κλαίει και δεν φοβάται.»', myth:true,
+     why:'Μύθος. Ανθεκτικό δεν σημαίνει «πάντα δυνατό». Σημαίνει παιδί που, <b>με στήριξη</b>, βρίσκει τον δρόμο του μέσα από τη δυσκολία — τα δύσκολα συναισθήματα είναι φυσιολογικά και αποδεκτά.', cite:'Masten κ.ά., 2021'},
+    {claim:'«Η ανθεκτικότητα καλλιεργείται — δεν γεννιέσαι μ’ αυτήν.»', myth:false,
+     why:'Αλήθεια. Είναι <b>δυναμική διαδικασία</b>, όχι έμφυτο ταλέντο· κάθε παιδί μπορεί να γίνει πιο ανθεκτικό με τις κατάλληλες εμπειρίες και σχέσεις.', cite:'Masten κ.ά., 2021'},
+    {claim:'«Είναι ατομική υπόθεση: ευθύνη του παιδιού να τα καταφέρει μόνο του.»', myth:true,
+     why:'Μύθος. Προκύπτει από <b>πολλά συστήματα μαζί</b> — παιδί, οικογένεια, τάξη, σχολείο. Ισχυρότερος προστατευτικός παράγοντας: η παρουσία <b>έστω κι ενός έμπιστου ενήλικα</b>. Στην τάξη, συχνά είστε εσείς.', cite:'Masten κ.ά., 2021'},
+    {claim:'«Δουλεύουμε προληπτικά, με όλη την τάξη — όχι μόνο με όσους δυσκολεύονται.»', myth:false,
+     why:'Αλήθεια. Καθολική & προληπτική λογική (όπως μαθαίνουμε κολύμπι πριν πέσουμε στα βαθιά). <b>Διαφέρει ρητά από κλινική/θεραπευτική παρέμβαση</b>.', cite:'CASEL, 2020'},
+   ]},
+  {type:'match', kick:'Αντιστοίχιση', q:'Ένωσε κάθε Φύλακα με τη δεξιότητα CASEL που ενσαρκώνει.', matc:'var(--forest)',
+   pairs:[
+    {l:'🦉 Κουκουβάγια', r:'Αυτοεπίγνωση'},
+    {l:'🐻 Αρκούδα', r:'Αυτοδιαχείριση'},
+    {l:'🦌 Ελάφι', r:'Κοινωνική επίγνωση'},
+    {l:'🐰 Λαγός', r:'Δεξιότητες σχέσεων'},
+    {l:'🐢 Χελώνα', r:'Υπεύθυνη λήψη αποφάσεων'},
+   ],
+   after:'Οι πέντε Φύλακες <b>συνεργάζονται</b> (δεν ανταγωνίζονται): CASEL ορίζει το <b>τι</b> διδάσκουμε, το μοντέλο ARCS το <b>πώς</b> κινητοποιούμε.', cite:'CASEL, 2020 · Keller, 2010'},
+  {type:'quiz', kick:'Πώς θα το έλεγες;', q:'Ένας γονέας ρωτά: «Δηλαδή αυτό είναι θεραπεία για παιδιά με πρόβλημα;» Τι απαντάτε;',
+   opts:[
+    {ok:true, t:'«Όχι — είναι για όλη την τάξη, προληπτικά. Χτίζουμε δεξιότητες, δεν θεραπεύουμε.»',
+     why:'Ακριβώς. Το πρόγραμμα είναι <b>καθολικό & προληπτικό</b> — απευθύνεται σε όλους, πριν τη δυσκολία, και εντάσσεται στα Εργαστήρια Δεξιοτήτων του Ι.Ε.Π. («Ζω Καλύτερα – Ευ Ζην»).', cite:'CASEL, 2020'},
+    {ok:false, t:'«Ναι, βοηθά τα παιδιά που έχουν δυσκολίες να το ξεπεράσουν.»',
+     why:'Όχι. Αυτό το πλαισιώνει ως <b>κλινική παρέμβαση</b>. Δεν στοχεύουμε «όσους έχουν πρόβλημα» — καλλιεργούμε δεξιότητες για <b>όλους</b>, προληπτικά.', cite:'CASEL, 2020'},
+    {ok:false, t:'«Είναι απλώς παιχνίδι, δεν έχει κάποιον σκοπό.»',
+     why:'Όχι. Έχει σαφή μαθησιακό στόχο (οι 5 ικανότητες CASEL) και τεκμηριωμένη λογική — απλώς <b>υλοποιείται παιγνιωδώς</b>, γιατί έτσι μαθαίνουν τα παιδιά 6–9.', cite:'CASEL, 2020'},
+   ]},
+ ],
+ theory:[
+  {h:'Τι είναι (και τι ΔΕΝ είναι) η ανθεκτικότητα', b:'Δυναμική διαδικασία θετικής προσαρμογής στη δυσκολία — <b>καλλιεργείται</b>, δεν είναι έμφυτο χάρισμα (Masten κ.ά., 2021). Δεν είναι «να είσαι πάντα δυνατός», ούτε «να μη νιώθεις πόνο», ούτε ατομική υπόθεση. Ισχυρότερος προστατευτικός παράγοντας: <b>ένας έμπιστος ενήλικας</b>.'},
+  {h:'Γιατί ειδικά στα 6–9 & γιατί προληπτικά', b:'Έντονα συναισθήματα που δεν μπορούν ακόμη να ονομάσουν + πρώτες κοινωνικές δοκιμασίες. Κρίσιμη περίοδος: <b>προλαβαίνουμε</b> αντί να «διορθώνουμε». Καθολικά & για όλη την τάξη (CASEL, 2020) — με ιδιαίτερη έμφαση στην πρόληψη εκφοβισμού.'},
+  {h:'CASEL & ARCS — δες πώς συνδέονται', b:'CASEL = <b>τι</b> (5 δεξιότητες/Φύλακες). ARCS = <b>πώς</b> (κίνητρο). Παίξε με το μοντέλο πιο κάτω.', model:true},
+ ]},
+
+/* ---------- Α1 · ΚΟΥΚΟΥΒΑΓΙΑ ---------- */
+{id:'Α1', c:'var(--owl)', title:'Αυτοεπίγνωση — η Κουκουβάγια', time:'~30′',
+ tags:['Quiz','Βρες το λάθος'],
+ intro:'Ένα παιδί σας λέει κάτι πριν μπείτε στη θεωρία. Τι απαντάτε;',
+ blocks:[
+  {type:'quiz', kick:'Στιγμή στην τάξη', q:'Ο Νίκος λέει «με πονάει η κοιλιά μου» λίγο πριν μια παρουσίαση. Ποια απάντηση χτίζει αυτοεπίγνωση;',
+   opts:[
+    {ok:true, t:'«Μερικές φορές, όταν αγχωνόμαστε, το νιώθουμε στην κοιλιά. Μπορεί να είναι άγχος αυτό;»',
+     why:'Ναι. Συνδέετε τη <b>σωματική ένδειξη με το συναίσθημα</b> και του δίνετε όνομα. Στα 6–9 τα παιδιά βιώνουν το συναίσθημα <b>πρώτα στο σώμα</b>· η ονομασία (affect labeling) είναι το πρώτο βήμα της ρύθμισης.', cite:'CASEL, 2020 · Masten κ.ά., 2021'},
+    {ok:false, t:'«Δεν είναι τίποτα, μη σκέφτεσαι, θα περάσει.»',
+     why:'Όχι. Το «δεν είναι τίποτα» <b>ακυρώνει</b> το συναίσθημα. Στόχος δεν είναι να το κρύψουμε αλλά να το <b>ονομάσουμε</b>: «όλα τα συναισθήματα είναι θεμιτά».', cite:'CASEL, 2020'},
+    {ok:false, t:'«Πήγαινε πλύνε το πρόσωπό σου και έλα.»',
+     why:'Χάνει την ευκαιρία. Δεν βοηθά το παιδί να <b>αναγνωρίσει</b> τι νιώθει — και η αυτοεπίγνωση είναι το θεμέλιο για όλες τις υπόλοιπες ικανότητες.', cite:'CASEL, 2020'},
+   ]},
+  {type:'finderror', kick:'Βρες το λάθος', scene:'Στη δραστηριότητα «Χάρτης των Συναισθημάτων», μια μαθήτρια λέει «νιώθω λύπη». Η εκπαιδευτικός απαντά με καλή πρόθεση:',
+   q:'«Μη στεναχωριέσαι, δεν υπάρχει λόγος!» — τι πήγε στραβά;',
+   opts:[
+    {ok:true, t:'Ακύρωσε το συναίσθημα αντί να το αναγνωρίσει',
+     why:'Σωστά. Αντί για «μη στεναχωριέσαι», το κλειδί είναι να το <b>ονομάσουμε και να το αποδεχτούμε</b>: «Φαίνεται πως νιώθεις λύπη. Είναι εντάξει.» Όλα τα συναισθήματα είναι θεμιτά — τα ονομάζουμε, δεν τα κρίνουμε.', cite:'CASEL, 2020'},
+    {ok:false, t:'Τίποτα — σωστά την καθησύχασε',
+     why:'Όχι. Η καθησύχαση που λέει «δεν υπάρχει λόγος» στην ουσία <b>ακυρώνει</b> αυτό που νιώθει το παιδί και του μαθαίνει να το κρύβει.', cite:'CASEL, 2020'},
+    {ok:false, t:'Έπρεπε να αγνοήσει τη μαθήτρια',
+     why:'Όχι — το αντίθετο. Το θέμα δεν είναι να την αγνοήσει, αλλά να <b>αναγνωρίσει</b> και να ονοματίσει το συναίσθημα μαζί της.', cite:'CASEL, 2020'},
+   ]},
+ ],
+ theory:[
+  {h:'Η δεξιότητα: ονομάζω πριν ρυθμίσω', b:'Το παιδί αναγνωρίζει και <b>ονομάζει</b> τα συναισθήματα και τα συνδέει με το σώμα. Η ονομασία (affect labeling) είναι το <b>πρώτο βήμα της ρύθμισης</b>: κανείς δεν ρυθμίζει κάτι που δεν αναγνωρίζει. Γι’ αυτό η Κουκουβάγια είναι πρώτη.'},
+  {h:'Πώς εκδηλώνεται στα 6–9', b:'Περιορισμένο συναισθηματικό λεξιλόγιο («καλά»/«άσχημα»), βίωμα <b>πρώτα στο σώμα</b>, τάση να ταυτίζουν συναίσθημα με συμπεριφορά («ήμουν κακός» αντί «ένιωσα θυμό»). Δουλεύουμε <b>βιωματικά & εικονογραφημένα</b>.'},
+  {h:'Πώς την καλλιεργείτε', b:'Δίνετε λεξιλόγιο, ρωτάτε «<b>πού το νιώθεις;</b>», αξιοποιείτε «θερμόμετρο συναισθημάτων», «Χάρτη» & «Καθρέφτη». Πορεία από το εξωτερικό (πρόσωπα/σκηνές) στο εσωτερικό (το δικό μου συναίσθημα).'},
+ ]},
+
+/* ---------- Α2 · ΑΡΚΟΥΔΑ ---------- */
+{id:'Α2', c:'var(--bear)', title:'Αυτοδιαχείριση — η Αρκούδα', time:'~30′',
+ tags:['Slider','Quiz','Βρες το λάθος'],
+ intro:'Πόσο σίγουρος/η είστε για ένα λεπτό σημείο τεκμηρίωσης; Εκτιμήστε πρώτα.',
+ blocks:[
+  {type:'slider', kick:'Εκτίμησε', q:'Κάτω από ποια ηλικία είναι <b>επιφυλακτική</b> η έρευνα για <b>αυτόνομα</b> προγράμματα ενσυνειδητότητας (mindfulness) σε παιδιά;',
+   min:5, max:14, step:1, unit:' ετών', start:8, correct:[9,11],
+   reveal:'Περίπου <b>κάτω των 10 ετών</b>.',
+   why:'Η άσκηση αναπνοής («η ανάσα της αρκούδας») μπαίνει ως <b>σύντομη στρατηγική μέσα στο πλαίσιο CASEL</b> — <b>όχι</b> ως αυτόνομο πρόγραμμα ενσυνειδητότητας. Για αυτόνομα mindfulness κάτω των ~10 η έρευνα είναι επιφυλακτική (μπορεί να είναι αναποτελεσματικά ή και επιβαρυντικά).', cite:'Malboeuf-Hurtubise κ.ά., 2024 · Pickerell κ.ά., 2023'},
+  {type:'quiz', kick:'Πότε;', q:'Πότε διδάσκετε & εξασκείτε τις στρατηγικές ηρεμίας;',
+   opts:[
+    {ok:true, t:'Όταν το παιδί είναι <b>ήρεμο</b> — εκ των προτέρων',
+     why:'Ναι. Την ώρα της «έκρηξης» το παιδί <b>δεν μπορεί να μάθει</b> κάτι νέο· μπορεί μόνο να χρησιμοποιήσει κάτι που ήδη ξέρει. Η εξάσκηση στην ηρεμία είναι το κλειδί.', cite:'Malboeuf-Hurtubise κ.ά., 2024'},
+    {ok:false, t:'Ακριβώς τη στιγμή που θυμώνει, για να πιάσει τόπο',
+     why:'Όχι. Στην κορύφωση της έντασης δεν διδάσκουμε — <b>μειώνουμε ερεθίσματα</b> και προσφέρουμε ένα εργαλείο που ήδη ξέρει. Η μάθηση γίνεται πριν και μετά, όχι μέσα στην κρίση.', cite:'Malboeuf-Hurtubise κ.ά., 2024'},
+   ]},
+  {type:'finderror', kick:'Βρες το λάθος', scene:'Ο Γιώργος σφίγγει τις γροθιές του, έτοιμος να ξεσπάσει επειδή του χάλασαν τον πύργο. Η εκπαιδευτικός:',
+   q:'…του λέει αναλυτικά γιατί δεν πρέπει να θυμώνει και του ζητά να εξηγήσει τι έγινε. Τι πήγε στραβά;',
+   opts:[
+    {ok:true, t:'«Λογικεύει» ένα παιδί που είναι στην κορύφωση της έντασης',
+     why:'Σωστά. Στην κορύφωση το παιδί <b>δεν ακούει</b>. Πρώτα ονομάζουμε την ένταση και προσφέρουμε εργαλείο: «Βλέπω ότι το θερμόμετρό σου ανέβηκε — πάμε να πάρουμε μαζί μια ανάσα της αρκούδας;». Η συζήτηση γίνεται <b>αφού</b> ηρεμήσει.', cite:'Masten κ.ά., 2021'},
+    {ok:false, t:'Τίποτα — καλά έκανε που εξήγησε τους κανόνες',
+     why:'Όχι. Η λογική εξήγηση την ώρα της «έκρηξης» δεν βοηθά· το παιδί δεν είναι σε θέση να την επεξεργαστεί.', cite:'Masten κ.ά., 2021'},
+    {ok:false, t:'Έπρεπε να τον τιμωρήσει αμέσως',
+     why:'Όχι. Στόχος δεν είναι η τιμωρία αλλά η <b>ρύθμιση</b>: πρώτα ασφάλεια & ηρεμία, μετά η συζήτηση.', cite:'CASEL, 2020'},
+   ]},
+ ],
+ theory:[
+  {h:'Η δεξιότητα: απόσταση «νιώθω»–«πράττω»', b:'Από την αναγνώριση στη <b>ρύθμιση της έντασης</b>. Υπάρχει απόσταση ανάμεσα στο «νιώθω» και στο «πράττω» — μπορώ να νιώθω έντονο θυμό και να επιλέγω πώς θα αντιδράσω. Η δύναμη δεν είναι στην έκρηξη, αλλά στη ρύθμιση.'},
+  {h:'Η «ανάσα της αρκούδας» — προσοχή στην τεκμηρίωση', b:'Σύντομη στρατηγική <b>μέσα στο CASEL</b>, όχι αυτόνομο mindfulness. Η έρευνα είναι επιφυλακτική για αυτόνομα προγράμματα ενσυνειδητότητας κάτω των ~10 (Malboeuf-Hurtubise κ.ά., 2024· Pickerell κ.ά., 2023). Κρίσιμο και το δικό σας <b>πρότυπο (modeling)</b>.'},
+  {h:'Πώς την καλλιεργείτε', b:'«Θερμόμετρο του θυμού» (διαφορετική ένταση → διαφορετική στρατηγική) και προσωπική «εργαλειοθήκη ηρεμίας». Εξάσκηση <b>στην ηρεμία</b>, όχι στην ένταση.'},
+ ]},
+
+/* ---------- Α3 · ΕΛΑΦΙ ---------- */
+{id:'Α3', c:'var(--deer)', title:'Κοινωνική επίγνωση — το Ελάφι', time:'~30′',
+ tags:['Μύθος/Αλήθεια','Quiz'],
+ intro:'Δύο γρήγορες προκλήσεις για την ενσυναίσθηση — και μετά η θεωρία.',
+ blocks:[
+  {type:'myth', kick:'Μύθος ή αλήθεια;', q:'Τι ισχύει για την ενσυναίσθηση στα 6–9;',
+   cards:[
+    {claim:'«Στόχος είναι το παιδί να λυπάται τους άλλους.»', myth:true,
+     why:'Μύθος. Ζητούμενο δεν είναι ο <b>οίκτος</b>, αλλά η <b>αντίληψη + κατάλληλη ανταπόκριση</b>: να «διαβάσει» πώς νιώθει ο άλλος και να ανταποκριθεί σωστά.', cite:'CASEL, 2020'},
+    {claim:'«Υπάρχει μία σωστή ερμηνεία του πώς νιώθει ο άλλος — τη μαθαίνουμε στα παιδιά.»', myth:true,
+     why:'Μύθος. Διαφορετικοί άνθρωποι νιώθουν διαφορετικά στην ίδια κατάσταση. Δεν επιβάλλουμε τη «σωστή» ερμηνεία — αφήνουμε τα παιδιά να προτείνουν από τις <b>ορατές ενδείξεις</b>.', cite:'Martinez-Yarza κ.ά., 2023'},
+    {claim:'«Η ενσυναίσθηση προστατεύει από τον εκφοβισμό.»', myth:false,
+     why:'Αλήθεια. Το παιδί που αντιλαμβάνεται τον πόνο του άλλου <b>δύσκολα τον προκαλεί</b> και είναι πιο πιθανό να υπερασπιστεί έναν συμμαθητή. Θεμέλιο της πρόληψης εκφοβισμού.', cite:'Masten κ.ά., 2021'},
+   ]},
+  {type:'quiz', kick:'Στιγμή στην τάξη', q:'Στο διάλειμμα η Ελένη κάθεται μόνη της. Ποια κίνηση καλλιεργεί κοινωνική επίγνωση σε όλη την τάξη;',
+   opts:[
+    {ok:true, t:'Δείχνετε τη σκηνή (ανώνυμα) και ρωτάτε: «Πώς νομίζετε ότι νιώθει; Από πού το καταλάβατε; Τι θα άλλαζε τη μέρα της;»',
+     why:'Ναι. Περνάτε από την <b>αναγνώριση στη δράση</b>, με βάση ορατές ενδείξεις — και τα παιδιά φτάνουν μόνα τους στη λύση. Κρατάτε το ανώνυμο & γενικό.', cite:'CASEL, 2020 · Martinez-Yarza κ.ά., 2023'},
+    {ok:false, t:'Λέτε δυνατά «Πηγαίνετε να παίξετε με την Ελένη που είναι μόνη».',
+     why:'Καλή πρόθεση, αλλά <b>εκθέτει</b> την Ελένη και δίνει έτοιμη λύση. Χάνεται η εξάσκηση στην ενσυναίσθηση — και ίσως αυξηθεί η αμηχανία.', cite:'CASEL, 2020'},
+    {ok:false, t:'Δεν κάνετε τίποτα — «θα λυθεί μόνο του».',
+     why:'Όχι. Η κοινωνική επίγνωση <b>καλλιεργείται</b> μέσα από καθοδηγούμενες, ασφαλείς κοινωνικές σκηνές — δεν προϋποτίθεται.', cite:'CASEL, 2020'},
+   ]},
+ ],
+ theory:[
+  {h:'Η δεξιότητα: «διαβάζω» τον άλλο', b:'Να αντιλαμβάνεται το παιδί πώς νιώθουν & τι χρειάζονται οι άλλοι, με βάση ορατές ενδείξεις (πρόσωπο, στάση, σιωπή). Το βλέμμα στρέφεται από το «τι νιώθω εγώ» στο «τι νιώθει ο άλλος».'},
+  {h:'Κομβικό για την πρόληψη εκφοβισμού', b:'Ενσυναίσθηση & υιοθέτηση οπτικής = <b>προστατευτικοί παράγοντες</b> για τη θυματοποίηση και για τη δράση του θεατή (Masten κ.ά., 2021). Ζητούμενο: αντίληψη + κατάλληλη ανταπόκριση.'},
+  {h:'Πώς την καλλιεργείτε', b:'«Τι νιώθει ο άλλος;» (κρίση καταστάσεων), «Οι Ιστορίες των Άλλων», «Τα Παπούτσια του Άλλου» (εναλλαγή ρόλων). Πάντα ανώνυμα & χωρίς επιβολή «σωστής» ερμηνείας.'},
+ ]},
+
+/* ---------- Α4 · ΛΑΓΟΣ ---------- */
+{id:'Α4', c:'var(--hare)', title:'Δεξιότητες σχέσεων — ο Λαγός', time:'~100′',
+ tags:['Μύθος/Αλήθεια','Quiz'],
+ intro:'Το «μεγάλο» μήνυμα αυτής της ενότητας κρύβεται πίσω από μια πρόκληση.',
+ blocks:[
+  {type:'myth', kick:'Μύθος ή αλήθεια;', q:'Το κεντρικό μήνυμα του Λαγού — δοκιμάστε το.',
+   cards:[
+    {claim:'«Το να ζητάς βοήθεια είναι αδυναμία.»', myth:true,
+     why:'Μύθος — και είναι το <b>ρητό αντίθετο</b> μήνυμα της ενότητας: «Το να μιλάς σε έναν έμπιστο μεγάλο είναι <b>πράξη δύναμης</b>, όχι αδυναμία.» Σπάει τη σιωπή και προστατεύει από την πίεση.', cite:'CASEL, 2020'},
+    {claim:'«Το “όχι με σεβασμό” προστατεύει το παιδί από την πίεση συνομηλίκων.»', myth:false,
+     why:'Αλήθεια. Το να λέει «όχι» χωρίς να χαλάει τη σχέση είναι δεξιότητα που <b>εξασκείται</b> σε ασφαλές περιβάλλον (role-play) — κομβικό για την πρόληψη εκφοβισμού.', cite:'CASEL, 2020'},
+    {claim:'«Η συνεργασία σε ομάδες προϋποτίθεται — δεν χρειάζεται στήριξη.»', myth:true,
+     why:'Μύθος. Στα 6–9 η ομαδική εργασία <b>χρειάζεται τη στήριξή σας</b>: σαφείς ρόλοι (τεχνική jigsaw) ώστε να μη μένει κανένα παιδί στο περιθώριο. Η συνεργασία μαθαίνεται.', cite:'Sulla κ.ά., 2023'},
+   ]},
+  {type:'quiz', kick:'Στιγμή στην τάξη', q:'Ένα παιδί μένει ξανά και ξανά έξω από τις ομάδες. Τι κάνετε;',
+   opts:[
+    {ok:true, t:'Οργανώνετε εσείς ισορροπημένες ομάδες με <b>διακριτούς ρόλους</b>, ώστε κάθε παιδί να έχει θέση και αξία.',
+     why:'Ναι. Με σαφείς ρόλους (π.χ. «αρχιτέκτονας», «μεταφορέας»), η επιτυχία εξαρτάται από όλους — κανένα παιδί δεν μένει στο περιθώριο. Αν επαναλαμβάνεται, δείτε και το πρωτόκολλο Α6.', cite:'Sulla κ.ά., 2023'},
+    {ok:false, t:'Το αφήνετε να διαλέξει μόνο του ομάδα «για να μάθει».',
+     why:'Όχι. Χωρίς δομή, το ίδιο παιδί μένει ξανά απ’ έξω. Η συνεργασία μαθαίνεται με <b>στήριξη και ρόλους</b>, όχι στην τύχη.', cite:'Sulla κ.ά., 2023'},
+    {ok:false, t:'Το βάζετε να δουλεύει πάντα μόνο του.',
+     why:'Όχι — αυτό εδραιώνει τον αποκλεισμό. Ο στόχος είναι η <b>ένταξη</b> μέσα από δομημένη συνεργασία.', cite:'CASEL, 2020'},
+   ]},
+ ],
+ theory:[
+  {h:'Η δεξιότητα: από την αντίληψη στη δράση', b:'Συνεργασία, όρια, «λέω <b>όχι</b> με σεβασμό», και <b>ζητάω βοήθεια</b> από έμπιστο ενήλικα. Εδώ οι προηγούμενες ικανότητες «βγαίνουν προς τα έξω», στη σχέση με τους άλλους.'},
+  {h:'Το κεντρικό μήνυμα', b:'«Το να μιλάς σε έναν έμπιστο μεγάλο είναι <b>πράξη δύναμης</b>, όχι αδυναμία.» Δεύτερη κομβική ενότητα για την πρόληψη εκφοβισμού· ο μεγαλύτερος εκτιμώμενος χρόνος (~100′).'},
+  {h:'Πώς τις καλλιεργείτε', b:'«Χτίζουμε τη Φωλιά Μαζί» (jigsaw), «Οι Μαγικές Λέξεις» (επικοινωνία, «λέω όχι/ζητάω βοήθεια»), «Ο Χάρτης των Φίλων μου» (έμπιστα πρόσωπα). Οι συγκρούσεις: πρώτα ηρεμία (ανάσα Αρκούδας), μετά «μαγικές λέξεις».'},
+ ]},
+
+/* ---------- Α5 · ΧΕΛΩΝΑ ---------- */
+{id:'Α5', c:'var(--turtle)', title:'Υπεύθυνη λήψη αποφάσεων — η Χελώνα', time:'~30′',
+ tags:['Βάλε στη σειρά','Διακλαδωτό','Quiz'],
+ intro:'Μπείτε στη θέση ενός παιδιού που πρέπει να αποφασίσει — βήμα-βήμα.',
+ blocks:[
+  {type:'order', kick:'Βάλε στη σειρά', q:'Η ρουτίνα της Χελώνας έχει τρία βήματα. Βάλ’ τα στη σωστή σειρά.',
+   items:[
+    'Σταμάτα — μια ανάσα, βάζω παύση',
+    'Σκέψου — «τι μπορεί να γίνει; πώς θα νιώσουν οι άλλοι;»',
+    'Διάλεξε — επιλέγω το σωστό και εξηγώ γιατί',
+   ],
+   done:'«Σταμάτα · Σκέψου · Διάλεξε» — μια παύση δίνει χρόνο στη σκέψη ανάμεσα στο ερέθισμα και την αντίδραση.'},
+  {type:'branch', kick:'Διακλαδωτό σενάριο', terra:false,
+   nodes:{
+    start:{badge:'Το δίλημμα', narr:'Βλέπεις τρία ζωάκια να πειράζουν έναν φίλο σου στο διάλειμμα.', q:'Ποιο είναι το <b>πρώτο</b> βήμα;',
+     opts:[
+      {t:'Ορμάς θυμωμένος/η για να τους σταματήσεις', ok:false, fb:'Σταμάτα – μια ανάσα πρώτα. Η παρόρμηση μπορεί να σε βάλει κι εσένα σε κίνδυνο.'},
+      {t:'Σταμάτα — παίρνεις μια ανάσα', ok:true, next:'think', fb:'Ναι. Πρώτο βήμα πάντα η παύση (η ανάσα της Αρκούδας).'},
+      {t:'Φεύγεις και κάνεις πως δεν είδες', ok:false, fb:'Το να μη μένεις σιωπηλός θεατής μετράει — αλλά με ασφάλεια. Πρώτα πάτησε «παύση» και σκέψου.'},
+     ]},
+    think:{badge:'Σκέψου', narr:'Πήρες μια ανάσα. Τι σκέφτεσαι τώρα;', q:'Ποια σκέψη σε οδηγεί σε <b>ασφαλή</b> επιλογή;',
+     opts:[
+      {t:'«Πώς θα βοηθήσω τον φίλο μου χωρίς να κινδυνέψω;»', ok:true, next:'choose', fb:'Ακριβώς — σκέφτεσαι συνέπειες & ασφάλεια.'},
+      {t:'«Πώς θα τους εκδικηθώ;»', ok:false, fb:'Η εκδίκηση δεν είναι υπεύθυνη επιλογή — σκέψου τι είναι ασφαλές για όλους.'},
+     ]},
+    choose:{badge:'Διάλεξε', narr:'Ώρα να διαλέξεις.', q:'Ποια είναι μια <b>υπεύθυνη</b> επιλογή;',
+     opts:[
+      {t:'Στέκεσαι δίπλα στον φίλο σου και το λες σε έναν έμπιστο μεγάλο', ok:true, end:true, fb:'Μπράβο! Ούτε έφυγες, ούτε όρμησες — βοήθησες <b>με ασφάλεια</b>. Από θεατής, υπερασπιστής.'},
+      {t:'Γελάς μαζί με τους άλλους για να μην μπλέξεις', ok:false, fb:'Αυτό ενισχύει τον εκφοβισμό. Θυμήσου: ο θεατής που δρα είναι καθοριστικός.'},
+     ]},
+   },
+   endText:'Η υπεύθυνη επιλογή είναι <b>και</b> το να ζητήσεις βοήθεια από έμπιστο μεγάλο (σύνδεση με τον Λαγό). Το ζητούμενο δεν είναι να μπει το παιδί σε κίνδυνο, αλλά να αναγνωρίζει ότι <b>έχει επιλογή</b>.', cite:'Masten κ.ά., 2021'},
+  {type:'quiz', kick:'Η στάση σας', q:'Σε ένα σενάριο εκφοβισμού, ένα παιδί λέει «εγώ θα έφευγα». Πώς αντιδράτε;',
+   opts:[
+    {ok:true, t:'Δεν το κρίνετε· δείχνετε ότι υπεύθυνη επιλογή είναι <b>και</b> το να ζητήσουμε βοήθεια από έμπιστο μεγάλο.',
+     why:'Ναι. Εστιάζετε στη <b>διαδικασία</b> της σκέψης, όχι στη «σωστή απάντηση». Ζητάτε πάντα το «γιατί» και αποφεύγετε να χαρακτηρίζετε επιλογές «λάθος» μπροστά στην τάξη.', cite:'CASEL, 2020'},
+    {ok:false, t:'Του λέτε ότι απάντησε λάθος και ζητάτε τη «σωστή» απάντηση.',
+     why:'Όχι. Σε πολλά διλήμματα ζητούμενο είναι η <b>στάθμιση</b>, όχι μία λύση. Το «λάθος» μπροστά στην τάξη κλείνει τη συζήτηση.', cite:'CASEL, 2020'},
+   ]},
+ ],
+ theory:[
+  {h:'Η δεξιότητα: η παύση γίνεται επιλογή', b:'Η Χελώνα <b>συνθέτει</b> τις τέσσερις προηγούμενες. Κεντρικό εργαλείο: <b>Σταμάτα · Σκέψου · Διάλεξε</b>. Στα 6–9 η παρορμητικότητα είναι φυσιολογική — δεν τους λείπει η καλή θέληση, τους λείπει το εργαλείο της παύσης.'},
+  {h:'Σύνδεση με τον εκφοβισμό', b:'Διακλαδωτά & καταστασιακά σενάρια, ανάμεσά τους «βλέπεις κάποιον να πειράζει έναν φίλο» — μετάβαση από <b>θεατή σε υπερασπιστή</b>. Ζητούμενο η αναγνώριση ότι το παιδί <b>έχει επιλογή</b>, με ασφάλεια.'},
+  {h:'Τι προσέχετε', b:'Εστίαση στη <b>διαδικασία</b>, όχι στη «σωστή απάντηση». Ζητάτε πάντα το «γιατί». Υπεύθυνη επιλογή είναι και το να ζητάς βοήθεια από έμπιστο μεγάλο (σύνδεση με τον Λαγό).'},
+ ]},
+
+/* ---------- Α6 · ΕΠΙΚΕΝΤΡΟ ---------- */
+{id:'Α6', c:'var(--terra)', title:'Διαχείριση ευαίσθητων στιγμών', time:'~40′', special:'a6',
+ tags:['Διακλαδωτό','Βάλε στη σειρά','Κάνω/Δεν κάνω','Ροή','Αντιστοίχιση'],
+ intro:'Δεν είναι δραστηριότητα. Είναι η στιγμή που ο τρόπος σας προστατεύει ένα παιδί — ή το επιβαρύνει.',
+ blocks:[
+  {type:'branch', kick:'Διακλαδωτό σενάριο — μια δύσκολη στιγμή', terra:true,
+   nodes:{
+    start:{badge:'Η αποκάλυψη', narr:'Στον αναστοχασμό της Χελώνας, η Ελένη λέει χαμηλόφωνα, μπροστά σε λίγα παιδιά: «Κάποιος μεγάλος με πειράζει και μου λέει να μην το πω σε κανέναν.»', q:'Τι κάνετε <b>αυτή</b> τη στιγμή;',
+     opts:[
+      {t:'Τη ρωτάτε αμέσως ποιος και τι ακριβώς έγινε, μπροστά στους άλλους', ok:false, fb:'Όχι — δεν ανακρίνουμε και δεν εκθέτουμε το παιδί μπροστά στην τάξη. Μπορεί να «κλείσει» και να μη μιλήσει ξανά.'},
+      {t:'Μένετε ήρεμη και λέτε: «Σ’ ευχαριστώ πολύ που μου το εμπιστεύτηκες. Έκανες πολύ καλά.»', ok:true, next:'promise', fb:'Ναι. Ηρεμία + επιβεβαίωση: το παιδί νιώθει ότι το πιστεύουν και ότι έκανε καλά που μίλησε.'},
+      {t:'Της λέτε «μην ανησυχείς, σίγουρα δεν είναι κάτι σοβαρό»', ok:false, fb:'Όχι — αυτό ακυρώνει και υποβαθμίζει. Δεν καθησυχάζουμε με ψευδείς υποσχέσεις.'},
+     ]},
+    promise:{badge:'Η υπόσχεση', narr:'Η Ελένη σας ρωτά: «Θα το κρατήσεις μυστικό, έτσι;»', q:'Τι απαντάτε;',
+     opts:[
+      {t:'«Ναι, θα μείνει μυστικό μεταξύ μας.»', ok:false, fb:'Όχι — έχετε θεσμική υποχρέωση αναφοράς (Ν. 4837/2021). Δεν υπόσχεστε μυστικότητα.'},
+      {t:'«Επειδή νοιάζομαι για σένα, θα το πω σε ανθρώπους που η δουλειά τους είναι να βοηθούν παιδιά — μόνο σε αυτούς.»', ok:true, next:'after', fb:'Ναι. Ειλικρίνεια χωρίς να τρομάξετε το παιδί — και χωρίς υπόσχεση μυστικότητας.'},
+     ]},
+    after:{badge:'Αμέσως μετά', narr:'Η δραστηριότητα συνεχίζεται για την υπόλοιπη τάξη.', q:'Ποια είναι η σωστή επόμενη κίνηση;',
+     opts:[
+      {t:'Το κρατάτε για τον εαυτό σας για να μην «μεγαλώσει» το θέμα', ok:false, fb:'Όχι — δεν αναλαμβάνετε μόνοι σας. Το περιστατικό δεν σταματά σε εσάς.'},
+      {t:'Μόλις μπορέσετε, καταγράφετε τα λόγια της & ενημερώνετε Διεύθυνση/ΕΔΥ', ok:true, end:true, fb:'Ακριβώς. Καταγραφή με τα λόγια του παιδιού + μεταφορά στους αρμόδιους.'},
+     ]},
+   },
+   endText:'Η παρουσία <b>έστω κι ενός σταθερού, υποστηρικτικού ενήλικα</b> είναι από τους πιο συνεπείς προστατευτικούς παράγοντες. Τη στιγμή της αποκάλυψης, εσείς είστε αυτός ο ενήλικας — η πρώτη σας αντίδραση μετράει.', cite:'Masten κ.ά., 2021'},
+  {type:'order', kick:'Βάλε στη σειρά', q:'Τα 5 βήματα τη στιγμή του περιστατικού — στη σωστή σειρά.',
+   items:[
+    'Μείνετε ήρεμοι — χωρίς σοκ, θυμό ή αναστάτωση',
+    'Ακούστε — χωρίς καθοδηγητικές ερωτήσεις, μόνο ανοιχτές φράσεις',
+    'Επιβεβαιώστε: «Σε ακούω. Ευχαριστώ που μου το είπες. Δεν φταις εσύ.»',
+    'Μην υποσχεθείτε μυστικότητα — «θα το πω σε ανθρώπους που βοηθούν παιδιά»',
+    'Καταγράψτε τα γεγονότα με τα λόγια του παιδιού, με ημ/ώρα',
+   ],
+   done:'Ηρεμία · Ακούω χωρίς να ανακρίνω · «Δεν φταις εσύ» · Καμία υπόσχεση μυστικότητας · Καταγραφή. Αυτή είναι η κάρτα «Τη στιγμή της αποκάλυψης».', cite:'Ν. 4837/2021, άρθρο 4'},
+  {type:'dodont', kick:'Κάνω / Δεν κάνω', q:'Ρίξε κάθε φράση στο σωστό κουτί — ρόλος & όρια του εκπαιδευτικού.',
+   zones:[{k:'do', label:'✔ Κάνω', color:'var(--ok)'},{k:'dont', label:'✘ Δεν κάνω ποτέ', color:'var(--no)'}],
+   items:[
+    {t:'Ακούω ήρεμα, με σεβασμό', k:'do'},
+    {t:'Επιβεβαιώνω: «δεν φταις εσύ»', k:'do'},
+    {t:'Διασφαλίζω ότι φτάνει στους αρμόδιους', k:'do'},
+    {t:'Καταγράφω με τα λόγια του παιδιού', k:'do'},
+    {t:'Ανακρίνω για λεπτομέρειες', k:'dont', why:'Δεν είστε ανακριτής/τρια — η πίεση βλάπτει το παιδί και πιθανή μελλοντική διερεύνηση.'},
+    {t:'Υπόσχομαι μυστικότητα', k:'dont', why:'Έχετε υποχρέωση αναφοράς (Ν. 4837/2021).'},
+    {t:'Σχολιάζω το περιστατικό μπροστά στην τάξη', k:'dont', why:'Ποτέ δεν εκθέτουμε ούτε «δείχνουμε» το παιδί.'},
+    {t:'Αναλαμβάνω μόνος/η τη «λύση»/θεραπεία', k:'dont', why:'Δεν είστε ψυχολόγος/θεραπευτής — το πρόγραμμα είναι προληπτικό.'},
+   ],
+   after:'Ο ρόλος σας είναι σαφώς οριοθετημένος: <b>ακούτε, επιβεβαιώνετε, διασφαλίζετε</b> ότι το περιστατικό φτάνει στους αρμόδιους. Ό,τι είναι πέρα από αυτό (διερεύνηση, «λύση», θεραπεία) δεν είναι δική σας ευθύνη.', cite:'CASEL, 2020'},
+  {type:'finderror', kick:'Βρες το λάθος', scene:'Ένας συνάδελφος περιγράφει πώς χειρίστηκε μια αποκάλυψη: «Της είπα να μην ανησυχεί, ότι θα το κρατήσω μυστικό μεταξύ μας, και τη ρώτησα αναλυτικά ποιος της το έκανε.»',
+   q:'Πόσα λάθη υπάρχουν εδώ — και ποιο είναι το πιο κρίσιμο;',
+   opts:[
+    {ok:true, t:'Δύο κρίσιμα: υποσχέθηκε μυστικότητα και ανέκρινε το παιδί',
+     why:'Σωστά. <b>Υπόσχεση μυστικότητας</b> = παραβίαση της υποχρέωσης αναφοράς (Ν. 4837/2021). <b>Ανάκριση</b> = μπορεί να βλάψει το παιδί και μια μελλοντική διερεύνηση. Σωστά: ήρεμη ακρόαση, «δεν φταις εσύ», καμία υπόσχεση μυστικότητας, μεταφορά στους αρμόδιους.', cite:'Ν. 4837/2021, άρθρο 4'},
+    {ok:false, t:'Κανένα — σωστά έδρασε με καλή πρόθεση',
+     why:'Όχι. Η καλή πρόθεση δεν αρκεί: η υπόσχεση μυστικότητας και η ανάκριση είναι <b>όρια που δεν παραβιάζονται</b>.', cite:'Ν. 4837/2021, άρθρο 4'},
+    {ok:false, t:'Μόνο ένα: ότι δεν κάλεσε αμέσως την αστυνομία',
+     why:'Όχι. Η οδός δεν είναι «αστυνομία αμέσως» αλλά Διεύθυνση/ΕΔΥ (→ΚΕΔΑΣΥ)· Εισαγγελέας μόνο σε <b>άμεσο κίνδυνο</b>. Τα κρίσιμα λάθη ήταν η μυστικότητα και η ανάκριση.', cite:'Ν. 4837/2021, άρθρο 4'},
+   ]},
+  {type:'flow', kick:'Διαδραστική ροή παραπομπής', q:'Μετά την αποκάλυψη — πού πάει το περιστατικό; Πάτησε κάθε βήμα.',
+   steps:[
+    {label:'1 · Αποκάλυψη στην τάξη', detail:'Ήρεμη ακρόαση, επιβεβαίωση, καταγραφή με τα λόγια του παιδιού. Το περιστατικό <b>δεν σταματά σε εσάς</b>.'},
+    {label:'2 · Διεύθυνση & ΕΔΥ', detail:'Ενημερώνετε <b>χωρίς καθυστέρηση</b> τη Διεύθυνση και την Επιτροπή Διεπιστημονικής Υποστήριξης (ΕΔΥ) του σχολείου.'},
+    {label:'3 · ΚΕΔΑΣΥ', detail:'Η ΕΔΥ συνδέεται με το οικείο <b>ΚΕΔΑΣΥ</b> (Κέντρο Διεπιστημονικής Αξιολόγησης, Συμβουλευτικής & Υποστήριξης).'},
+    {label:'4 · Εισαγγελέας Ανηλίκων', detail:'Σε <b>άμεσο κίνδυνο</b> για τη σωματική/ψυχική υγεία του παιδιού, ειδοποιείται ο/η Εισαγγελέας Ανηλίκων (ή Υπηρεσίας).', cite:'Άμεσος κίνδυνος', danger:true},
+    {label:'☎ Γραμμή 1107 (ΕΚΚΑ)', detail:'Δωρεάν, 24ωρη Εθνική Γραμμή Παιδικής Προστασίας — και για <b>ανώνυμη</b> αναφορά. Η αναφορά είναι θεσμική υποχρέωση.', cite:'Ν. 4837/2021, άρθρο 4'},
+   ]},
+  {type:'match', kick:'Αντιστοίχιση', q:'Ένωσε κάθε κατάσταση με τη σωστή ενέργεια/παραπομπή.', matc:'var(--terra)',
+   pairs:[
+    {l:'Θεσμική υποχρέωση αναφοράς', r:'Ν. 4837/2021, άρθρο 4'},
+    {l:'Άμεσος κίνδυνος για το παιδί', r:'Εισαγγελέας Ανηλίκων'},
+    {l:'Θέλω ανώνυμη, 24ωρη αναφορά', r:'Γραμμή 1107 (ΕΚΚΑ)'},
+    {l:'Πρώτη εσωτερική ενημέρωση', r:'Διεύθυνση & ΕΔΥ → ΚΕΔΑΣΥ'},
+   ],
+   after:'Το πρόγραμμα είναι <b>προληπτικό</b>: αυτή η ενότητα δεν σας κάνει φορέα διερεύνησης — σας διασφαλίζει ότι ξέρετε <b>πού σταματά ο ρόλος σας</b> και ποιοι αναλαμβάνουν από εκεί.'},
+ ],
+ theory:[
+  {h:'Πότε ενεργοποιείται', b:'Όταν ένα παιδί <b>αποκαλύπτει άμεσα</b> κάτι (εκφοβισμό, κάτι στο σπίτι, κάποιος του κάνει κακό), <b>υπαινίσσεται έμμεσα</b> κάτι σοβαρό (ζωγραφιά, φράση «σαν στα ψέματα»), ή δείχνει <b>έντονη δυσφορία</b> (κλάμα που δεν σταματά, φόβο, αποσύνδεση). Τότε δεν προχωράτε τη δραστηριότητα «κανονικά» — σταματάτε.'},
+  {h:'Ο ρόλος σας — και τα όριά του', b:'Δεν είστε ψυχολόγος/θεραπευτής. <b>Ακούτε · επιβεβαιώνετε · διασφαλίζετε</b> ότι φτάνει στους αρμόδιους. Η διερεύνηση/«λύση»/θεραπεία δεν είναι δική σας ευθύνη (CASEL, 2020). «Οιονεί θεραπευτικές» προσεγγίσεις σε μικρά παιδιά μπορεί να είναι επιβαρυντικές (Malboeuf-Hurtubise κ.ά., 2024· Pickerell κ.ά., 2023).'},
+  {h:'Προληπτικά & φροντίδα εαυτού', b:'Μάθετε <b>εκ των προτέρων</b> το πρωτόκολλο του σχολείου (μέλη ΕΔΥ, ΚΕΔΑΣΥ, τηλέφωνα, Γραμμή 1107) και συμπληρώστε την κάρτα. Ορίστε τον «κανόνα του κύκλου». Είναι φυσιολογικό να ταραχτείτε — <b>μη μένετε μόνοι με το βάρος</b>· ζητήστε στήριξη από Διεύθυνση/ΕΔΥ.'},
+ ],
+ a6dl:true},
+
+/* ---------- Α7 · AI ---------- */
+{id:'Α7', c:'var(--amber)', title:'Εργαλεία Τεχνητής Νοημοσύνης', time:'~30′',
+ tags:['Slider','Βάλε στη σειρά','Κάνω/Δεν κάνω'],
+ intro:'Το AI είναι εργαλείο δικό σας — όχι των παιδιών. Δοκιμάστε γιατί.',
+ blocks:[
+  {type:'slider', kick:'Εκτίμησε', q:'Για ποια ηλικιακή ομάδα υπάρχει τεκμηρίωση <b>ασφαλούς</b> χρήσης GenAI στην εκπαίδευση;',
+   min:4, max:18, step:1, unit:'+ ετών', start:8, correct:[13,18],
+   reveal:'Κυρίως σε <b>μεγαλύτερες ηλικίες</b> — <b>καμία</b> τεκμηρίωση για την πρώιμη παιδική ηλικία.',
+   why:'Γι’ αυτό τα παιδιά <b>δεν</b> αλληλεπιδρούν με AI σε καμία δραστηριότητα. Το AI το χρησιμοποιείτε <b>μόνο εσείς</b>, στην προετοιμασία — η έρευνα για GenAI στην εκπαίδευση εστιάζει σχεδόν αποκλειστικά σε μεγαλύτερες ηλικίες.', cite:'Alfarwan, 2025'},
+  {type:'order', kick:'Βάλε στη σειρά', q:'Η αρχή ευθυγράμμισης «3P». Βάλε τα βήματα στη σωστή σειρά.',
+   items:[
+    'Μαθησιακός στόχος (η ικανότητα CASEL)',
+    'Δραστηριότητα που τον υπηρετεί',
+    'Ρόλος του AI — υπηρετεί, δεν οδηγεί',
+   ],
+   done:'Σειρά 3P: στόχος → δραστηριότητα → ρόλος AI, <b>ποτέ το αντίστροφο</b>. Αλλιώς: μειωμένη πρωτοτυπία & υπερβολική εξάρτηση από το εργαλείο.', cite:'Lin & Tan, 2025'},
+  {type:'dodont', kick:'Κάνω / Δεν κάνω', q:'Με το AI στην προετοιμασία — ρίξε κάθε φράση στο σωστό κουτί.',
+   zones:[{k:'do', label:'✔ Κάνω', color:'var(--ok)'},{k:'dont', label:'✘ Δεν κάνω', color:'var(--no)'}],
+   items:[
+    {t:'Ζητάω εικονογράφηση στο ύφος των Φυλάκων', k:'do'},
+    {t:'Ζητάω παραλλαγές δραστηριότητας (διαφοροποίηση)', k:'do'},
+    {t:'Ελέγχω ακρίβεια, στερεότυπα, καταλληλότητα', k:'do'},
+    {t:'Ξεκινάω από τον μαθησιακό στόχο', k:'do'},
+    {t:'Βάζω τα παιδιά να χρησιμοποιήσουν AI «για λίγο»', k:'dont', why:'Ποτέ — καμία τεκμηρίωση ασφαλούς χρήσης στην πρώιμη παιδική ηλικία (Alfarwan, 2025).'},
+    {t:'Εισάγω πραγματικά ονόματα/δεδομένα παιδιών', k:'dont', why:'Προστασία προσωπικών δεδομένων — ποτέ.'},
+    {t:'Χρησιμοποιώ υλικό «όπως βγήκε», χωρίς έλεγχο', k:'dont', why:'Πάντα ελέγχετε ακρίβεια, στερεότυπα & καταλληλότητα πριν φτάσει στα παιδιά.'},
+   ],
+   after:'Το AI παραμένει <b>βοηθός της παιδαγωγικής σας κρίσης</b> — όχι υποκατάστατό της. Η ευθύνη για το τι φτάνει στα παιδιά παραμένει, πάντα, δική σας.', cite:'Lin & Tan, 2025'},
+ ],
+ theory:[
+  {h:'Δικό σας εργαλείο — όχι των παιδιών', b:'Το AI το χρησιμοποιείτε <b>μόνο εσείς, στην προετοιμασία</b>. Τα παιδιά <b>δεν</b> αλληλεπιδρούν με AI — δεν υπάρχει τεκμηρίωση ασφαλούς χρήσης στην πρώιμη παιδική ηλικία (Alfarwan, 2025).'},
+  {h:'Η αρχή 3P (ευθυγράμμιση)', b:'Σειρά: <b>μαθησιακός στόχος → δραστηριότητα → ρόλος AI</b> — ποτέ το αντίστροφο (Lin & Tan, 2025). Δεν στήνουμε δραστηριότητα «επειδή το βγάζει ωραία το AI»· αλλιώς κινδυνεύει η πρωτοτυπία και δημιουργείται υπερβολική εξάρτηση.'},
+  {h:'Για τι το αξιοποιείτε & τι ΔΕΝ κάνετε', b:'✔ Εικονογράφηση, διαφοροποίηση, ιδέες για αναστοχασμό. ✘ Τα παιδιά δεν χρησιμοποιούν AI· δεν εισάγετε προσωπικά δεδομένα/ονόματα· ελέγχετε <b>πάντα</b> ακρίβεια, στερεότυπα, καταλληλότητα.'},
+ ]},
+
+/* ---------- Α8 · ΡΟΥΜΠΡΙΚΑ ---------- */
+{id:'Α8', c:'var(--forest)', title:'Οδηγίες υλοποίησης & ρουμπρίκα', time:'~40′',
+ tags:['Αντιστοίχιση','Μύθος/Αλήθεια','Quiz'],
+ intro:'Τελευταίος σταθμός: πώς τρέχει κάθε ενότητα και τι (δεν) αξιολογούμε.',
+ blocks:[
+  {type:'match', kick:'Αντιστοίχιση', q:'Ένωσε κάθε φάση ARCS με το τι κάνει μέσα στη δομή της ενότητας.', matc:'var(--forest)',
+   pairs:[
+    {l:'A — Attention', r:'Η ιστορία ξεκινά & τραβά την προσοχή'},
+    {l:'R — Relevance', r:'Συνδέεται με τη ζωή του παιδιού'},
+    {l:'C — Confidence', r:'Η δραστηριότητα χτίζει σιγουριά (απλό→σύνθετο)'},
+    {l:'S — Satisfaction', r:'Αναστοχασμός & σύμβολο στην ασπίδα'},
+   ],
+   after:'Τριμερής δομή ARCS: <b>Ιστορία (A·R) → Δραστηριότητα (C) → Αναστοχασμός (S)</b>. Κάθε Φύλακας ≈ μία διδακτική ώρα, συχνά σε δύο σύντομες συναντήσεις.', cite:'Keller, 2010'},
+  {type:'myth', kick:'Μύθος ή αλήθεια;', q:'Τι κάνει (και τι δεν κάνει) η ρουμπρίκα;',
+   cards:[
+    {claim:'«Η ρουμπρίκα βαθμολογεί τα παιδιά και τα συγκρίνει μεταξύ τους.»', myth:true,
+     why:'Μύθος. Η ρουμπρίκα <b>δεν βαθμολογεί</b> και <b>δεν συγκρίνει</b> παιδιά. Κάθε παιδί συγκρίνεται μόνο με τον εαυτό του, στον χρόνο — χωρίς ταμπέλες.', cite:'Wang & Hannafin, 2005'},
+    {claim:'«Αξιολογούμε αν ο σχεδιασμός ενεργοποίησε την ικανότητα — όχι το παιδί.»', myth:false,
+     why:'Αλήθεια. Μεθοδολογία Design-Based Research: το ζητούμενο είναι «<b>ενεργοποίησε ο σχεδιασμός την ικανότητα;</b>», εργαλείο <b>βελτίωσης του σεναρίου</b>.', cite:'Wang & Hannafin, 2005'},
+    {claim:'«Παρατηρούμε κατά τη διάρκεια των δραστηριοτήτων, όχι με ξεχωριστό τεστ.»', myth:false,
+     why:'Αλήθεια. Διαμορφωτική αποτίμηση: σημειώνετε <b>παρατηρήσιμες συμπεριφορές</b> (1–2 κριτήρια κάθε φορά), όχι εντυπώσεις για τον χαρακτήρα.', cite:'Martinez-Yarza κ.ά., 2023'},
+   ]},
+  {type:'quiz', kick:'Η οπτική DBR', q:'Μια δραστηριότητα «δεν πιάνει» στην τάξη. Ποια είναι η πρώτη σκέψη στο πνεύμα του προγράμματος;',
+   opts:[
+    {ok:true, t:'«Τι θα άλλαζα στον σχεδιασμό ώστε να ενεργοποιήσει την ικανότητα;»',
+     why:'Ναι. Η δεύτερη ματιά είναι το πνεύμα του Design-Based Research: βελτιώνουμε τον <b>σχεδιασμό</b>, δεν χρεώνουμε την «αποτυχία» στο παιδί.', cite:'Wang & Hannafin, 2005'},
+    {ok:false, t:'«Τι δεν κατάλαβαν / δεν μπόρεσαν τα παιδιά;»',
+     why:'Όχι ως πρώτη σκέψη. Αυτό μετατοπίζει το «βάρος» στο παιδί. Το εργαλείο αξιολογεί τον <b>σχεδιασμό</b>, όχι την επίδοση.', cite:'Wang & Hannafin, 2005'},
+   ]},
+ ],
+ theory:[
+  {h:'Πώς τρέχει κάθε ενότητα', b:'Ίδια <b>τριμερής δομή (ARCS)</b>: <b>1. Ιστορία</b> (A·R) → <b>2. Δραστηριότητα</b>, απλό→σύνθετο (C) → <b>3. Αναστοχασμός</b> + σύμβολο στην ασπίδα (S). Κάθε Φύλακας ≈ μία διδακτική ώρα, συχνά σε δύο σύντομες συναντήσεις.'},
+  {h:'Πώς παρατηρείτε', b:'<b>Κατά τη διάρκεια</b> — όχι ξεχωριστό «τεστ». Εστιάζετε σε 1–2 κριτήρια κάθε φορά, με διατυπώσεις <b>παρατηρήσιμης συμπεριφοράς</b>. Τρία επίπεδα: Αναδυόμενο (με στήριξη) · Σε εξέλιξη (με υπενθύμιση) · Επιτευγμένο (αυθόρμητα).'},
+  {h:'Η ρουμπρίκα — τι αξιολογεί', b:'Design-Based Research: «ενεργοποίησε ο σχεδιασμός την ικανότητα;». <b>Δεν βαθμολογεί, δεν συγκρίνει, δεν ταμπελιάζει.</b> Οι πλήρεις ρουμπρίκες βρίσκονται στο Παράρτημα του σεναρίου.', dl:'Ρουμπρίκα παρατήρησης'},
+ ]},
+
+];
+
+/* ================= ΒΟΗΘΟΣ — knowledge base (ΟΛΗ η θεωρία) ================= */
+const THEORY=[
+  {t:'Τι είναι η ανθεκτικότητα', s:'Α0', kw:'ανθεκτικοτητα ορισμος τι ειναι resilience masten', x:'Δυναμική διαδικασία θετικής προσαρμογής στη δυσκολία. Καλλιεργείται — δεν είναι έμφυτο «ταλέντο» (Masten κ.ά., 2021). Ένας από τους ισχυρότερους προστατευτικούς παράγοντες είναι η παρουσία έστω κι ενός έμπιστου, υποστηρικτικού ενήλικα.'},
+  {t:'Τι ΔΕΝ είναι η ανθεκτικότητα', s:'Α0', kw:'μυθοι δυνατος πονος χαρισμα', x:'Δεν είναι «να είσαι πάντα δυνατός», ούτε «να μη νιώθεις πόνο» (τα δύσκολα συναισθήματα είναι φυσιολογικά), ούτε έμφυτο χάρισμα, ούτε ατομική υπόθεση — προκύπτει από το περιβάλλον γύρω από το παιδί.'},
+  {t:'Γιατί ειδικά στα 6–9 ετών', s:'Α0', kw:'ηλικια αναπτυξη κρισιμη περιοδος', x:'Έντονα συναισθήματα που δεν μπορούν ακόμη να ονομάσουν, και πρώτες κοινωνικές δοκιμασίες (φιλίες, συγκρούσεις, πίεση). Κρίσιμη περίοδος: προλαβαίνουμε αντί να «διορθώνουμε».'},
+  {t:'Προληπτικά & καθολικά — όχι κλινικά', s:'Α0', kw:'προληπτικο καθολικο κλινικο θεραπεια ολη ταξη', x:'Απευθύνεται σε όλη την τάξη, πριν εμφανιστεί η δυσκολία (CASEL, 2020). Διαφέρει ρητά από θεραπευτική/κλινική παρέμβαση — δεν «θεραπεύουμε», καλλιεργούμε δεξιότητες για όλους.'},
+  {t:'Πρόληψη εκφοβισμού (bullying)', s:'Α0/Α3/Α4/Α5', kw:'εκφοβισμος bullying πιεση συνομηλικων θεατης υπερασπιστης', x:'Έμφαση στην πρόληψη εκφοβισμού & πίεσης συνομηλίκων: ενσυναίσθηση (Ελάφι), «λέω όχι / ζητάω βοήθεια» (Λαγός), μετάβαση από θεατή σε υπερασπιστή (Χελώνα). Η κοινωνικο-συναισθηματική μάθηση χτίζει τις δεξιότητες που «σπάνε» τον κύκλο του εκφοβισμού.'},
+  {t:'CASEL — το «τι»', s:'Α0', kw:'casel 5 δεξιοτητες πλαισιο τι', x:'CASEL = τι διδάσκουμε: 5 δεξιότητες — αυτοεπίγνωση (Κουκουβάγια), αυτοδιαχείριση (Αρκούδα), κοινωνική επίγνωση (Ελάφι), δεξιότητες σχέσεων (Λαγός), υπεύθυνη λήψη αποφάσεων (Χελώνα).'},
+  {t:'ARCS (Keller) — το «πώς»', s:'Α0/Α8', kw:'arcs keller κινητρο attention relevance confidence satisfaction πως', x:'ARCS = το όχημα κινητοποίησης: Attention (προσοχή), Relevance (σύνδεση με τη ζωή), Confidence (σιγουριά), Satisfaction (ικανοποίηση). Κάθε ενότητα δομείται Ιστορία(A·R) → Δραστηριότητα(C) → Αναστοχασμός(S).'},
+  {t:'Η Ασπίδα της Ανθεκτικότητας', s:'Α0', kw:'ασπιδα συμβολο ιστορια συνεχεια', x:'Όλο το πρόγραμμα δένει σε μία ενιαία ιστορία: τα παιδιά κερδίζουν ένα σύμβολο από κάθε Φύλακα και τα πέντε μαζί χτίζουν την «Ασπίδα» τους.'},
+  {t:'Αυτοεπίγνωση — η Κουκουβάγια', s:'Α1', kw:'αυτοεπιγνωση κουκουβαγια συναισθημα ονομασια affect labeling φοβος σωμα', x:'Το παιδί αναγνωρίζει και ονομάζει τα συναισθήματα και τα συνδέει με το σώμα. Η ονομασία (affect labeling) είναι το πρώτο βήμα της ρύθμισης. Στα 6–9 βιώνουν σωματικά· ρωτάτε «πού το νιώθεις;».'},
+  {t:'Πώς εξηγώ τον φόβο σε 6χρονα', s:'Α1', kw:'φοβος εξηγηση πως 6χρονα κοιλια πεταλουδες', x:'Ξεκινήστε από το σώμα: «πού το νιώθεις;». Μετά δώστε του όνομα («αυτό λέγεται φόβος») και κανονικοποιήστε το: μόλις ο φόβος αποκτά όνομα, γίνεται λιγότερο τρομακτικός.'},
+  {t:'Αυτοδιαχείριση — η Αρκούδα', s:'Α2', kw:'αυτοδιαχειριση αρκουδα θυμος ρυθμιση θερμομετρο εργαλειοθηκη', x:'Ρύθμιση της έντασης· υπάρχει απόσταση ανάμεσα στο «νιώθω» και στο «πράττω». Εργαλεία: «θερμόμετρο του θυμού» (διαφορετική ένταση → διαφορετική στρατηγική) και προσωπική «εργαλειοθήκη ηρεμίας».'},
+  {t:'Η «ανάσα της αρκούδας» & το mindfulness', s:'Α2', kw:'αναπνοη ανασα mindfulness ενσυνειδητοτητα κατω 10 ετων', x:'Η άσκηση αναπνοής μπαίνει ως σύντομη στρατηγική μέσα στο CASEL, ΟΧΙ ως αυτόνομο πρόγραμμα ενσυνειδητότητας. Η έρευνα είναι επιφυλακτική για αυτόνομα mindfulness σε παιδιά κάτω των 10 (Malboeuf-Hurtubise κ.ά., 2024· Pickerell κ.ά., 2023).'},
+  {t:'Κοινωνική επίγνωση — το Ελάφι', s:'Α3', kw:'κοινωνικη επιγνωση ελαφι ενσυναισθηση perspective taking', x:'Να «διαβάζει» το παιδί τα σημάδια του άλλου (πρόσωπο, στάση, σιωπή). Ενσυναίσθηση & υιοθέτηση οπτικής = προστατευτικοί παράγοντες για τον εκφοβισμό. Ζητούμενο: αντίληψη + κατάλληλη ανταπόκριση, όχι απλώς οίκτος.'},
+  {t:'Δεξιότητες σχέσεων — ο Λαγός', s:'Α4', kw:'δεξιοτητες σχεσεων λαγος οχι ζηταω βοηθεια συνεργασια ορια', x:'Συνεργασία, όρια, «λέω όχι με σεβασμό», και «ζητάω βοήθεια από έμπιστο ενήλικα». Κεντρικό μήνυμα: το να μιλάς σε έναν έμπιστο μεγάλο είναι πράξη δύναμης, όχι αδυναμία. Μεγαλύτερος χρόνος (~100′).'},
+  {t:'Υπεύθυνη λήψη αποφάσεων — η Χελώνα', s:'Α5', kw:'υπευθυνη ληψη αποφασεων χελωνα σταματα σκεψου διαλεξε αποφαση', x:'Συνθέτει τις τέσσερις προηγούμενες. Κεντρικό εργαλείο: Σταμάτα · Σκέψου · Διάλεξε. Διακλαδωτά σενάρια, ανάμεσά τους η μετάβαση από θεατή σε υπερασπιστή.'},
+  {t:'Ευαίσθητες στιγμές — πότε ενεργοποιείται', s:'Α6', kw:'ευαισθητες στιγμες αποκαλυψη κριση κλαμα δυσφορια υπαινιγμος', x:'Ενεργοποιείται όταν ένα παιδί αποκαλύπτει άμεσα κάτι (εκφοβισμό, κάτι στο σπίτι, κάποιος του κάνει κακό), υπαινίσσεται έμμεσα κάτι σοβαρό, ή δείχνει έντονη δυσφορία (κλάμα που δεν σταματά, φόβο, αποσύνδεση). Τότε δεν προχωράτε τη δραστηριότητα «κανονικά» — σταματάτε.'},
+  {t:'Τα 5 βήματα τη στιγμή του περιστατικού', s:'Α6', kw:'5 βηματα αποκαλυψη κακοποιηση τι κανω πως αντιδρω', x:'1) Μείνετε ήρεμοι. 2) Ακούστε χωρίς καθοδηγητικές ερωτήσεις (μόνο ανοιχτές φράσεις). 3) Επιβεβαιώστε: «Σε ακούω. Ευχαριστώ που μου το είπες. Δεν φταις εσύ.» 4) Μην υποσχεθείτε μυστικότητα. 5) Καταγράψτε τα γεγονότα με τα λόγια του παιδιού, με ημ/ώρα.'},
+  {t:'Τι ΔΕΝ κάνετε ποτέ σε αποκάλυψη', s:'Α6', kw:'δεν κανω ποτε μυστικοτητα ανακριση δραστης', x:'Δεν ανακρίνετε/πιέζετε για λεπτομέρειες, δεν υπόσχεστε μυστικότητα, δεν σχολιάζετε μπροστά στην τάξη, δεν κρίνετε τον φερόμενο ως δράστη, δεν αναλαμβάνετε μόνοι σας «λύση»/διερεύνηση/θεραπεία, δεν αγνοείτε αποκάλυψη ή υπαινιγμό.'},
+  {t:'Πρωτόκολλο παραπομπής', s:'Α6', kw:'παραπομπη εδυ κεδασυ εισαγγελεας 1107 νομος 4837 αναφορα', x:'Ενημερώνετε χωρίς καθυστέρηση Διεύθυνση & ΕΔΥ (→ ΚΕΔΑΣΥ). Σε άμεσο κίνδυνο: Εισαγγελέας Ανηλίκων. Δωρεάν 24ωρη Γραμμή Παιδικής Προστασίας 1107 (ΕΚΚΑ). Η αναφορά είναι θεσμική υποχρέωση (Ν. 4837/2021, άρθρο 4).'},
+  {t:'Ο ρόλος σας & τα όριά του (Α6)', s:'Α6', kw:'ρολος οριο ψυχολογος θεραπευτης ευθυνη φροντιδα εαυτου', x:'Δεν είστε ψυχολόγος/θεραπευτής. Ακούτε, επιβεβαιώνετε, διασφαλίζετε ότι το περιστατικό φτάνει στους αρμόδιους. Η διερεύνηση/«λύση»/θεραπεία δεν είναι δική σας ευθύνη. Φροντίστε κι εσείς τον εαυτό σας — μη μένετε μόνοι με το βάρος.'},
+  {t:'AI — δικό σας εργαλείο, όχι των παιδιών', s:'Α7', kw:'ai τεχνητη νοημοσυνη παιδια χρηση εργαλειο', x:'Το AI το χρησιμοποιείτε μόνο εσείς, στην προετοιμασία. Τα παιδιά δεν αλληλεπιδρούν με AI σε καμία δραστηριότητα — δεν υπάρχει τεκμηρίωση ασφαλούς χρήσης στην πρώιμη παιδική ηλικία (Alfarwan, 2025).'},
+  {t:'Η αρχή 3P (ευθυγράμμιση AI)', s:'Α7', kw:'3p ευθυγραμμιση στοχος δραστηριοτητα ρολος ai lin tan', x:'Σειρά: μαθησιακός στόχος → δραστηριότητα → ρόλος AI, ποτέ το αντίστροφο (Lin & Tan, 2025). Ελέγχετε πάντα ακρίβεια, στερεότυπα, καταλληλότητα· δεν εισάγετε προσωπικά δεδομένα/ονόματα παιδιών.'},
+  {t:'Πώς τρέχει κάθε ενότητα & χρόνος', s:'Α8', kw:'διαρκεια χρονος ωρα δομη ιστορια δραστηριοτητα αναστοχασμος', x:'Ίδια τριμερής δομή (ARCS): Ιστορία → Δραστηριότητα (απλό→σύνθετο) → Αναστοχασμός + σύμβολο. Κάθε Φύλακας ≈ μία διδακτική ώρα, συχνά σε δύο σύντομες συναντήσεις. Καλύτερα λίγα και ουσιαστικά.'},
+  {t:'Η ρουμπρίκα — αξιολογούμε τον σχεδιασμό', s:'Α8', kw:'ρουμπρικα αξιολογηση σχεδιασμος design based research βαθμος', x:'Μεθοδολογία Design-Based Research. Το ζητούμενο δεν είναι «τα κατάφερε το παιδί;» αλλά «ενεργοποίησε ο σχεδιασμός την ικανότητα;». Η ρουμπρίκα δεν βαθμολογεί και δεν συγκρίνει παιδιά.'},
+  {t:'Θεσμικό πλαίσιο — Εργαστήρια Δεξιοτήτων', s:'Α0', kw:'θεσμικο πλαισιο ιεπ εργαστηρια δεξιοτητων ζω καλυτερα ευ ζην', x:'Το σενάριο εντάσσεται στα Εργαστήρια Δεξιοτήτων του Ι.Ε.Π., θεματική «Ζω Καλύτερα – Ευ Ζην», όπου η ανθεκτικότητα κατονομάζεται ρητά ως δεξιότητα προς καλλιέργεια.'},
+  {t:'Μη συμμετοχή παιδιού — «κανόνας του κύκλου»', s:'Α6', kw:'δεν θελει συμμετοχη προαιρετικη κανονας κυκλου', x:'Η συμμετοχή στον αναστοχασμό είναι προαιρετική. Ορίστε από την αρχή τον «κανόνα του κύκλου»: ό,τι μοιραζόμαστε μένει στον κύκλο, με σεβασμό· κανείς δεν υποχρεώνεται να μιλήσει.'},
+];
+const SHORTCUTS=['Τι κάνω αν παιδί αποκαλύψει κακοποίηση;','Πώς εξηγώ τον φόβο σε 6χρονα;','Μπορούν τα παιδιά να χρησιμοποιήσουν AI;','Πόσο διαρκεί κάθε ενότητα;'];
+
+</script>
+<script>
+/* ================= ΜΗΧΑΝΗ ================= */
+const BOT=`<svg viewBox="0 0 48 48" width="100%" height="100%" fill="none"><rect x="8" y="11" width="32" height="26" rx="10" fill="#2E7D5B" stroke="#3A2A22" stroke-width="3"/><path d="M24 6.5V11" stroke="#3A2A22" stroke-width="2.6" stroke-linecap="round"/><circle cx="24" cy="5" r="3" fill="#FF6A3D" stroke="#3A2A22" stroke-width="2"/><rect x="13" y="16" width="22" height="15" rx="7" fill="#FBF3E7" stroke="#3A2A22" stroke-width="2.4"/><circle cx="20" cy="22.5" r="2.7" fill="#3A2A22"/><circle cx="28" cy="22.5" r="2.7" fill="#3A2A22"/><path d="M20 27q4 2.8 8 0" stroke="#3A2A22" stroke-width="2" stroke-linecap="round"/></svg>`;
+document.getElementById('favav').innerHTML=BOT; document.getElementById('chav').innerHTML=BOT;
+
+const GRADE=new Set(['quiz','finderror','myth','order','match','dodont','branch','flow','slider']);
+const CONF_FACES=[{e:'😟',l:'Καθόλου'},{e:'😕',l:'Λίγο'},{e:'😐',l:'Μέτρια'},{e:'🙂',l:'Αρκετά'},{e:'😃',l:'Πολύ'}];
+
+/* ---- state ---- */
+const KEY='guardians_teacher_v2';
+let ST={done:{},conf:{},refl:{}};
+try{const s=JSON.parse(localStorage.getItem(KEY)); if(s&&typeof s==='object'){ST.done=s.done||{};ST.conf=s.conf||{};ST.refl=s.refl||{};}}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(ST))}catch(e){}}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function doneCount(){return STATIONS.filter(s=>ST.done[s.id]).length;}
+function renderProg(){const n=doneCount(); document.getElementById('ptxt').textContent=n+'/9'; document.getElementById('pfill').style.width=(n/9*100)+'%';}
+
+/* ---- MAP ---- */
+const map=document.getElementById('map');
+function renderMap(){
+  map.innerHTML='';
+  STATIONS.forEach((s,i)=>{
+    const cf=ST.conf[s.id]?CONF_FACES[ST.conf[s.id]-1].e:'';
+    const b=document.createElement('button'); b.className='st'+(ST.done[s.id]?' done':''); b.style.setProperty('--stc',s.c);
+    b.innerHTML=`<span class="n">${s.id}</span>${cf?`<span class="cf" title="Σιγουριά">${cf}</span>`:''}<span class="done">✓</span>`+
+      `<h3>${s.title}</h3><span class="t">${s.time}</span>`+
+      `<div class="tags">${(s.tags||[]).map(t=>`<span class="tg">${t}</span>`).join('')}</div>`;
+    b.onclick=()=>openStation(i); map.appendChild(b);
+  });
+  renderReadiness(); renderProg();
+}
+function renderReadiness(){
+  const el=document.getElementById('ready'); const n=doneCount();
+  let rows='';
+  STATIONS.forEach(s=>{
+    const d=!!ST.done[s.id]; const cv=ST.conf[s.id];
+    const face=cv?CONF_FACES[cv-1].e:'—';
+    rows+=`<div class="rrow${d?' ok':''}"><span class="rk">${d?'✓':''}</span><span class="rt">${s.id} · ${s.title}</span><span class="rc" title="Σιγουριά">${face}</span></div>`;
+  });
+  const ready=n>=9;
+  el.innerHTML=`<h3>🛡️ Ετοιμότητα για τη Στρώση Β</h3>`+
+    `<p class="sub2">Ολοκληρώστε και τους 9 σταθμούς. Δίπλα σε κάθε σταθμό φαίνεται πόσο σίγουρος/η νιώθετε.</p>`+
+    `<div class="rlist">${rows}</div>`+
+    `<div class="readbar"><span style="width:${n/9*100}%"></span></div>`+
+    `<div class="gate"><button class="btn primary" id="gateBtn" ${ready?'':'disabled'}>Είμαι έτοιμος/η για τη Στρώση Β →</button>`+
+    `<span class="gmsg">${ready?'Ολοκληρώσατε την προετοιμασία σας. Μπράβο!':`Απομένουν ${9-n} σταθμοί.`}</span></div>`;
+  const gb=document.getElementById('gateBtn');
+  if(gb) gb.onclick=()=>{ if(doneCount()>=9){ alert('Μπράβο! Ολοκληρώσατε την εκπαίδευσή σας. Είστε έτοιμος/η για τη Στρώση Β.'); } };
+}
+
+/* ---- navigation ---- */
+const vMap=document.getElementById('v-map'), vSt=document.getElementById('v-station');
+function goMap(){ vSt.classList.remove('on'); vMap.classList.add('on'); renderMap(); window.scrollTo(0,0); }
+let curr=0, solvedSet=new Set(), requiredCount=0;
+
+function openStation(i){
+  curr=i; const s=STATIONS[i]; solvedSet=new Set();
+  vMap.classList.remove('on'); vSt.classList.add('on'); window.scrollTo(0,0);
+  const head=document.getElementById('svhead');
+  head.style.setProperty('--svc', s.c);
+  head.innerHTML=`<div class="n">Σταθμός ${s.id} · ${s.time}</div><h2>${s.title}</h2>${s.intro?`<p class="intro">${s.intro}</p>`:''}`;
+  const body=document.getElementById('svbody'); body.innerHTML='';
+  requiredCount=(s.blocks||[]).filter(b=>GRADE.has(b.type)).length;
+
+  if(s.special==='a6'){
+    const w=document.createElement('div'); w.className='callout warn';
+    w.innerHTML='<b>ΠΡΟΣΟΧΗ — δεν είναι δραστηριότητα.</b> Ολοκληρώστε αυτόν τον σταθμό πριν ξεκινήσετε τη Στρώση Β. Ο τρόπος που χειρίζεστε μια δύσκολη στιγμή μπορεί να προστατεύσει ένα παιδί.';
+    body.appendChild(w);
+  }
+
+  (s.blocks||[]).forEach((blk,bi)=>{
+    const el=document.createElement('div'); el.className='blk'; el.style.setProperty('--bkc', s.c);
+    el.id=`blk-${i}-${bi}`;
+    body.appendChild(el);
+    renderBlock(el, blk, s, ()=>markSolved(bi));
+  });
+
+  // theory (η θεωρία από κάτω)
+  if(s.theory && s.theory.length){
+    const th=document.createElement('div'); th.className='thead'; th.innerHTML='📖 Η θεωρία πίσω από αυτά';
+    body.appendChild(th);
+    s.theory.forEach(c=>{
+      const wrap=document.createElement('div');
+      wrap.innerHTML=reveal(c.h, c.b + (c.dl?`<div style="margin-top:8px"><span class="dl">⬇ ${c.dl}</span></div>`:''), s.c, c.model);
+      const rc=wrap.firstElementChild; body.appendChild(rc);
+      const btn=rc.querySelector('button'), bd=rc.querySelector('.body');
+      btn.onclick=()=>{const open=rc.classList.toggle('open'); bd.style.maxHeight=open?bd.querySelector('.inner').scrollHeight+30+'px':'0';};
+      if(rc.querySelector('#modelbox')) wireModel();
+    });
+  }
+  if(s.a6dl){
+    const d=document.createElement('div'); d.style.marginTop='6px';
+    d.innerHTML='<span class="dl">⬇ Κάρτα «Τη στιγμή της αποκάλυψης»</span>';
+    body.appendChild(d);
+  }
+
+  // reflection + confidence (πάντα)
+  const rf=document.createElement('div'); rf.className='blk reflect'; rf.style.setProperty('--bkc','var(--forest)');
+  body.appendChild(rf); renderReflect(rf, s.id);
+  const cf=document.createElement('div'); cf.className='conf'; body.appendChild(cf); renderConf(cf, s.id);
+
+  updateNext();
+}
+function markSolved(bi){ solvedSet.add(bi); if(requiredCount>0 && solvedSet.size>=requiredCount){ ST.done[STATIONS[curr].id]=true; save(); renderProg(); } updateNext(); }
+function updateNext(){
+  const nb=document.getElementById('nextBtn'), hint=document.getElementById('nexthint');
+  const last=curr===STATIONS.length-1; const allSolved=requiredCount===0||solvedSet.size>=requiredCount;
+  if(last){
+    if(doneCount()>=9){ nb.textContent='Ολοκλήρωσα την εκπαίδευση ✓'; nb.onclick=()=>{ alert('Μπράβο! Ολοκληρώσατε την εκπαίδευσή σας. Είστε έτοιμος/η για τη Στρώση Β.'); goMap(); }; }
+    else { nb.textContent='Πίσω στους σταθμούς →'; nb.onclick=goMap; }
+  } else { nb.textContent='Επόμενος σταθμός →'; nb.onclick=()=>openStation(curr+1); }
+  hint.textContent = allSolved ? '✓ Σταθμός ολοκληρωμένος' : `Λύσε τις προκλήσεις (${solvedSet.size}/${requiredCount}) για ✓`;
+}
+
+/* ---- block dispatcher ---- */
+function renderBlock(el, blk, s, onSolved){
+  switch(blk.type){
+    case 'quiz': case 'finderror': return renderQuiz(el, blk, onSolved);
+    case 'myth': return renderMyth(el, blk, onSolved);
+    case 'order': return renderOrder(el, blk, onSolved);
+    case 'match': return renderMatch(el, blk, onSolved);
+    case 'dodont': return renderDoDont(el, blk, onSolved);
+    case 'branch': return renderBranch(el, blk, onSolved);
+    case 'flow': return renderFlow(el, blk, onSolved);
+    case 'slider': return renderSlider(el, blk, onSolved);
+  }
+}
+function kickHTML(blk, extra){ return `<div class="kickrow"><span class="kick"><span class="ic">${extra||''}</span>${blk.kick||''}</span><span class="solved" style="display:none">✓ Ολοκληρώθηκε</span></div>`; }
+function markBlockDone(el){ const s=el.querySelector('.solved'); if(s) s.style.display='inline-flex'; }
+
+/* ---- QUIZ / FIND-ERROR ---- */
+function renderQuiz(el, blk, onSolved){
+  const icon = blk.type==='finderror' ? '🔎' : '❓';
+  let html=kickHTML(blk, icon);
+  if(blk.scene) html+=`<div class="callout" style="background:var(--cream-2);border-left:5px solid var(--bkc,var(--forest))">${blk.scene}</div>`;
+  html+=`<div class="q">${blk.q}</div><div class="opts">`;
+  blk.opts.forEach((o,i)=>{ html+=`<button class="opt" data-i="${i}"><span class="mk"></span><span>${o.t}</span></button>`; });
+  html+='</div>';
+  blk.opts.forEach((o,i)=>{ html+=`<div class="exp ${o.ok?'good':'bad'}" data-e="${i}">${o.ok?'✓ ':'✗ '}${o.why}${o.cite?`<span class="cite">📚 ${o.cite}</span>`:''}</div>`; });
+  el.innerHTML=html;
+  let solved=false;
+  el.querySelectorAll('.opt').forEach(btn=>btn.onclick=()=>{
+    if(solved) return;
+    const i=+btn.dataset.i, o=blk.opts[i];
+    el.querySelectorAll(`.exp`).forEach(e=>{ if(+e.dataset.e===i) e.classList.add('show'); });
+    const mk=btn.querySelector('.mk');
+    if(o.ok){ btn.classList.add('ok'); mk.textContent='✓'; solved=true;
+      el.querySelectorAll('.opt').forEach(b=>{ b.disabled=true; if(b!==btn) b.classList.add('dim'); });
+      markBlockDone(el); onSolved();
+    } else { btn.classList.add('no'); mk.textContent='✗'; btn.disabled=true; btn.classList.add('dim'); }
+  });
+}
+
+/* ---- MYTH OR TRUTH ---- */
+function renderMyth(el, blk, onSolved){
+  let html=kickHTML(blk,'🃏')+`<div class="q">${blk.q}</div>`;
+  blk.cards.forEach((c,i)=>{
+    html+=`<div class="mtcard" data-i="${i}"><div class="claim">${c.claim}</div>`+
+      `<div class="mtbtns"><button class="mtb myth" data-v="myth">✗ Μύθος</button><button class="mtb truth" data-v="truth">✓ Αλήθεια</button></div>`+
+      `<div class="exp" data-e="${i}"></div></div>`;
+  });
+  el.innerHTML=html;
+  let answered=0;
+  el.querySelectorAll('.mtcard').forEach(card=>{
+    const i=+card.dataset.i, c=blk.cards[i], exp=card.querySelector('.exp');
+    card.querySelectorAll('.mtb').forEach(btn=>btn.onclick=()=>{
+      const choseMyth=btn.dataset.v==='myth'; const correct=(choseMyth===c.myth);
+      card.querySelectorAll('.mtb').forEach(b=>{ b.disabled=true; b.classList.add('dim'); });
+      btn.classList.remove('dim'); btn.classList.add(correct?'sel-ok':'sel-no');
+      exp.className='exp '+(correct?'good':'bad')+' show';
+      exp.innerHTML=(correct?'✓ Σωστά! ':'✗ ')+c.why+(c.cite?`<span class="cite">📚 ${c.cite}</span>`:'');
+      answered++; if(answered>=blk.cards.length){ markBlockDone(el); onSolved(); }
+    });
+  });
+}
+
+/* ---- PUT IN ORDER ---- */
+function renderOrder(el, blk, onSolved){
+  const correct=blk.items.slice();
+  let order=shuffle(correct); if(order.join('|')===correct.join('|')) order=shuffle(correct);
+  let solved=false;
+  function draw(){
+    let html=kickHTML(blk,'🔢')+`<div class="q">${blk.q}</div><div class="orderl">`;
+    order.forEach((t,i)=>{ html+=`<div class="oitem" data-i="${i}"><span class="idx">${i+1}</span><span class="txt">${t}</span>`+
+      `<span class="arrs"><button data-d="-1" ${i===0?'disabled':''} aria-label="πάνω">▲</button><button data-d="1" ${i===order.length-1?'disabled':''} aria-label="κάτω">▼</button></span></div>`; });
+    html+=`</div><button class="btn primary sm" data-act="check">Έλεγξε τη σειρά</button><div class="exp good" data-e="done"></div>`;
+    el.innerHTML=html;
+    el.querySelectorAll('.arrs button').forEach(b=>b.onclick=()=>{ if(solved) return; const it=b.closest('.oitem'); const i=+it.dataset.i; const j=i+(+b.dataset.d); if(j<0||j>=order.length) return; [order[i],order[j]]=[order[j],order[i]]; draw(); });
+    el.querySelector('[data-act="check"]').onclick=()=>{
+      if(solved) return; let ok=true;
+      el.querySelectorAll('.oitem').forEach((it,i)=>{ it.classList.remove('right','wrongpos'); if(order[i]===correct[i]) it.classList.add('right'); else {it.classList.add('wrongpos'); ok=false;} });
+      if(ok){ solved=true; const exp=el.querySelector('[data-e="done"]'); exp.classList.add('show'); exp.innerHTML='✓ '+blk.done+(blk.cite?`<span class="cite">📚 ${blk.cite}</span>`:''); el.querySelectorAll('.arrs button,[data-act="check"]').forEach(b=>b.disabled=true); markBlockDone(el); onSolved(); }
+    };
+  }
+  draw();
+}
+
+/* ---- MATCHING ---- */
+function renderMatch(el, blk, onSolved){
+  const lefts=blk.pairs.map((p,i)=>({t:p.l,i})); const rights=shuffle(blk.pairs.map((p,i)=>({t:p.r,i})));
+  let html=kickHTML(blk,'🧩')+`<div class="q">${blk.q}</div><div class="matchg" style="--matc:${blk.matc||'var(--forest)'}">`;
+  html+=`<div class="mcol"><span class="h">Στοιχείο</span>`+lefts.map(l=>`<button class="mitem l" data-i="${l.i}"><span class="pin"></span>${l.t}</button>`).join('')+`</div>`;
+  html+=`<div class="mcol"><span class="h">Ταίριασμα</span>`+rights.map(r=>`<button class="mitem r" data-i="${r.i}"><span class="pin"></span>${r.t}</button>`).join('')+`</div></div>`;
+  html+=`<div class="exp good" data-e="after"></div>`;
+  el.innerHTML=html;
+  let activeL=null, matched=0;
+  function clearActive(){ el.querySelectorAll('.mitem.active').forEach(x=>x.classList.remove('active')); activeL=null; }
+  el.querySelectorAll('.mitem.l').forEach(b=>b.onclick=()=>{ if(b.classList.contains('matched')) return; clearActive(); b.classList.add('active'); activeL=b; });
+  el.querySelectorAll('.mitem.r').forEach(b=>b.onclick=()=>{
+    if(b.classList.contains('matched')||!activeL) return;
+    if(+b.dataset.i===+activeL.dataset.i){ b.classList.add('matched'); activeL.classList.add('matched'); activeL.classList.remove('active'); activeL=null; matched++;
+      if(matched>=blk.pairs.length){ const ex=el.querySelector('[data-e="after"]'); if(blk.after){ex.classList.add('show'); ex.innerHTML='✓ '+blk.after+(blk.cite?`<span class="cite">📚 ${blk.cite}</span>`:'');} markBlockDone(el); onSolved(); }
+    } else { b.classList.add('shake'); setTimeout(()=>b.classList.remove('shake'),350); }
+  });
+}
+
+/* ---- DO / DON'T ---- */
+function renderDoDont(el, blk, onSolved){
+  const items=shuffle(blk.items.map((it,i)=>({...it,i})));
+  let html=kickHTML(blk,'🗂️')+`<div class="q">${blk.q}</div>`;
+  html+=`<div class="ddchips">`+items.map(it=>`<button class="ddchip" data-i="${it.i}">${it.t}</button>`).join('')+`</div>`;
+  html+=`<div class="ddzones">`+blk.zones.map(z=>`<div class="ddzone" data-k="${z.k}" style="--zc:${z.color}"><div class="zh">${z.label}</div><div class="drop"></div></div>`).join('')+`</div>`;
+  html+=`<div class="exp bad" data-e="warn" style="margin-top:12px"></div><div class="exp good" data-e="after"></div>`;
+  el.innerHTML=html;
+  let active=null, placed=0, total=blk.items.length;
+  const warn=el.querySelector('[data-e="warn"]');
+  el.querySelectorAll('.ddchip').forEach(ch=>ch.onclick=()=>{ el.querySelectorAll('.ddchip.active').forEach(x=>x.classList.remove('active')); ch.classList.add('active'); active=ch; });
+  el.querySelectorAll('.ddzone').forEach(zone=>zone.onclick=()=>{
+    if(!active) return; const it=blk.items[+active.dataset.i];
+    if(it.k===zone.dataset.k){
+      const chip=document.createElement('span'); chip.className='placedchip good'; chip.textContent='✓ '+it.t;
+      zone.querySelector('.drop').appendChild(chip); active.classList.add('placed'); active=null; warn.classList.remove('show'); placed++;
+      if(placed>=total){ const ex=el.querySelector('[data-e="after"]'); if(blk.after){ex.classList.add('show'); ex.innerHTML='✓ '+blk.after+(blk.cite?`<span class="cite">📚 ${blk.cite}</span>`:'');} markBlockDone(el); onSolved(); }
+    } else {
+      zone.classList.add('hl'); setTimeout(()=>zone.classList.remove('hl'),300);
+      warn.classList.add('show'); warn.innerHTML='✗ Όχι εκεί. '+(it.why||'Ξανασκέψου σε ποιο κουτί ανήκει.');
+    }
+  });
+}
+
+/* ---- BRANCHING SCENARIO ---- */
+function renderBranch(el, blk, onSolved){
+  let node='start', solved=false;
+  function draw(){
+    const n=blk.nodes[node];
+    let html=kickHTML(blk,'🌿')+`<div class="branch${blk.terra?' terra':''}"><div class="step-badge">${n.badge||''}</div>`+
+      `<div class="narr">${n.narr}</div><div class="q">${n.q}</div><div class="opts">`;
+    n.opts.forEach((o,i)=>{ html+=`<button class="opt" data-i="${i}"><span class="mk"></span><span>${o.t}</span></button>`; });
+    html+=`</div><div class="fb2"></div></div>`;
+    el.innerHTML=html;
+    const fb=el.querySelector('.fb2');
+    el.querySelectorAll('.opt').forEach(btn=>btn.onclick=()=>{
+      const o=n.opts[+btn.dataset.i], mk=btn.querySelector('.mk');
+      if(o.ok){
+        btn.classList.add('ok'); mk.textContent='✓'; el.querySelectorAll('.opt').forEach(b=>{b.disabled=true; if(b!==btn)b.classList.add('dim');});
+        fb.style.color='var(--forest-2)'; fb.innerHTML='✓ '+o.fb;
+        if(o.end){ solved=true; const done=document.createElement('div'); done.className='exp good show'; done.style.marginTop='10px';
+          done.innerHTML=(blk.endText||'')+(blk.cite?`<span class="cite">📚 ${blk.cite}</span>`:''); el.querySelector('.branch').appendChild(done);
+          markBlockDone(el); onSolved();
+        } else {
+          const cont=document.createElement('button'); cont.className='btn primary sm'; cont.style.marginTop='10px'; cont.textContent='Συνέχεια →';
+          cont.onclick=()=>{ node=o.next; draw(); }; el.querySelector('.branch').appendChild(cont);
+        }
+      } else { btn.classList.add('no'); mk.textContent='✗'; btn.disabled=true; btn.classList.add('dim'); fb.style.color='var(--terra)'; fb.innerHTML='✗ '+o.fb; }
+    });
+  }
+  draw();
+}
+
+/* ---- REFERRAL FLOW ---- */
+function renderFlow(el, blk, onSolved){
+  let html=kickHTML(blk,'🧭')+`<div class="q">${blk.q}</div><div class="flow">`;
+  blk.steps.forEach((st,i)=>{ html+=`<div class="fstep${st.danger?' danger':''}" data-i="${i}"><span class="dot">${i+1}</span>`+
+    `<button class="fbtn">${st.label}</button><div class="fdetail">${st.detail}${st.cite?`<span class="cite">📚 ${st.cite}</span>`:''}</div></div>`; });
+  html+=`</div>`;
+  el.innerHTML=html;
+  const opened=new Set(); const total=blk.steps.length; let solved=false;
+  el.querySelectorAll('.fstep').forEach(step=>{
+    step.querySelector('.fbtn').onclick=()=>{ const open=step.classList.toggle('open'); if(open){ opened.add(+step.dataset.i); if(!solved && opened.size>=total){ solved=true; markBlockDone(el); onSolved(); } } };
+  });
+}
+
+/* ---- SLIDER ---- */
+function renderSlider(el, blk, onSolved){
+  let html=kickHTML(blk,'🎚️')+`<div class="q">${blk.q}</div><div class="slwrap"><div class="slrow">`+
+    `<input type="range" min="${blk.min}" max="${blk.max}" step="${blk.step||1}" value="${blk.start}"><span class="slval">${blk.start}${blk.unit||''}</span></div>`+
+    `<div class="slscale"><span>${blk.min}${blk.unit||''}</span><span>${blk.max}${blk.unit||''}</span></div>`+
+    `<button class="btn primary sm slbtn">Δες την απάντηση</button><div class="exp good slreveal" data-e="rev"></div></div>`;
+  el.innerHTML=html;
+  const range=el.querySelector('input[type=range]'), val=el.querySelector('.slval'); let solved=false;
+  range.oninput=()=>{ val.textContent=range.value+(blk.unit||''); };
+  el.querySelector('.slbtn').onclick=()=>{
+    if(solved) return; solved=true;
+    const g=+range.value, within=g>=blk.correct[0]&&g<=blk.correct[1];
+    const rev=el.querySelector('[data-e="rev"]'); rev.classList.add('show');
+    rev.innerHTML=`${within?'✓ Κοντά! ':'ℹ️ '}<b>Η εκτίμησή σου: ${g}${blk.unit||''}.</b> Σωστή απάντηση: ${blk.reveal} ${blk.why}${blk.cite?`<span class="cite">📚 ${blk.cite}</span>`:''}`;
+    range.disabled=true; markBlockDone(el); onSolved();
+  };
+}
+
+/* ---- REFLECT ---- */
+function renderReflect(el, id){
+  el.innerHTML=`<div class="kick"><span class="ic">✍️</span> Αναστοχασμός</div>`+
+    `<div class="q" style="font-size:1rem">Κρατήστε μια σκέψη — τι θέλετε να προσαρμόσετε στη δική σας τάξη;</div>`+
+    `<textarea placeholder="Γράψτε εδώ… (αποθηκεύεται σε αυτόν τον υπολογιστή)">${esc(ST.refl[id]||'')}</textarea>`+
+    `<div class="saved">✓ Αποθηκεύτηκε</div>`;
+  const ta=el.querySelector('textarea'), sv=el.querySelector('.saved'); let tmr=null;
+  ta.oninput=()=>{ ST.refl[id]=ta.value; clearTimeout(tmr); tmr=setTimeout(()=>{ save(); sv.classList.add('on'); setTimeout(()=>sv.classList.remove('on'),1200); },400); };
+}
+
+/* ---- CONFIDENCE ---- */
+function renderConf(el, id){
+  el.innerHTML=`<div class="q">Πόσο σίγουρος/η νιώθετε γι’ αυτόν τον σταθμό;</div><div class="cfaces">`+
+    CONF_FACES.map((f,i)=>`<button class="cface${ST.conf[id]===i+1?' sel':''}" data-v="${i+1}"><span class="em">${f.e}</span>${f.l}</button>`).join('')+`</div>`;
+  el.querySelectorAll('.cface').forEach(b=>b.onclick=()=>{ ST.conf[id]=+b.dataset.v; save(); el.querySelectorAll('.cface').forEach(x=>x.classList.toggle('sel',x===b)); });
+}
+
+/* ---- theory reveal + CASEL/ARCS model (διατηρημένα) ---- */
+function reveal(h,b,c,model){
+  return `<div class="rc" style="--rcc:${c}"><button><span>${h}</span><span class="chev">▾</span></button><div class="body"><div class="inner">${b}${model?modelHTML():''}</div></div></div>`;
+}
+function modelHTML(){
+  return `<div class="model" id="modelbox"><h4>CASEL (το «τι») · κλίκαρε έναν Φύλακα</h4>
+    <div class="gchips">
+      <button class="gchip" style="--gc:var(--owl)" data-n="Αυτοεπίγνωση — αναγνωρίζω & ονομάζω τι νιώθω">🦉 Κουκουβάγια</button>
+      <button class="gchip" style="--gc:var(--bear)" data-n="Αυτοδιαχείριση — ρυθμίζω την ένταση πριν αντιδράσω">🐻 Αρκούδα</button>
+      <button class="gchip" style="--gc:var(--deer)" data-n="Κοινωνική επίγνωση — «διαβάζω» πώς νιώθει ο άλλος">🦌 Ελάφι</button>
+      <button class="gchip" style="--gc:var(--hare)" data-n="Δεξιότητες σχέσεων — συνεργάζομαι, λέω όχι, ζητάω βοήθεια">🐰 Λαγός</button>
+      <button class="gchip" style="--gc:var(--turtle)" data-n="Υπεύθυνη λήψη αποφάσεων — Σταμάτα · Σκέψου · Διάλεξε">🐢 Χελώνα</button>
+    </div>
+    <h4 style="margin-top:14px">ARCS (το «πώς») · κλίκαρε μια φάση</h4>
+    <div class="arcsrow">
+      <button class="achip" data-n="Attention — τραβάμε την προσοχή (η ιστορία ξεκινά)">A</button>
+      <button class="achip" data-n="Relevance — συνδέεται με τη ζωή του παιδιού">R</button>
+      <button class="achip" data-n="Confidence — χτίζει σιγουριά μέσα από τη δράση">C</button>
+      <button class="achip" data-n="Satisfaction — κλείνει με ικανοποίηση & σύμβολο">S</button>
+    </div>
+    <p class="modelnote" id="modelnote">Πάτησε ένα στοιχείο για να δεις τι σημαίνει.</p></div>`;
+}
+function wireModel(){
+  const note=document.getElementById('modelnote'); if(!note) return;
+  document.querySelectorAll('#modelbox .gchip, #modelbox .achip').forEach(el=>el.onclick=()=>{
+    document.querySelectorAll('#modelbox .gchip,#modelbox .achip').forEach(x=>x.classList.remove('sel')); el.classList.add('sel');
+    const p=el.dataset.n.split(' — '); note.innerHTML='<b>'+p[0]+'</b> — '+p[1];
+  });
+}
+
+/* ================= ΒΟΗΘΟΣ (chatbot) — αναζήτηση σε ΟΛΗ τη θεωρία ================= */
+const chatbody=document.getElementById('chatbody'), qbtns=document.getElementById('qbtns');
+function botMsg(html){ const d=document.createElement('div'); d.className='msg'; const av=document.createElement('span'); av.className='av'; av.innerHTML=BOT; const b=document.createElement('div'); b.className='bub'; b.innerHTML=html; d.append(av,b); chatbody.appendChild(d); chatbody.scrollTop=chatbody.scrollHeight; return d; }
+function meMsg(t){ const d=document.createElement('div'); d.className='msg me'; const b=document.createElement('div'); b.className='bub'; b.textContent=t; d.append(b); chatbody.appendChild(d); chatbody.scrollTop=chatbody.scrollHeight; }
+const STOP=new Set('και η ο το τα οι της των τον την ενα μια για με σε απο ειναι που πως τι να αν οτι στο στη στον στην θα δεν μου σας μας ή'.split(' '));
+function norm(s){ return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-zα-ωͰ-Ͽ0-9\s]/gi,' ').split(/\s+/).filter(w=>w.length>2 && !STOP.has(w)); }
+const INDEX=THEORY.map(c=>({c, toks:new Set(norm(c.t+' '+c.kw+' '+c.x))}));
+function search(q){ const qt=norm(q); if(!qt.length) return [];
+  return INDEX.map(e=>{ let sc=0; qt.forEach(w=>{ if(e.toks.has(w)) sc+=2; else { for(const t of e.toks){ if(t.startsWith(w)||w.startsWith(t)){sc+=1;break;} } } }); return {c:e.c, sc}; })
+    .filter(r=>r.sc>0).sort((a,b)=>b.sc-a.sc).slice(0,3); }
+function answer(q){ meMsg(q); setTimeout(()=>{
+    const res=search(q);
+    if(!res.length){ botMsg('Δεν βρήκα κάτι ακριβές στη θεωρία. Δοκίμασε άλλες λέξεις (π.χ. «εκφοβισμός», «θερμόμετρο», «αποκάλυψη», «AI», «αναπνοή») ή δες τους σταθμούς Α0–Α8.'); return; }
+    const top=res[0], rest=res.slice(1);
+    const more = rest.length ? `<div class="more">Σχετικά: ${rest.map((r,i)=>`<button data-mi="${i}">${r.c.t}</button>`).join(' · ')}</div>` : '';
+    const d=botMsg(`<span class="src">${top.c.s} · ${top.c.t}</span>${top.c.x}${more}`);
+    d.querySelectorAll('.more button').forEach(b=>b.onclick=()=>{ const r=rest[+b.dataset.mi]; botMsg(`<span class="src">${r.c.s} · ${r.c.t}</span>${r.c.x}`); });
+  },220); }
+function initChat(){ chatbody.innerHTML=''; botMsg('Γεια σας! Έχω <b>όλη τη θεωρία</b> της προετοιμασίας. Γράψτε την ερώτησή σας — ή διαλέξτε:'); qbtns.innerHTML=''; SHORTCUTS.forEach(q=>{ const b=document.createElement('button'); b.className='qbtn'; b.textContent=q; b.onclick=()=>answer(q); qbtns.appendChild(b); }); }
+const chatq=document.getElementById('chatq'), chatsend=document.getElementById('chatsend');
+function sendQ(){ const v=chatq.value.trim(); if(!v) return; chatq.value=''; answer(v); }
+chatsend.onclick=sendQ; chatq.addEventListener('keydown',e=>{ if(e.key==='Enter') sendQ(); });
+let chatInit=false;
+function toggleChat(on){ const w=document.getElementById('chatwin'); const show=on!==undefined?on:!w.classList.contains('on'); w.classList.toggle('on',show); document.getElementById('fab').setAttribute('aria-expanded',show); if(show&&!chatInit){initChat(); chatInit=true;} if(show) setTimeout(()=>chatq&&chatq.focus(),60); }
+document.getElementById('fab').onclick=()=>toggleChat();
+
+/* ---- init ---- */
+renderMap();
+
+</script>
+</body>
+</html>
