@@ -226,6 +226,14 @@
   body.pedon .deck{gap:5px}
   body.pedon .qcard{font-size:.95rem; max-width:34ch}
   body.pedon .opt{padding:8px 13px; font-size:.88rem}
+
+/* ==== UX Fix Pack v1 · 2026-08 (Cowork) — Ενότητα 3: 2-column layout ==== */
+.screen .inner:has(> .text-col){display:flex!important;flex-direction:row!important;align-items:center!important;gap:40px!important;width:min(1100px,94%)!important;max-width:94%!important}
+.screen .inner:has(> .text-col) > .owlwrap{flex:0 0 320px;height:320px!important;min-height:320px!important;display:flex;align-items:center;justify-content:center}
+.screen .inner > .text-col{flex:1 1 auto;display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:10px}
+.screen .inner > .text-col > *{text-align:left!important;margin:0!important}
+.screen .inner > .text-col .lead{margin-top:8px!important}
+/* ==== end UX Fix Pack v1 ==== */
 </style>
 </head>
 <body>
@@ -528,6 +536,21 @@
   buildDeck({data:DECK2, img:'d2img', q:'d2q', opts:'d2opts', fb:'d2fb', dots:'d2dots', done:'Μπράβο! Ξέρεις να στέκεσαι δίπλα στους άλλους. 🤝'});
 
   show(0);
+</script>
+<script>
+(function(){
+  const wrap=()=>{
+    document.querySelectorAll('.screen').forEach(scr=>{
+      const inner=scr.querySelector('.inner');if(!inner)return;
+      const owl=inner.querySelector('.owlwrap');if(!owl)return;
+      if(inner.querySelector('.text-col'))return;
+      const tc=document.createElement('div');tc.className='text-col';
+      [...inner.children].forEach(k=>{if(k!==owl)tc.appendChild(k)});
+      inner.appendChild(tc);
+    });
+  };
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',wrap);else wrap();
+})();
 </script>
 </body>
 </html>
