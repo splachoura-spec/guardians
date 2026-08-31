@@ -431,13 +431,13 @@
     arcsB.forEach(b=>b.classList.toggle('on', ph.includes(b.dataset.k)));
     prev.disabled = idx===0;
     const last = idx===screens.length-1;
-    next.textContent = last ? 'Τέλος ✓' : 'Επόμενο →';
+    next.textContent = last ? 'Ενότητα 3 →' : 'Επόμενο →';
     next.classList.toggle('go', last);
     if(document.body.classList.contains('pedon')) renderPed();
     hidePop();
   }
   prev.onclick=()=>{ if(idx>0) show(idx-1); };
-  next.onclick=()=>{ if(idx<screens.length-1) show(idx+1); else location.href='index.html'; };
+  next.onclick=()=>{ if(idx<screens.length-1) show(idx+1); else location.href='enotita3.html'; };
   addEventListener('keydown',e=>{ if(e.key==='ArrowRight')next.click(); if(e.key==='ArrowLeft')prev.click(); });
 
   const arcpop=document.getElementById('arcpop');
