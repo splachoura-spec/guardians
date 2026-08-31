@@ -546,14 +546,15 @@ function show(n){
   updateSegs();
   const ph=screens[idx].dataset.phase||'';
   arcsB.forEach(b=>b.classList.toggle('on',ph.includes(b.dataset.k)));
-  prev.disabled=idx===0;
+  prev.disabled=false;
+  prev.textContent=idx===0?'\u2190 \u0395\u03bd\u03cc\u03c4\u03b7\u03c4\u03b1 4':'\u2190 \u03a0\u03af\u03c3\u03c9';
   const last=idx===screens.length-1;
   next.textContent=last?'\u03a4\u03ad\u03bb\u03bf\u03c2 \u2713':'\u0395\u03c0\u03cc\u03bc\u03b5\u03bd\u03bf \u2192';
   next.classList.toggle('go',last);
   if(document.body.classList.contains('pedon'))renderPed();
   hidePop();
 }
-prev.onclick=()=>{if(idx>0)show(idx-1);};
+prev.onclick=()=>{if(idx>0)show(idx-1);else location.href='enotita4.html';};
 next.onclick=()=>{if(idx<screens.length-1)show(idx+1);else location.href='index.html';};
 addEventListener('keydown',e=>{if(e.key==='ArrowRight')next.click();if(e.key==='ArrowLeft')prev.click();});
 
