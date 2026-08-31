@@ -48,7 +48,7 @@
   .segbar{position:fixed; top:60px; left:0; right:0; height:38px; z-index:39; display:flex; gap:5px; justify-content:flex-end;
     align-items:center; padding:4px 14px; background:rgba(253,243,231,.94); backdrop-filter:blur(6px); border-bottom:2px solid var(--cream-2)}
   .seg{border:2px solid var(--cream-2); background:#fff; color:var(--ink-soft); font-weight:900; font-size:.68rem;
-    padding:4px 11px; border-radius:999px; cursor:pointer; transition:.2s; white-space:nowrap}
+    padding:4px 11px; border-radius:999x; cursor:pointer; transition:.2s; white-space:nowrap}
   .seg:hover{transform:translateY(-1px)}
   .seg.on{background:var(--c); color:#fff; border-color:var(--c); box-shadow:0 6px 14px -6px var(--c)}
   @media(max-width:420px){.seg{padding:4px 8px; font-size:.62rem}}
@@ -513,13 +513,13 @@
     arcsB.forEach(b=>b.classList.toggle('on', ph.includes(b.dataset.k)));
     prev.disabled = idx===0;
     const last = idx===screens.length-1;
-    next.textContent = last ? 'Τέλος ✓' : 'Επόμενο →';
+    next.textContent = last ? 'Ενότητα 5 →' : 'Επόμενο →';
     next.classList.toggle('go', last);
     if(document.body.classList.contains('pedon')) renderPed();
     hidePop();
   }
   prev.onclick=()=>{ if(idx>0) show(idx-1); };
-  next.onclick=()=>{ if(idx<screens.length-1) show(idx+1); else location.href='index.html'; };
+  next.onclick=()=>{ if(idx<screens.length-1) show(idx+1); else location.href='enotita5.html'; };
   addEventListener('keydown',e=>{ if(e.key==='ArrowRight')next.click(); if(e.key==='ArrowLeft')prev.click(); });
 
   const arcpop=document.getElementById('arcpop');
