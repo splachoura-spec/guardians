@@ -119,6 +119,35 @@
   .oitem .arrs button{width:26px;height:20px;border:1px solid var(--line);background:var(--cream);border-radius:6px;font-size:.7rem;line-height:1;color:var(--ink)}
   .oitem .arrs button:disabled{opacity:.3}
   .oitem.right{border-color:var(--ok); background:color-mix(in srgb,var(--ok) 10%,#fff)} .oitem.right .idx{background:var(--ok);color:#fff}
+
+  /* tile grid — square activity tiles that flip + fill the screen */
+  .tileGrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(148px,1fr)); gap:14px; margin:0 0 20px}
+  .tile{position:relative; width:100%; aspect-ratio:1/1; border-radius:18px; box-shadow:var(--shadow); transform-origin:0 0}
+  .tile.expanded{position:fixed; inset:0; width:100%; height:100%; z-index:200; border-radius:0}
+  .tile.animating{transition:transform .48s cubic-bezier(.22,.68,.32,1), border-radius .48s ease}
+  .tile-scene{width:100%; height:100%; perspective:1800px}
+  .tile-inner{position:relative; width:100%; height:100%; transform-style:preserve-3d; transition:transform .48s cubic-bezier(.22,.68,.32,1)}
+  .tile.flipped .tile-inner{transform:rotateY(180deg)}
+  .tile-face{position:absolute; inset:0; backface-visibility:hidden; border-radius:inherit; overflow:hidden; display:flex; flex-direction:column}
+  .tile-front{background:#fff; border:2px solid var(--cream-2); border-top:5px solid var(--bkc,var(--forest)); align-items:center; justify-content:center; text-align:center; padding:14px; cursor:pointer; transition:border-color .15s}
+  .tile-front:hover{border-color:var(--bkc,var(--forest))}
+  .tile-front .tf-badge{width:44px; height:44px; border-radius:13px; display:flex; align-items:center; justify-content:center; margin-bottom:10px; font-size:1.3rem; background:var(--cream-2)}
+  .tile-front .tf-label{font-weight:1000; font-size:.86rem; line-height:1.25}
+  .tile-front .tf-done{position:absolute; top:10px; right:10px; width:22px; height:22px; border-radius:50%; background:var(--ok); color:#fff; display:none; place-items:center; font-weight:900; font-size:.7rem}
+  .tile-front.done .tf-done{display:grid}
+  .tile-front .tf-hint{margin-top:8px; font-size:.62rem; font-weight:900; letter-spacing:.05em; text-transform:uppercase; color:var(--bkc,var(--forest))}
+  .tile-back{background:var(--cream); transform:rotateY(180deg)}
+  .tile-back-head{flex:0 0 auto; display:flex; align-items:center; gap:12px; padding:16px 20px; background:#fff; border-bottom:2px solid var(--cream-2)}
+  .tile-back-head .tf-badge{width:36px; height:36px; border-radius:11px; display:flex; align-items:center; justify-content:center; font-size:1.05rem; background:var(--cream-2); flex:0 0 auto}
+  .tile-back-head h3{margin:0; font-size:1.02rem; flex:1; color:var(--ink); font-weight:1000}
+  .tile-back-head .tile-x{width:34px; height:34px; border-radius:50%; border:2px solid var(--cream-2); background:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer; flex:0 0 auto; font-weight:900; color:var(--ink-soft); transition:border-color .15s, color .15s}
+  .tile-back-head .tile-x:hover{border-color:var(--no); color:var(--no)}
+  .tile-back-body{flex:1 1 auto; overflow-y:auto; padding:20px 20px 100px}
+  .tile-back-body-inner{max-width:640px; margin:0 auto}
+  .tile-back-body-inner .blk{box-shadow:none; border:none; padding:0; margin:0}
+  .tile-close-down{position:absolute; left:50%; bottom:22px; transform:translateX(-50%); display:flex; align-items:center; gap:8px; padding:10px 18px; border-radius:999px; background:var(--bkc,var(--forest)); color:#fff; border:none; cursor:pointer; font-weight:900; font-size:.85rem; box-shadow:0 10px 24px -8px rgba(58,42,34,.4); transition:transform .15s}
+  .tile-close-down:hover{transform:translateX(-50%) translateY(2px)}
+  @media(prefers-reduced-motion:reduce){.tile,.tile-inner{transition:none!important}}
   .oitem.wrongpos{border-color:var(--terra)}
 
   /* matching */
@@ -326,7 +355,7 @@
 const STATIONS=[
 
 /* ---------- Α0 · ΕΙΣΑΓΩΓΗ ---------- */
-{id:'Α0', c:'var(--forest)', title:'Εισαγωγή στην ανθεκτικότητα', time:'~40′',
+{id:'Α0', c:'var(--forest)', title:'Εισαγωγή στην ανθεκτικότητα', time:'~40′', tileUI:true,
  tags:['Μύθος/Αλήθεια','Αντιστοίχιση','Quiz','Βάλε στη σειρά'],
  intro:'Πριν διαβάσετε τι είναι η ανθεκτικότητα — δοκιμάστε τι πιστεύετε ήδη.',
  blocks:[
@@ -858,10 +887,11 @@ function renderReadiness(){
 
 /* ---- navigation ---- */
 const vMap=document.getElementById('v-map'), vSt=document.getElementById('v-station');
-function goMap(){ vSt.classList.remove('on'); vMap.classList.add('on'); renderMap(); window.scrollTo(0,0); }
-let curr=0, solvedSet=new Set(), requiredCount=0;
+function goMap(){ if(openTileEl) closeTile(openTileEl,true); vSt.classList.remove('on'); vMap.classList.add('on'); renderMap(); window.scrollTo(0,0); }
+let curr=0, solvedSet=new Set(), requiredCount=0, openTileEl=null;
 
 function openStation(i){
+  if(openTileEl) closeTile(openTileEl,true);
   curr=i; const s=STATIONS[i]; solvedSet=new Set();
   vMap.classList.remove('on'); vSt.classList.add('on'); window.scrollTo(0,0);
   const head=document.getElementById('svhead');
@@ -876,12 +906,16 @@ function openStation(i){
     body.appendChild(w);
   }
 
-  (s.blocks||[]).forEach((blk,bi)=>{
-    const el=document.createElement('div'); el.className='blk'; el.style.setProperty('--bkc', s.c);
-    el.id=`blk-${i}-${bi}`;
-    body.appendChild(el);
-    renderBlock(el, blk, s, ()=>markSolved(bi));
-  });
+  if(s.tileUI){
+    renderBlocksAsTiles(body, s, i);
+  } else {
+    (s.blocks||[]).forEach((blk,bi)=>{
+      const el=document.createElement('div'); el.className='blk'; el.style.setProperty('--bkc', s.c);
+      el.id=`blk-${i}-${bi}`;
+      body.appendChild(el);
+      renderBlock(el, blk, s, ()=>markSolved(bi));
+    });
+  }
 
   // theory (η θεωρία από κάτω)
   if(s.theory && s.theory.length){
@@ -935,6 +969,72 @@ function renderBlock(el, blk, s, onSolved){
 }
 function kickHTML(blk, extra){ return `<div class="kickrow"><span class="kick"><span class="ic">${extra||''}</span>${blk.kick||''}</span><span class="solved" style="display:none">✓ Ολοκληρώθηκε</span></div>`; }
 function markBlockDone(el){ const s=el.querySelector('.solved'); if(s) s.style.display='inline-flex'; }
+
+/* ---- TILE UI: one square tile per block · flip + fullscreen expand ---- */
+const TILE_ICON={quiz:'❓',finderror:'🔎',myth:'🃏',order:'🔢',match:'🧩',dodont:'🗂️',branch:'🌿',flow:'🧭',slider:'🎚️'};
+function renderBlocksAsTiles(body, s, i){
+  const grid=document.createElement('div'); grid.className='tileGrid';
+  body.appendChild(grid);
+  (s.blocks||[]).forEach((blk,bi)=>{
+    const tile=document.createElement('div'); tile.className='tile'; tile.style.setProperty('--bkc', s.c);
+    tile.innerHTML=`<div class="tile-scene"><div class="tile-inner">
+        <div class="tile-face tile-front">
+          <span class="tf-done">✓</span>
+          <div class="tf-badge">${TILE_ICON[blk.type]||'✨'}</div>
+          <div class="tf-label">${blk.kick||''}</div>
+          <div class="tf-hint">Άνοιξε</div>
+        </div>
+        <div class="tile-face tile-back">
+          <div class="tile-back-head">
+            <div class="tf-badge">${TILE_ICON[blk.type]||'✨'}</div>
+            <h3>${blk.kick||''}</h3>
+            <button class="tile-x" type="button" aria-label="Κλείσιμο">✕</button>
+          </div>
+          <div class="tile-back-body"><div class="tile-back-body-inner"></div></div>
+          <button class="tile-close-down" type="button">↓ Κλείσιμο</button>
+        </div>
+      </div></div>`;
+    grid.appendChild(tile);
+    const front=tile.querySelector('.tile-front');
+    const inner=tile.querySelector('.tile-back-body-inner');
+    const el=document.createElement('div'); el.className='blk'; el.style.setProperty('--bkc', s.c);
+    el.id=`blk-${i}-${bi}`;
+    inner.appendChild(el);
+    renderBlock(el, blk, s, ()=>{ markSolved(bi); front.classList.add('done'); });
+    front.addEventListener('click', ()=>openTile(tile));
+    tile.querySelector('.tile-x').addEventListener('click', ()=>closeTile(tile));
+    tile.querySelector('.tile-close-down').addEventListener('click', ()=>closeTile(tile));
+  });
+}
+function openTile(tile){
+  if(openTileEl) return;
+  const r=tile.getBoundingClientRect();
+  tile._origin=r;
+  tile.classList.add('expanded');
+  const vw=window.innerWidth, vh=window.innerHeight;
+  tile.style.transform=`translate(${r.left}px,${r.top}px) scale(${r.width/vw},${r.height/vh})`;
+  tile.getBoundingClientRect(); // force reflow before enabling transition
+  tile.classList.add('animating');
+  requestAnimationFrame(()=>{ requestAnimationFrame(()=>{ tile.style.transform='none'; tile.classList.add('flipped'); }); });
+  openTileEl=tile; document.body.style.overflow='hidden';
+}
+function closeTile(tile, instant){
+  if(!tile.classList.contains('expanded')){ if(openTileEl===tile) openTileEl=null; return; }
+  const r=tile._origin;
+  if(instant || !r){ tile.classList.remove('expanded','animating','flipped'); tile.style.transform=''; document.body.style.overflow=''; if(openTileEl===tile) openTileEl=null; return; }
+  const vw=window.innerWidth, vh=window.innerHeight;
+  tile.classList.remove('flipped');
+  tile.style.transform=`translate(${r.left}px,${r.top}px) scale(${r.width/vw},${r.height/vh})`;
+  const onEnd=(e)=>{
+    if(e.target!==tile||e.propertyName!=='transform') return;
+    tile.removeEventListener('transitionend', onEnd);
+    tile.classList.remove('expanded','animating');
+    tile.style.transform=''; document.body.style.overflow='';
+    if(openTileEl===tile) openTileEl=null;
+  };
+  tile.addEventListener('transitionend', onEnd);
+}
+document.addEventListener('keydown', e=>{ if(e.key==='Escape' && openTileEl) closeTile(openTileEl); });
 
 /* ---- QUIZ / FIND-ERROR ---- */
 function renderQuiz(el, blk, onSolved){
