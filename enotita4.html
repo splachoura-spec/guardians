@@ -119,7 +119,7 @@
   @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
   .shieldrow{display:flex; gap:8px; justify-content:center}
   .slot{width:42px; height:42px; border-radius:50%; border:3px dashed var(--cream-2); display:grid; place-items:center; overflow:hidden; background:#fff; font-size:1.1rem}
-  .slot.filled{border-style:solid; border-color:var(--c)} .slot img{width:100%; height:100%; object-fit:contain}
+  .slot.filled{border-style:solid; border-color:var(--c)} .slot img{width:100%; height:100%; object-fit:contain; opacity:.32; filter:saturate(.5); transition:opacity .3s,filter .3s} .slot.filled img{opacity:1; filter:none}
 
   /* pedagogy panel */
   .pedpanel{position:fixed; left:0; right:0; bottom:80px; z-index:38; background:#fff; border-top:3px solid var(--forest);
@@ -442,7 +442,7 @@
         <div class="slot filled"><img src="σύμβολο_αρκούδα.png" alt="Αρκούδα"></div>
         <div class="slot filled"><img src="σύμβολο_ελάφι.png" alt="Ελάφι"></div>
         <div class="slot filled"><img src="σύμβολο_λαγός.png" alt="Λαγός"></div>
-        <div class="slot">🐢</div>
+        <div class="slot"><img src="σύμβολο_χελώνα.png" alt="Χελώνα"></div>
       </div>
     </div>
   </section>
