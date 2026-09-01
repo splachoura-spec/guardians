@@ -122,9 +122,9 @@
 
   /* tile grid — square activity tiles that flip + fill the screen */
   .tileGrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(148px,1fr)); gap:14px; margin:0 0 20px}
-  .tile{--tileR:18px; position:relative; width:100%; aspect-ratio:1/1; border-radius:var(--tileR); box-shadow:var(--shadow); transform-origin:0 0}
-  .tile.expanded{--tileR:26px; position:fixed; inset:16px; width:auto; height:auto; aspect-ratio:auto; z-index:200; border-radius:var(--tileR); box-shadow:0 30px 70px -20px rgba(58,42,34,.45)}
-  @media(max-width:680px){.tile.expanded{--tileR:0px; inset:0}}
+  .tile{--tileR:24px; position:relative; width:100%; aspect-ratio:1/1; border-radius:var(--tileR); box-shadow:var(--shadow); transform-origin:0 0}
+  .tile.expanded{--tileR:30px; position:fixed; inset:0; margin:auto; width:min(1400px,94vw); height:90vh; max-height:90vh; aspect-ratio:auto; z-index:200; border-radius:var(--tileR); box-shadow:0 30px 70px -20px rgba(58,42,34,.45)}
+  @media(max-width:680px){.tile.expanded{--tileR:0px; inset:0; margin:0; width:100%; height:100%; max-height:none}}
   .tile.animating{transition:transform .48s cubic-bezier(.22,.68,.32,1), border-radius .48s ease, inset .48s cubic-bezier(.22,.68,.32,1)}
   .tile-scene{width:100%; height:100%; perspective:1800px}
   .tile-inner{position:relative; width:100%; height:100%; transform-style:preserve-3d; transition:transform .48s cubic-bezier(.22,.68,.32,1)}
@@ -1012,8 +1012,17 @@ function openTile(tile){
   const r=tile.getBoundingClientRect();
   tile._origin=r;
   tile.classList.add('expanded');
-  const vw=window.innerWidth, vh=window.innerHeight;
-  tile.style.transform=`translate(${r.left}px,${r.top}px) scale(${r.width/vw},${r.height/vh})`;
+  const isMobile=window.matchMedia('(max-width:680px)').matches;
+  if(!isMobile){
+    const head=tile.querySelector('.tile-back-head');
+    const bodyInner=tile.querySelector('.tile-back-body-inner');
+    const needed=(head?head.offsetHeight:0)+(bodyInner?bodyInner.offsetHeight:0)+132;
+    tile.style.height=Math.min(Math.max(needed,320),Math.round(window.innerHeight*0.86))+'px';
+  } else {
+    tile.style.height='';
+  }
+  const r1=tile.getBoundingClientRect();
+  tile.style.transform=`translate(${r.left-r1.left}px,${r.top-r1.top}px) scale(${r.width/r1.width},${r.height/r1.height})`;
   tile.getBoundingClientRect(); // force reflow before enabling transition
   tile.classList.add('animating');
   requestAnimationFrame(()=>{ requestAnimationFrame(()=>{ tile.style.transform='none'; tile.classList.add('flipped'); }); });
@@ -1022,15 +1031,15 @@ function openTile(tile){
 function closeTile(tile, instant){
   if(!tile.classList.contains('expanded')){ if(openTileEl===tile) openTileEl=null; return; }
   const r=tile._origin;
-  if(instant || !r){ tile.classList.remove('expanded','animating','flipped'); tile.style.transform=''; document.body.style.overflow=''; if(openTileEl===tile) openTileEl=null; return; }
-  const vw=window.innerWidth, vh=window.innerHeight;
+  if(instant || !r){ tile.classList.remove('expanded','animating','flipped'); tile.style.transform=''; tile.style.height=''; document.body.style.overflow=''; if(openTileEl===tile) openTileEl=null; return; }
+  const r1=tile.getBoundingClientRect();
   tile.classList.remove('flipped');
-  tile.style.transform=`translate(${r.left}px,${r.top}px) scale(${r.width/vw},${r.height/vh})`;
+  tile.style.transform=`translate(${r.left-r1.left}px,${r.top-r1.top}px) scale(${r.width/r1.width},${r.height/r1.height})`;
   const onEnd=(e)=>{
     if(e.target!==tile||e.propertyName!=='transform') return;
     tile.removeEventListener('transitionend', onEnd);
     tile.classList.remove('expanded','animating');
-    tile.style.transform=''; document.body.style.overflow='';
+    tile.style.transform=''; tile.style.height=''; document.body.style.overflow='';
     if(openTileEl===tile) openTileEl=null;
   };
   tile.addEventListener('transitionend', onEnd);
