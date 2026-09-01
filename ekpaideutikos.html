@@ -1095,6 +1095,7 @@ renderMap();
   (function(){
     var ICONS=['','σύμβολο_κουκουβάγια.png','σύμβολο_αρκούδα.png','σύμβολο_ελάφι.png','σύμβολο_λαγός.png','σύμβολο_χελώνα.png'];
     var CLR=['','owl','bear','deer','hare','turtle'];
+    var EMOJI={0:'🧭',6:'💛',7:'🤖',8:'📋'};
     var applying=false, mo=null;
     function apply(){
       var rlist=document.querySelector('#ready .rlist');
@@ -1114,6 +1115,10 @@ renderMap();
             img.alt='';
             rk.appendChild(img);
           }
+        } else if(EMOJI.hasOwnProperty(i) && !row.dataset.emojiSet){
+          row.dataset.emojiSet='1';
+          var rk2=row.querySelector('.rk');
+          if(rk2) rk2.textContent=EMOJI[i];
         }
       });
       var readyEl=document.getElementById('ready');
