@@ -737,10 +737,10 @@ function renderReadiness(){
     `<p class="sub2">Ολοκληρώστε και τους 9 σταθμούς. Δίπλα σε κάθε σταθμό φαίνεται πόσο σίγουρος/η νιώθετε.</p>`+
     `<div class="rlist">${rows}</div>`+
     `<div class="readbar"><span style="width:${n/9*100}%"></span></div>`+
-    `<div class="gate"><button class="btn primary" id="gateBtn" ${ready?'':'disabled'}>Είμαι έτοιμος/η για τη Στρώση Β →</button>`+
+    `<div class="gate"><button class="btn primary" id="gateBtn" ${ready?'':'disabled'}>${ready?'Πάμε στο υλικό της τάξης →':'Είμαι έτοιμος/η για τη Στρώση Β →'}</button>`+
     `<span class="gmsg">${ready?'Ολοκληρώσατε την προετοιμασία σας. Μπράβο!':`Απομένουν ${9-n} σταθμοί.`}</span></div>`;
   const gb=document.getElementById('gateBtn');
-  if(gb) gb.onclick=()=>{ if(doneCount()>=9){ alert('Μπράβο! Ολοκληρώσατε την εκπαίδευσή σας. Είστε έτοιμος/η για τη Στρώση Β.'); } };
+  if(gb) gb.onclick=()=>{ if(doneCount()>=9){ window.location.href='index.html#yliko-taksis'; } };
 }
 
 /* ---- navigation ---- */
