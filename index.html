@@ -362,8 +362,9 @@
   function select(i){
     document.querySelectorAll('.node').forEach(n=>n.setAttribute('aria-selected', n.dataset.i==i?'true':'false'));
     const g=guardians[i]; detail.style.setProperty('--c', g.color);
+    const CTA_TEXT = {owl:'Ξεκίνα το ταξίδι →', bear:'Συνέχισε με την Αρκούδα →', deer:'Συνέχισε με το Ελάφι →', hare:'Συνέχισε με τον Λαγό →', turtle:'Ολοκλήρωσε με τη Χελώνα →'};
     const cta = g.ready
-      ? `<a class="btn go" href="${g.link}">Ξεκίνα το ταξίδι →</a>`
+      ? `<a class="btn go" href="${g.link}">${CTA_TEXT[g.key] || 'Ξεκίνα το ταξίδι →'}</a>`
       : `<span class="btn go locked">Σύντομα 🔒</span>`;
     detail.innerHTML=`
       <div class="pic"><span class="order">${g.unit}</span><img src="${g.img}" alt="${g.name}"></div>
