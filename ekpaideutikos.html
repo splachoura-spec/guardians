@@ -242,20 +242,23 @@
   @media(prefers-reduced-motion:reduce){*{transition:none!important; animation:none!important}}
   :focus-visible{outline:3px solid var(--forest); outline-offset:3px; border-radius:10px}
 
-  /* --- readiness redesign patch --- */
-  .ready .rlist{display:block}
-  .ready .rlist .rrow{margin-bottom:8px}
-  .ready .grp-h{font-family:'Caveat',cursive; font-weight:700; font-size:1.15rem; color:var(--ink-soft); margin:16px 0 8px; display:flex; align-items:center; gap:8px}
-  .ready .grp-h:first-child{margin-top:2px}
-  .ready .grp-h::after{content:""; flex:1; height:1px; background:var(--line)}
-  .ready .rrow.animal .rk{width:30px; height:30px; padding:0; overflow:hidden; background:#fff}
-  .ready .rrow.animal .rk img{width:100%; height:100%; object-fit:cover; border-radius:50%; opacity:.35; filter:saturate(.4); transition:opacity .3s,filter .3s; display:block}
+  
+  /* --- readiness redesign patch v2 (grid) --- */
+  .ready .rlist{display:grid; grid-template-columns:repeat(3,1fr); gap:8px}
+  .ready .rrow{flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:8px; padding:16px 8px}
+  .ready .rrow .rk{width:48px; height:48px; font-size:1.3rem}
+  .ready .rrow .rt{font-size:.82rem; line-height:1.25}
+  .ready .rrow .rc{display:none}
+  .ready .rrow.ok{border-color:var(--ok)}
+  .ready .rrow.animal .rk{padding:0; overflow:hidden; background:#fff}
+  .ready .rrow.animal .rk img{width:100%; height:100%; object-fit:cover; border-radius:50%; opacity:.4; filter:saturate(.5); display:block; transition:opacity .3s,filter .3s}
   .ready .rrow.animal.ok .rk img{opacity:1; filter:none}
   .ready .rrow.owl .rk{box-shadow:0 0 0 2px var(--owl) inset}
   .ready .rrow.bear .rk{box-shadow:0 0 0 2px var(--bear) inset}
   .ready .rrow.deer .rk{box-shadow:0 0 0 2px var(--deer) inset}
   .ready .rrow.hare .rk{box-shadow:0 0 0 2px var(--hare) inset}
   .ready .rrow.turtle .rk{box-shadow:0 0 0 2px var(--turtle) inset}
+  @media (max-width:560px){ .ready .rlist{grid-template-columns:repeat(2,1fr)} }
   </style>
 </head>
 <body>
@@ -1086,11 +1089,12 @@ renderMap();
 
 </script>
 
-  <script>
+  
+  
+  <script id="ready-patch">
   (function(){
     var ICONS=['','σύμβολο_κουκουβάγια.png','σύμβολο_αρκούδα.png','σύμβολο_ελάφι.png','σύμβολο_λαγός.png','σύμβολο_χελώνα.png'];
     var CLR=['','owl','bear','deer','hare','turtle'];
-    var GROUPS=[[0,0,'Εισαγωγή'],[1,5,'Οι 5 δεξιότητες'],[6,8,'Ειδικά θέματα & εργαλεία']];
     var applying=false, mo=null;
     function apply(){
       var rlist=document.querySelector('#ready .rlist');
@@ -1112,19 +1116,6 @@ renderMap();
           }
         }
       });
-      if(!rlist.dataset.grouped){
-        rlist.dataset.grouped='1';
-        var frag=document.createDocumentFragment();
-        GROUPS.forEach(function(g){
-          var a=g[0], b=g[1], label=g[2];
-          var h=document.createElement('h4');
-          h.className='grp-h';
-          h.textContent=label;
-          frag.appendChild(h);
-          for(var i=a;i<=b;i++){ frag.appendChild(rows[i]); }
-        });
-        rlist.appendChild(frag);
-      }
       var readyEl=document.getElementById('ready');
       if(mo && readyEl) mo.observe(readyEl, {childList:true, subtree:true});
       applying=false;
