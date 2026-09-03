@@ -295,6 +295,26 @@
 .screen .inner > .text-col > *{text-align:left!important;margin:0!important}
 .screen .inner > .text-col .lead{margin-top:8px!important}
 /* ==== end UX Fix Pack v1 ==== */
+/* ==== UI SCALE PASS 2026-09 ==== */
+@media(min-width:900px){
+  .inner{ max-width:min(1280px,94vw) }
+  .inner:has(> .text-col){ width:min(1360px,95%)!important }
+}
+@media(min-width:900px) and (min-height:790px){
+  html{ font-size:clamp(16px, 2.05vh, 22px) }
+  .inner{ gap:16px }
+  .inner:has(> .text-col){ gap:48px!important }
+  .inner:has(> .text-col) > .owlwrap{
+    flex:0 0 clamp(320px,42vh,460px);
+    height:clamp(320px,42vh,460px)!important;
+    min-height:0!important
+  }
+  .scene{ max-height:min(66vh,780px)!important; max-width:min(88vw,780px)!important }
+  .owl{ max-height:min(58vh,520px)!important }
+  .facebox, .facebox img, .deck .facebox, .deck .facebox img{ max-height:min(40vh,400px)!important }
+  .scenecard{ max-width:34ch; padding:16px 22px }
+  body.pedon .scene{ max-height:34vh!important }
+}
 </style>
 </head>
 <body>

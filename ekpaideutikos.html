@@ -309,7 +309,36 @@
   .askbot-cta-text strong{color:var(--forest-2)}
   .askbot-cta-btn{background:linear-gradient(180deg,#FF7A50,#F04E2A); color:#fff; border:none; font-family:'Nunito',sans-serif; font-weight:900; font-size:.88rem; padding:10px 16px; border-radius:11px; cursor:pointer; white-space:nowrap}
   .askbot-cta-btn:hover{filter:brightness(1.06)}
-  </style>
+  /* ==== UI SCALE PASS 2026-09 ==== */
+html{ font-size:17.5px }
+.wrap{ max-width:min(1500px,95vw); padding:0 24px }
+.topbar{ padding:12px 22px }
+.hero{ padding:26px 0 6px }
+.hero p{ max-width:80ch; font-size:1.05rem }
+.map{ grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:18px; padding:22px 0 20px }
+.st{ padding:20px 20px 18px }
+.st h3{ font-size:1.2rem }
+.sv-head{ padding:26px 30px; margin:16px 0 14px }
+.sv-head .intro{ max-width:88ch }
+.tileGrid{ grid-template-columns:repeat(auto-fit,minmax(215px,1fr)); gap:18px; margin:0 0 18px }
+.tile{ aspect-ratio:16/11 }
+.tile-front{ padding:18px }
+.tile-front .tf-badge{ width:52px; height:52px; border-radius:15px; font-size:1.5rem }
+.tile-front .tf-label{ font-size:1rem }
+.tile-front .tf-hint{ font-size:.66rem; padding:5px 13px }
+.tile-back-head{ padding:18px 26px }
+.tile-back-head h3{ font-size:1.2rem }
+.tile-back-body-inner{ max-width:min(1500px,94vw) }
+.blk{ padding:20px 22px 18px; margin:0 0 14px }
+.ready{ padding:26px 28px; margin:6px 0 44px }
+footer{ padding:22px }
+@media(max-width:760px){
+  html{ font-size:16px }
+  .wrap{ padding:0 16px }
+  .map{ grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:12px }
+  .tileGrid{ grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px }
+}
+</style>
 </head>
 <body>
 
