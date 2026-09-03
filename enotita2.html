@@ -153,10 +153,10 @@
   .breath{display:flex; flex-direction:column; align-items:center; gap:14px}
   .breathring{width:min(34vh,190px); height:min(34vh,190px); border-radius:50%;
     background:radial-gradient(circle at 50% 38%, color-mix(in srgb,var(--c) 26%,#fff), color-mix(in srgb,var(--c) 58%,#fff));
-    border:6px solid var(--c); display:grid; place-items:center; box-shadow:var(--shadow); animation:breathe 11s ease-in-out infinite}
+    border:6px solid var(--c); display:grid; place-items:center; box-shadow:var(--shadow); animation:breathe 8s ease-in-out infinite}
   body.pedon .breathring{width:min(22vh,150px); height:min(22vh,150px)}
   .breathcore{font-size:2.6rem}
-  @keyframes breathe{0%{transform:scale(.6)}36%{transform:scale(1)}55%{transform:scale(1)}100%{transform:scale(.6)}}
+  @keyframes breathe{0%{transform:scale(.6)}50%{transform:scale(1)}100%{transform:scale(.6)}}
   .breathlabel{font-weight:1000; color:var(--c-deep); font-size:1.4rem; min-height:1.4em}
   @media(prefers-reduced-motion:reduce){.breathring{animation:none; transform:scale(.85)}}
   /* --- toolbox multi-select --- */
@@ -290,7 +290,7 @@
     <div class="inner">
       <span class="phase-tag s2">Ας μιλήσουμε</span>
       <h2 class="qbig">«Έχετε θυμώσει<br>κι εσείς ποτέ;»</h2>
-      <p class="scenehint">Πες μας τι έγινε — και τι έκανες.</p>
+      <p class="scenehint">Τι έγινε στο σώμα σου; Ξέρεις κάποιον τρόπο να ηρεμείς;</p>
     </div>
   </section>
 
@@ -302,24 +302,27 @@
         <div class="breathring"><span class="breathcore">🐻</span></div>
         <div class="breathlabel" id="breathlabel">Εισπνοή… 🌬️</div>
       </div>
-      <span class="strat">Στρατηγική: διαφραγματική αναπνοή (ρύθμιση της διέγερσης)</span>
+      <span class="strat">Στρατηγική: διαφραγματική αναπνοή — 4″ εισπνοή · 4″ εκπνοή · έξι επαναλήψεις</span>
     </div>
   </section>
 
   <section class="screen" data-phase="C">
     <div class="inner">
-      <span class="phase-tag s3">Δραστηριότητα 2</span>
+      <span class="phase-tag s3">Δραστηριότητα 2 · όλοι μαζί</span>
       <h2 class="big" style="font-size:1.4rem">Το Θερμόμετρο του Θυμού</h2>
-      <p class="lead">Πόσο δυνατός είναι ο θυμός; Διάλεξε — και δες τι μπορείς να κάνεις.</p>
+      <div class="scenecard" id="thermoScene"></div>
+      <p class="lead" id="thermoAsk">Πόσο δυνατό θυμό θα ένιωθες; Βάλε την κατάσταση στο θερμόμετρο.</p>
       <div class="thermo" id="thermo">
-        <div class="lvl" data-strat="Τέλεια! Συνέχισε αυτό που κάνεις. 😊"><span class="e">😌</span> Ήρεμα — όλα καλά</div>
-        <div class="lvl" data-strat="Πάρε μία βαθιά ανάσα και μέτρα ως το 3."><span class="e">🙂</span> Λίγο ενοχλημένος/η</div>
-        <div class="lvl" data-strat="Κάνε 3 φορές την «ανάσα της αρκούδας». 🐻"><span class="e">😠</span> Θυμωμένος/η</div>
-        <div class="lvl" data-strat="Απομακρύνσου λίγο και πες: «Χρειάζομαι μια παύση.»"><span class="e">😤</span> Πολύ θυμωμένος/η</div>
-        <div class="lvl" data-strat="Ζήτα βοήθεια από έναν μεγάλο που εμπιστεύεσαι. 🤝"><span class="e">🌋</span> Έτοιμος/η να εκραγώ</div>
+        <div class="lvl" data-v="1"><span class="e">😌</span> Λίγο — περνάει γρήγορα</div>
+        <div class="lvl" data-v="2"><span class="e">🙂</span> Μέτρια — με ενοχλεί</div>
+        <div class="lvl" data-v="3"><span class="e">😠</span> Δυνατά — θυμώνω</div>
+        <div class="lvl" data-v="4"><span class="e">😤</span> Πολύ δυνατά</div>
+        <div class="lvl" data-v="5"><span class="e">🌋</span> Έτοιμος/η να εκραγώ</div>
       </div>
+      <div class="opts" id="thermoStrats" style="display:none"></div>
       <p class="feedback" id="thermoFb"></p>
-      <span class="strat">Στρατηγική: ένταση → κατάλληλη στρατηγική</span>
+      <div class="dots-mini" id="thermoDots"></div>
+      <span class="strat">Στρατηγική: κατάσταση → ένταση → στρατηγική ανάλογη της έντασης</span>
     </div>
   </section>
 
@@ -327,7 +330,7 @@
     <div class="inner">
       <span class="phase-tag s3">Δραστηριότητα 3 · ατομικά</span>
       <h2 class="big" style="font-size:1.4rem">Η Εργαλειοθήκη μου</h2>
-      <p class="lead">Διάλεξε τα εργαλεία που σε βοηθούν να ηρεμείς.</p>
+      <p class="lead">Διάλεξε τα 3 εργαλεία που σε βοηθούν περισσότερο να ηρεμείς.</p>
       <div class="toolbox" id="toolbox">
         <button class="tool">🫁 Βαθιές ανάσες</button>
         <button class="tool">🔟 Μετράω ως το 10</button>
@@ -395,7 +398,7 @@
     {how:'Λύση: η «ανάσα της αρκούδας» και η ΠΑΥΣΗ ανάμεσα στο νιώθω και στο πράττω.', strat:'Απόσταση ερεθίσματος–αντίδρασης· η ανάσα ως πρώτο εργαλείο ρύθμισης.', casel:'Αυτοδιαχείριση', bridge:'«Μπορώ να σταματήσω για μια στιγμή πριν αντιδράσω.»'},
     {how:'Ρητή ερώτηση-γέφυρα προς την ολομέλεια.', strat:'Bridging: σύνδεση της ιστορίας με την εμπειρία του παιδιού.', casel:'Αυτοδιαχείριση', bridge:'«Έχετε θυμώσει κι εσείς ποτέ; Τι κάνατε;»'},
     {how:'Καθοδηγούμενη ομαδική αναπνοή με οπτικό οδηγό (κύκλος που μεγαλώνει/μικραίνει).', strat:'Διαφραγματική αναπνοή — άμεση ρύθμιση της φυσιολογικής διέγερσης.', casel:'Αυτοδιαχείριση', bridge:'Εξασκούμαι στο εργαλείο εδώ, για να το έχω όταν το χρειαστώ.'},
-    {how:'Το παιδί διαλέγει ένταση θυμού και λαμβάνει μια αντίστοιχη στρατηγική.', strat:'Αντιστοίχιση έντασης → στρατηγικής (κλιμακούμενη αυτορρύθμιση).', casel:'Αυτοδιαχείριση', bridge:'«Ανάλογα με το πόσο θυμώνω, διαλέγω τι θα κάνω.»'},
+    {how:'Δίνεται σύντομο σενάριο· το παιδί το τοποθετεί στην κλίμακα έντασης και επιλέγει στρατηγική ανάλογη της έντασης.', strat:'Κατάσταση → ένταση → στρατηγική (κλιμακούμενη αυτορρύθμιση).', casel:'Αυτοδιαχείριση', bridge:'«Ανάλογα με το πόσο θυμώνω, διαλέγω τι θα κάνω.»'},
     {how:'Ατομική επιλογή εργαλείων ηρεμίας (multi-select), χωρίς σωστό/λάθος.', strat:'Χτίσιμο προσωπικού ρεπερτορίου αυτορρύθμισης.', casel:'Αυτοδιαχείριση', bridge:'«Αυτά είναι τα δικά μου εργαλεία.»'},
     {how:'Παιχνίδι ρόλων & κύκλος συζήτησης, με προαιρετική συμμετοχή.', strat:'Αναστοχασμός & μεταφορά στην πράξη (τι κάνω όταν θυμώνω).', casel:'Αυτοδιαχείριση', bridge:'«Την επόμενη φορά, μπορώ να δοκιμάσω…»'},
     {how:'Απόκτηση συμβόλου — ορατή ανταμοιβή στην ασπίδα (2ο σύμβολο).', strat:'Ικανοποίηση μέσω ορατής προόδου (η ασπίδα γεμίζει).', casel:'Αυτοδιαχείριση', bridge:'«Κέρδισα τη δύναμη της Αρκούδας.»'}
@@ -472,24 +475,63 @@
   const blabel=document.getElementById('breathlabel');
   if(blabel && !REDUCE){
     const t0=performance.now();
-    setInterval(()=>{ const e=((performance.now()-t0)%11000)/1000;
-      blabel.textContent = e<3.96 ? 'Εισπνοή… 🌬️' : (e<6.05 ? 'Κράτα… ✋' : 'Εκπνοή… 😮‍💨'); },120);
-  } else if(blabel){ blabel.textContent='Εισπνοή… κράτα… εκπνοή αργά.'; }
+    setInterval(()=>{ const e=((performance.now()-t0)%8000)/1000;
+      blabel.textContent = e<4 ? 'Εισπνοή… 🌬️' : 'Εκπνοή… 😮‍💨'; },120);
+  } else if(blabel){ blabel.textContent='Εισπνοή… εκπνοή… αργά, έξι φορές.'; }
 
-  // --- Activity 2: anger thermometer -> strategy ---
-  const thermoFb=document.getElementById('thermoFb');
-  document.querySelectorAll('#thermo .lvl').forEach(l=>l.addEventListener('click',()=>{
-    document.querySelectorAll('#thermo .lvl').forEach(x=>x.classList.remove('sel'));
-    l.classList.add('sel'); pop(600);
-    if(thermoFb) thermoFb.textContent=l.dataset.strat||'';
-  }));
+  // --- Activity 2: θερμόμετρο του θυμού — τοποθετώ την κατάσταση + διαλέγω στρατηγική ---
+  (function(){
+    const sceneEl=document.getElementById('thermoScene'); if(!sceneEl) return;
+    const askEl=document.getElementById('thermoAsk'), stratsEl=document.getElementById('thermoStrats'),
+          fbEl=document.getElementById('thermoFb'), dotsEl=document.getElementById('thermoDots');
+    const lvls=[...document.querySelectorAll('#thermo .lvl')];
+    const SCEN=['Ο φίλος σου πήρε το μολύβι σου χωρίς να ρωτήσει.','Γκρεμίζεται ο πύργος που έχτιζες τόση ώρα.','Χάνεις σε ένα παιχνίδι που ήθελες πολύ να κερδίσεις.'];
+    const STRATS=[
+      {t:'🫁 Παίρνω την «ανάσα της αρκούδας»', min:1},
+      {t:'🔟 Μετράω αργά ως το 10', min:1},
+      {t:'🚶 Απομακρύνομαι και λέω «χρειάζομαι μια παύση»', min:3},
+      {t:'🤝 Ζητάω βοήθεια από έναν μεγάλο', min:4},
+    ];
+    SCEN.forEach(()=>{const d=document.createElement('i'); dotsEl.appendChild(d);});
+    const dots=[...dotsEl.children];
+    let si=0, stage=0, picked=0;
+    function renderScene(){
+      stage=0; picked=0;
+      sceneEl.textContent=SCEN[si];
+      askEl.textContent='Πόσο δυνατό θυμό θα ένιωθες; Βάλε την κατάσταση στο θερμόμετρο.';
+      lvls.forEach(x=>x.classList.remove('sel'));
+      stratsEl.style.display='none'; stratsEl.innerHTML=''; fbEl.textContent='';
+      dots.forEach((d,i)=>d.classList.toggle('on', i<=si));
+    }
+    lvls.forEach(l=>l.addEventListener('click',()=>{
+      if(stage!==0) return;
+      lvls.forEach(x=>x.classList.remove('sel')); l.classList.add('sel'); pop(600);
+      picked=+l.dataset.v; stage=1;
+      fbEl.textContent='Δεν υπάρχει σωστό ή λάθος — ο καθένας το νιώθει με άλλη ένταση.';
+      askEl.textContent='Τώρα διάλεξε μια στρατηγική ηρεμίας που ταιριάζει σε τόση ένταση.';
+      stratsEl.innerHTML='';
+      STRATS.forEach(s=>{ const b=document.createElement('button'); b.className='opt'; b.textContent=s.t;
+        b.onclick=()=>{ if(stage!==1) return;
+          if(picked>=4 && s.min<3){ b.classList.add('nope'); b.disabled=true; pop(300);
+            fbEl.textContent='Βοηθάει κι αυτό — αλλά για τόσο δυνατό θυμό χρειάζεσαι κάτι πιο δυνατό: μια παύση ή έναν μεγάλο. Διάλεξε ξανά!'; return; }
+          stage=2; b.classList.add('correct'); pop(660);
+          fbEl.textContent='Ταιριαστή επιλογή! Διαφορετική ένταση → διαφορετική στρατηγική. ✔';
+          setTimeout(()=>{ if(si<SCEN.length-1){ si++; renderScene(); } else { fbEl.textContent='Το κατάλαβες: δεν χρειάζεται η ίδια απάντηση για κάθε ένταση! 🌡️'; } },1600);
+        };
+        stratsEl.appendChild(b); });
+      stratsEl.style.display='flex';
+    }));
+    renderScene();
+  })();
 
   // --- Activity 3: toolbox multi-select ---
   const toolFb=document.getElementById('toolFb');
   document.querySelectorAll('#toolbox .tool').forEach(t=>t.addEventListener('click',()=>{
+    const selN=document.querySelectorAll('#toolbox .tool.sel').length;
+    if(!t.classList.contains('sel') && selN>=3){ if(toolFb) toolFb.textContent='Διάλεξε τις 3 πιο δικές σου — για να βάλεις άλλη, βγάλε πρώτα μία. 🙂'; pop(300); return; }
     t.classList.toggle('sel'); pop(560);
     const n=document.querySelectorAll('#toolbox .tool.sel').length;
-    if(toolFb) toolFb.textContent = n ? `Έφτιαξες την εργαλειοθήκη σου με ${n} ${n===1?'εργαλείο':'εργαλεία'}! 🧰` : '';
+    if(toolFb) toolFb.textContent = n===3 ? 'Η εργαλειοθήκη σου είναι έτοιμη — 3 δικές σου στρατηγικές! 🧰' : (n ? `Διάλεξες ${n} — φτάσε τις 3.` : '');
   }));
 
   show(0);
