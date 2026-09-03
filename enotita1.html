@@ -121,6 +121,15 @@
   .slot{width:42px; height:42px; border-radius:50%; border:3px dashed var(--cream-2); display:grid; place-items:center; overflow:hidden; background:#fff; font-size:1.1rem}
   .slot.filled{border-style:solid; border-color:var(--c)} .slot img{width:100%; height:100%; object-fit:contain; opacity:.32; filter:saturate(.5); transition:opacity .3s,filter .3s} .slot.filled img{opacity:1; filter:none}
 
+  /* κλίμακα ικανοποίησης (Παράρτημα Β.Γ) */
+  .satwrap{display:flex; flex-direction:column; gap:8px; width:100%; max-width:600px; margin:0 auto}
+  .satrow{display:flex; align-items:center; justify-content:space-between; gap:10px; background:#fff; border:3px solid var(--cream-2); border-radius:14px; padding:8px 12px}
+  .satrow .satq{font-weight:800; font-size:.92rem; text-align:left}
+  .satfaces{display:flex; gap:6px; flex:0 0 auto}
+  .satf{font-size:1.35rem; background:none; border:2px solid transparent; border-radius:10px; padding:2px 6px; cursor:pointer; filter:grayscale(1) opacity(.55); transition:.15s}
+  .satf:hover{transform:scale(1.1)}
+  .satf.sel{filter:none; border-color:var(--c); background:color-mix(in srgb,var(--c) 12%,#fff)}
+  @media(max-height:710px){ .satrow{padding:5px 10px} .satrow .satq{font-size:.8rem} .satf{font-size:1.1rem} }
   /* pedagogy panel */
   .pedpanel{position:fixed; left:0; right:0; bottom:80px; z-index:38; background:#fff; border-top:3px solid var(--forest);
     box-shadow:0 -14px 30px -20px rgba(0,0,0,.45); padding:12px 18px; height:180px; overflow:auto;
@@ -281,6 +290,20 @@
 
   <section class="screen" data-phase="S">
     <div class="inner">
+      <span class="phase-tag s2">Πώς σου φάνηκε;</span>
+      <h2 class="big" style="font-size:1.5rem">Δείξε ένα προσωπάκι</h2>
+      <div class="satwrap">
+        <div class="satrow"><span class="satq">Μου άρεσε η ιστορία και το ταξίδι με τον Φύλακα σήμερα;</span><span class="satfaces"><button class="satf">🙂</button><button class="satf">😐</button><button class="satf">🙁</button></span></div>
+        <div class="satrow"><span class="satq">Κατάλαβα τι έπρεπε να κάνω στις δραστηριότητες;</span><span class="satfaces"><button class="satf">🙂</button><button class="satf">😐</button><button class="satf">🙁</button></span></div>
+        <div class="satrow"><span class="satq">Ένιωσα ότι τα κατάφερα;</span><span class="satfaces"><button class="satf">🙂</button><button class="satf">😐</button><button class="satf">🙁</button></span></div>
+        <div class="satrow"><span class="satq">Θα ήθελα να ξανακάνω μια τέτοια δραστηριότητα;</span><span class="satfaces"><button class="satf">🙂</button><button class="satf">😐</button><button class="satf">🙁</button></span></div>
+      </div>
+      <p class="private">🔒 Δεν υπάρχει σωστό ή λάθος — δείχνεις ό,τι νιώθεις εσύ.</p>
+    </div>
+  </section>
+
+  <section class="screen" data-phase="S">
+    <div class="inner">
       <img class="sym" src="σύμβολο_κουκουβάγια.png" alt="Σύμβολο Κουκουβάγιας">
       <h1 class="big" style="color:var(--forest)">Μπράβο!</h1>
       <p class="lead">Κέρδισες το <b>σύμβολο της Κουκουβάγιας</b> για την ασπίδα σου.</p>
@@ -325,8 +348,10 @@
     {how:'Ιδιωτική επιλογή στην κλίμακα, χωρίς σωστό ή λάθος.', strat:'Αυτο-παρατήρηση σε ασφαλές, μη-εκθετικό πλαίσιο.', casel:'Αυτοεπίγνωση', bridge:'«Πώς νιώθω εγώ τώρα;»'},
     {how:'Ενσώματη εξάσκηση σε δυάδες, εκτός οθόνης.', strat:'Ενσώματη μίμηση &amp; αναγνώριση (σώμα + πρόσωπο).', casel:'Αυτοεπίγνωση / Κοινωνική επίγνωση', bridge:'Αναγνωρίζω το συναίσθημα και στον άλλον.'},
     {how:'Δημιουργική έκφραση και κύκλος συζήτησης, με προαιρετική συμμετοχή.', strat:'Αναστοχασμός &amp; οπτικοποίηση (σώμα–συναίσθημα).', casel:'Αυτοεπίγνωση', bridge:'«Πώς &amp; πού το νιώθω στο σώμα μου;»'},
+    {how:'Εικονογραφημένη κλίμακα ικανοποίησης (Παράρτημα Β.Γ) — μη λεκτική, με προσωπάκια, χωρίς σωστό/λάθος.', strat:'Αυτο-αποτίμηση του παιδιού + ένδειξη για τη συνιστώσα Satisfaction.', casel:'—', bridge:'«Πώς μου φάνηκε το σημερινό ταξίδι;»'},
     {how:'Απόκτηση συμβόλου — ορατή ανταμοιβή στην ασπίδα.', strat:'Ικανοποίηση μέσω ορατής προόδου.', casel:'Αυτοεπίγνωση', bridge:'«Κέρδισα τη δύναμη της Κουκουβάγιας.»'}
   ];
+  const MACRO={time:"~90′ συνολικά: 20′ ιστορία · 55′ δραστηριότητες (20′ Χάρτης + 15′ Θερμόμετρο + 20′ Καθρέφτης) · 15′ αναστοχασμός & σύμβολο.", mat:"Διαδραστικός πίνακας, tablets (ένα ανά παιδί ή ανά δύο), φύλλο Α4 & μαρκαδόροι ανά παιδί, οι φάκελοι-ασπίδες. Διάταξη: ημικύκλιο για την ιστορία → ολομέλεια → ατομικά (tablets) → δυάδες → κύκλος. Είσοδος: υπενθύμιση «συμβολαίου» + άνοιγμα φακέλων · Έξοδος: σύμβολο Κουκουβάγιας στην 1η θέση."};
   const pedpanel=document.getElementById('pedpanel'), pedbtn=document.getElementById('pedbtn');
   function renderPed(){
     const ph=screens[idx].dataset.phase||'';
@@ -340,12 +365,14 @@
         <span class="k">Στρατηγική</span><span class="v">${p.strat}</span>
         <span class="k">Δεξιότητα CASEL</span><span class="v">${p.casel}</span>
         <span class="k">Γέφυρα</span><span class="v">${p.bridge}</span>
+        <span class="k">Χρόνος (macro)</span><span class="v">${MACRO.time}</span>
+        <span class="k">Υλικά & διάταξη</span><span class="v">${MACRO.mat}</span>
       </div>`;
   }
   pedbtn.onclick=()=>{ const on=document.body.classList.toggle('pedon'); pedbtn.classList.toggle('on',on); pedbtn.setAttribute('aria-pressed',on); if(on) renderPed(); };
 
   const segs=[...document.querySelectorAll('.seg')];
-  const SEG_RANGES=[[1,4],[5,7],[8,9]];
+  const SEG_RANGES=[[1,4],[5,7],[8,10]];
   segs.forEach(s=>s.addEventListener('click',()=>show(parseInt(s.dataset.start))));
   function updateSegs(){ segs.forEach((s,i)=>{ const r=SEG_RANGES[i]; s.classList.toggle('on', idx>=r[0] && idx<=r[1]); }); }
 
@@ -423,6 +450,7 @@
 
   document.querySelectorAll('#thermo .lvl').forEach(l=>l.addEventListener('click',()=>{ document.querySelectorAll('#thermo .lvl').forEach(x=>x.classList.remove('sel')); l.classList.add('sel'); pop(600); }));
 
+  document.querySelectorAll('.satrow').forEach(r=>r.querySelectorAll('.satf').forEach(b=>b.addEventListener('click',()=>{ r.querySelectorAll('.satf').forEach(x=>x.classList.remove('sel')); b.classList.add('sel'); pop(600); })));
   show(0);
 </script>
 <script>
