@@ -121,6 +121,15 @@
   .slot{width:42px; height:42px; border-radius:50%; border:3px dashed var(--cream-2); display:grid; place-items:center; overflow:hidden; background:#fff; font-size:1.1rem}
   .slot.filled{border-style:solid; border-color:var(--c)} .slot img{width:100%; height:100%; object-fit:contain; opacity:.32; filter:saturate(.5); transition:opacity .3s,filter .3s} .slot.filled img{opacity:1; filter:none}
 
+  /* κλίμακα ικανοποίησης (Παράρτημα Β.Γ) */
+  .satwrap{display:flex; flex-direction:column; gap:8px; width:100%; max-width:600px; margin:0 auto}
+  .satrow{display:flex; align-items:center; justify-content:space-between; gap:10px; background:#fff; border:3px solid var(--cream-2); border-radius:14px; padding:8px 12px}
+  .satrow .satq{font-weight:800; font-size:.92rem; text-align:left}
+  .satfaces{display:flex; gap:6px; flex:0 0 auto}
+  .satf{font-size:1.35rem; background:none; border:2px solid transparent; border-radius:10px; padding:2px 6px; cursor:pointer; filter:grayscale(1) opacity(.55); transition:.15s}
+  .satf:hover{transform:scale(1.1)}
+  .satf.sel{filter:none; border-color:var(--c); background:color-mix(in srgb,var(--c) 12%,#fff)}
+  @media(max-height:710px){ .satrow{padding:5px 10px} .satrow .satq{font-size:.8rem} .satf{font-size:1.1rem} }
   /* pedagogy panel */
   .pedpanel{position:fixed; left:0; right:0; bottom:80px; z-index:38; background:#fff; border-top:3px solid var(--forest);
     box-shadow:0 -14px 30px -20px rgba(0,0,0,.45); padding:12px 18px; height:180px; overflow:auto;
@@ -364,6 +373,20 @@
 
   <section class="screen" data-phase="S">
     <div class="inner">
+      <span class="phase-tag s2">Πώς σου φάνηκε;</span>
+      <h2 class="big" style="font-size:1.5rem">Δείξε ένα προσωπάκι</h2>
+      <div class="satwrap">
+        <div class="satrow"><span class="satq">Μου άρεσε η ιστορία και το ταξίδι με τον Φύλακα σήμερα;</span><span class="satfaces"><button class="satf">🙂</button><button class="satf">😐</button><button class="satf">🙁</button></span></div>
+        <div class="satrow"><span class="satq">Κατάλαβα τι έπρεπε να κάνω στις δραστηριότητες;</span><span class="satfaces"><button class="satf">🙂</button><button class="satf">😐</button><button class="satf">🙁</button></span></div>
+        <div class="satrow"><span class="satq">Ένιωσα ότι τα κατάφερα;</span><span class="satfaces"><button class="satf">🙂</button><button class="satf">😐</button><button class="satf">🙁</button></span></div>
+        <div class="satrow"><span class="satq">Θα ήθελα να ξανακάνω μια τέτοια δραστηριότητα;</span><span class="satfaces"><button class="satf">🙂</button><button class="satf">😐</button><button class="satf">🙁</button></span></div>
+      </div>
+      <p class="private">🔒 Δεν υπάρχει σωστό ή λάθος — δείχνεις ό,τι νιώθεις εσύ.</p>
+    </div>
+  </section>
+
+  <section class="screen" data-phase="S">
+    <div class="inner">
       <img class="sym" src="σύμβολο_ελάφι.png" alt="Σύμβολο Ελαφιού">
       <h1 class="big" style="color:var(--forest)">Μπράβο!</h1>
       <p class="lead">Κέρδισες το <b>σύμβολο του Ελαφιού</b> για την ασπίδα σου.</p>
@@ -408,8 +431,10 @@
     {how:'Σύντομες μικρο-ιστορίες· το παιδί αναγνωρίζει το συναίσθημα του πρωταγωνιστή (3-4 ιστορίες).', strat:'Αναγνώριση συναισθήματος σε πλαίσιο — με έμφαση στον αποκλεισμό (πρόληψη εκφοβισμού).', casel:'Κοινωνική επίγνωση', bridge:'«Μπορώ να κάνω κάτι όταν βλέπω κάποιον να μένει έξω.»'},
     {how:'Παιχνίδι ρόλων με εναλλαγή: τα παιδιά παίζουν μια σκηνή, αλλάζουν ρόλους και λένε πώς ένιωσαν σε καθέναν.', strat:'Ενσώματη ενσυναίσθηση — βιώνω και τις δύο πλευρές (role-reversal).', casel:'Κοινωνική επίγνωση', bridge:'«Πώς θα ήταν να ήμουν εγώ στη θέση του;»'},
     {how:'Ομαδική αφήγηση σε κύκλο, με προαιρετική συμμετοχή.', strat:'Αναστοχασμός & μεταφορά — προσωπικά παραδείγματα κατανόησης του άλλου.', casel:'Κοινωνική επίγνωση', bridge:'«Θυμάμαι μια φορά που κατάλαβα πώς ένιωθε ένας φίλος.»'},
+    {how:'Εικονογραφημένη κλίμακα ικανοποίησης (Παράρτημα Β.Γ) — μη λεκτική, με προσωπάκια, χωρίς σωστό/λάθος.', strat:'Αυτο-αποτίμηση του παιδιού + ένδειξη για τη συνιστώσα Satisfaction.', casel:'—', bridge:'«Πώς μου φάνηκε το σημερινό ταξίδι;»'},
     {how:'Απόκτηση συμβόλου — ορατή ανταμοιβή στην ασπίδα (3ο σύμβολο).', strat:'Ικανοποίηση μέσω ορατής προόδου (η ασπίδα γεμίζει).', casel:'Κοινωνική επίγνωση', bridge:'«Κέρδισα τη δύναμη του Ελαφιού.»'}
   ];
+  const MACRO={time:"~90′ συνολικά: 20′ ιστορία · 55′ δραστηριότητες (20′ Τι νιώθει ο άλλος + 15′ Ιστορίες των Άλλων + 20′ Παπούτσια του Άλλου) · 15′ αναστοχασμός & σύμβολο.", mat:"Διαδραστικός πίνακας, tablets, ανοιχτός χώρος για το παιχνίδι ρόλων, οι φάκελοι-ασπίδες. Ρόλος: συντονιστής/τρια — δεν επιβάλλετε «σωστή» ερμηνεία. Είσοδος: «ως τώρα κοιτάξαμε μέσα μας — σήμερα κοιτάμε και τους άλλους» · Έξοδος: σύμβολο Ελαφιού στην 3η θέση."};
   const pedpanel=document.getElementById('pedpanel'), pedbtn=document.getElementById('pedbtn');
   function renderPed(){
     const ph=screens[idx].dataset.phase||'';
@@ -423,12 +448,14 @@
         <span class="k">Στρατηγική</span><span class="v">${p.strat}</span>
         <span class="k">Δεξιότητα CASEL</span><span class="v">${p.casel}</span>
         <span class="k">Γέφυρα</span><span class="v">${p.bridge}</span>
+        <span class="k">Χρόνος (macro)</span><span class="v">${MACRO.time}</span>
+        <span class="k">Υλικά & διάταξη</span><span class="v">${MACRO.mat}</span>
       </div>`;
   }
   pedbtn.onclick=()=>{ const on=document.body.classList.toggle('pedon'); pedbtn.classList.toggle('on',on); pedbtn.setAttribute('aria-pressed',on); if(on) renderPed(); };
 
   const segs=[...document.querySelectorAll('.seg')];
-  const SEG_RANGES=[[1,4],[5,7],[8,9]];
+  const SEG_RANGES=[[1,4],[5,7],[8,10]];
   segs.forEach(s=>s.addEventListener('click',()=>show(parseInt(s.dataset.start))));
   function updateSegs(){ segs.forEach((s,i)=>{ const r=SEG_RANGES[i]; s.classList.toggle('on', idx>=r[0] && idx<=r[1]); }); }
 
@@ -547,6 +574,7 @@
   buildDeck({data:DECK1, img:'d1img', q:'d1q', opts:'d1opts', fb:'d1fb', dots:'d1dots', done:'Τέλεια! Διαβάζεις τα συναισθήματα — και ξέρεις πώς να βοηθάς. 🌟'});
   buildDeck({data:DECK2, img:'d2img', q:'d2q', opts:'d2opts', fb:'d2fb', dots:'d2dots', done:'Μπράβο! Αναγνώρισες το συναίσθημα σε όλες τις ιστορίες. 🤝'});
 
+  document.querySelectorAll('.satrow').forEach(r=>r.querySelectorAll('.satf').forEach(b=>b.addEventListener('click',()=>{ r.querySelectorAll('.satf').forEach(x=>x.classList.remove('sel')); b.classList.add('sel'); pop(600); })));
   show(0);
 </script>
 <script>
