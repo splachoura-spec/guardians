@@ -1394,5 +1394,155 @@ renderMap();
     if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', schedule); } else { schedule(); }
   })();
   </script>
-  </body>
+  
+<!-- ==== UI MODERN PASS 2026-09 ==== -->
+<style>
+/* ==== UI MODERN PASS 2026-09 ==== */
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
+body{font-weight:500}
+.intro,.sub,.sub2,.q,.claim,.exp,.rc .inner,.gmsg,.nexthint,.ump-lead,.ump-tq,.modelnote{font-weight:600}
+.rc .inner,.rc .inner p,.rc .inner li{max-width:74ch}
+.rc .inner{line-height:1.62}
+@media(min-width:1120px){.map{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+@media(min-width:720px) and (max-width:1119px){.map{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+.map{align-items:stretch!important}
+.map>.st{height:100%;display:flex!important;flex-direction:column;gap:0;align-items:stretch}
+.map .st>.n{align-self:flex-start!important}
+.map .st>.done{align-self:flex-end}
+.map .st>.t{opacity:.5;font-weight:800}
+.map .st .tags{display:none!important}
+.map .st .ump-lead{font-weight:600;font-size:.95rem;line-height:1.45;opacity:.82;margin:.5rem 0 .1rem}
+.map .st .ump-foot{margin-top:auto;padding-top:.85rem;display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;border-top:1.5px dashed rgba(58,42,34,.14)}
+.map .st .ump-state{display:inline-flex;align-items:center;gap:.38rem;font-weight:900;font-size:.8rem;padding:.3rem .68rem;border-radius:999px;background:rgba(58,42,34,.07);color:rgba(58,42,34,.62)}
+.map .st .ump-state.is-done{background:rgba(45,122,79,.14);color:#2c7a4b}
+.map .st .ump-state.is-doing{background:rgba(255,106,61,.16);color:#c2431c}
+.map .st .ump-count{font-weight:800;font-size:.8rem;opacity:.55;margin-left:auto}
+.map .st .ump-bar{flex:0 0 100%;height:6px;border-radius:99px;background:rgba(58,42,34,.1);overflow:hidden}
+.map .st .ump-bar>i{display:block;height:100%;border-radius:99px;background:currentColor;transition:width .4s ease}
+.ready .rlist{display:none!important}
+.ready .sub2{margin-bottom:.9rem}
+.tileGrid>.tile{aspect-ratio:auto!important;min-height:250px}
+.tile .tile-front{align-items:flex-start!important;justify-content:flex-start!important;text-align:left!important;gap:.1rem;padding:20px 20px 18px!important}
+.tile .tf-badge{margin:0 0 .55rem!important}
+.tile .tf-label{text-align:left!important;font-size:1.14rem!important;line-height:1.25}
+.tile .tf-hint{display:none!important}
+.tile .ump-tq{font-weight:600;font-size:.92rem;line-height:1.42;opacity:.72;margin-top:.4rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tile .ump-tfoot{margin-top:auto;padding-top:.9rem;display:flex;align-items:center;gap:.5rem;width:100%}
+.tile .ump-type{font-weight:900;font-size:.72rem;letter-spacing:.03em;text-transform:uppercase;padding:.26rem .6rem;border-radius:999px;background:rgba(58,42,34,.07);color:rgba(58,42,34,.6)}
+.tile .ump-go{margin-left:auto;font-weight:900;font-size:1.05rem;opacity:.35;transition:transform .18s ease,opacity .18s ease}
+.tile:hover .ump-go{opacity:.9;transform:translateX(3px)}
+.tile.expanded .ump-tq,.tile.expanded .ump-tfoot{display:none!important}
+#ump-backdrop{position:fixed;inset:0;z-index:55;background:rgba(38,26,20,.5);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .28s ease}
+body.ump-modal #ump-backdrop{opacity:1;pointer-events:auto}
+body.ump-modal .tile.expanded{z-index:60!important}
+body.ump-modal .fab,body.ump-modal .chatwin{display:none!important}
+.tile .tile-close-down{display:none!important}
+.tile.expanded .tile-back{position:relative}
+.tile.expanded .tile-back-body{padding-bottom:88px!important}
+.ump-mfoot{position:absolute;left:0;right:0;bottom:0;z-index:3;display:flex;align-items:center;gap:.8rem;padding:.8rem 1.1rem;border-top:1.5px solid rgba(58,42,34,.1);background:rgba(255,255,255,.94)}
+.tile:not(.expanded) .ump-mfoot{display:none}
+.ump-mfoot .ump-mprog{font-weight:800;font-size:.86rem;opacity:.6}
+.ump-mfoot .ump-mbtn{font:inherit;font-weight:900;cursor:pointer;border-radius:999px;padding:.55rem 1.1rem;border:2px solid rgba(58,42,34,.16);background:#fff;color:inherit;transition:transform .15s ease,box-shadow .15s ease}
+.ump-mfoot .ump-mbtn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(58,42,34,.12)}
+.ump-mfoot .ump-mnext{margin-left:auto;border-color:transparent;color:#fff;background:var(--bkc,var(--forest,#2d7a4f))}
+.mtcard .mtbtns{display:flex!important;gap:.6rem;flex-wrap:wrap}
+.mtcard .mtbtns>.mtb{flex:0 1 auto!important;min-width:150px;max-width:240px;padding-left:1rem!important;padding-right:1rem!important}
+@media(max-width:560px){.mtcard .mtbtns>.mtb{flex:1 1 100%!important;max-width:none}}
+:focus{outline:none}
+:focus-visible{outline:3px solid var(--bkc,var(--forest,#2d7a4f));outline-offset:3px;border-radius:10px}
+</style>
+<script>
+(function(){
+ if(window.__UMP__) return; window.__UMP__=1;
+ var LEADS=['Πριν διαβάσετε τι είναι η ανθεκτικότητα — δοκιμάστε τι πιστεύετε ήδη.','Ένα παιδί σας λέει κάτι πριν μπείτε στη θεωρία. Τι απαντάτε;','Πόσο σίγουρος/η είστε για ένα λεπτό σημείο τεκμηρίωσης; Εκτιμήστε πρώτα.','Δύο γρήγορες προκλήσεις για την ενσυναίσθηση — και μετά η θεωρία.','Το «μεγάλο» μήνυμα αυτής της ενότητας κρύβεται πίσω από μια πρόκληση.','Μπείτε στη θέση ενός παιδιού που πρέπει να αποφασίσει — βήμα-βήμα.','Δεν είναι δραστηριότητα. Είναι η στιγμή που ο τρόπος σας προστατεύει ένα παιδί — ή το επιβαρύνει.','Το AI είναι εργαλείο δικό σας — όχι των παιδιών. Δοκιμάστε γιατί.','Τελευταίος σταθμός: πώς τρέχει κάθε ενότητα και τι (δεν) αξιολογούμε.'];
+ var PKEY='ump.blockprog.v1';
+ function readProg(){try{return JSON.parse(localStorage.getItem(PKEY)||'{}')}catch(e){return {}}}
+ function writeProg(p){try{localStorage.setItem(PKEY,JSON.stringify(p))}catch(e){}}
+ function isDone(t){var d=t.querySelector('.tf-done');return !!d&&getComputedStyle(d).display!=='none';}
+ function typeChips(){return [].map.call(document.querySelectorAll('.map .st'),function(st){return [].map.call(st.querySelectorAll('.tg'),function(t){return t.textContent.trim()})})}
+ function enhanceMap(){
+  var chips=typeChips(),prog=readProg();
+  [].forEach.call(document.querySelectorAll('.map .st'),function(st,i){
+   var o1=st.querySelector('.ump-foot'); if(o1)o1.remove();
+   var o2=st.querySelector('.ump-lead'); if(o2)o2.remove();
+   var total=(chips[i]||[]).length,done=st.classList.contains('done');
+   var partial=Math.max(0,Math.min(total,prog[i]||0)); if(done)partial=total;
+   if(LEADS[i]){var lead=document.createElement('div');lead.className='ump-lead';lead.textContent=LEADS[i];var t=st.querySelector('.t');if(t)t.insertAdjacentElement('beforebegin',lead);else st.appendChild(lead);}
+   var foot=document.createElement('div');foot.className='ump-foot';
+   var stt=document.createElement('span');stt.className='ump-state'+(done?' is-done':(partial>0?' is-doing':''));
+   stt.textContent=done?'✓ Ολοκληρώθηκε':(partial>0?'● Σε εξέλιξη':'○ Δεν ξεκίνησε');
+   var cnt=document.createElement('span');cnt.className='ump-count';
+   cnt.textContent=total?((partial>0&&!done)?partial+'/'+total+' προκλήσεις':total+' προκλήσεις'):'';
+   var bar=document.createElement('span');bar.className='ump-bar';var fill=document.createElement('i');
+   fill.style.width=(total?Math.round(partial/total*100):0)+'%';bar.appendChild(fill);
+   foot.appendChild(stt);foot.appendChild(cnt);foot.appendChild(bar);
+   foot.style.color=done?'#2c7a4b':'#ff6a3d';
+   st.appendChild(foot);
+  });
+ }
+ function cacheProgress(idx){var tiles=document.querySelectorAll('.tileGrid .tile');if(!tiles.length)return;var n=0;[].forEach.call(tiles,function(t){if(isDone(t))n++});var p=readProg();if(p[idx]!==n){p[idx]=n;writeProg(p)}}
+ function enhanceTiles(idx){
+  var chips=typeChips()[idx]||[];
+  [].forEach.call(document.querySelectorAll('.tileGrid .tile'),function(tile,j){
+   tile.classList.toggle('is-done',isDone(tile));
+   if(!tile.hasAttribute('tabindex'))tile.setAttribute('tabindex','0');
+   if(!tile.querySelector('.ump-tq')){
+    var q=tile.querySelector('.tile-back .blk .q');var txt=q?q.textContent.trim():'';
+    if(txt){var p=document.createElement('div');p.className='ump-tq';p.textContent=txt;var lab=tile.querySelector('.tf-label');if(lab)lab.insertAdjacentElement('afterend',p);}
+   }
+   var foot=tile.querySelector('.ump-tfoot');
+   if(!foot){foot=document.createElement('div');foot.className='ump-tfoot';
+    var ty=document.createElement('span');ty.className='ump-type';ty.textContent=chips[j]||'Πρόκληση';
+    var go=document.createElement('span');go.className='ump-go';go.textContent='→';
+    foot.appendChild(ty);foot.appendChild(go);
+    var front=tile.querySelector('.tile-front');if(front)front.appendChild(foot);
+   }else{var t2=foot.querySelector('.ump-type');if(t2)t2.textContent=chips[j]||'Πρόκληση';}
+  });
+  cacheProgress(idx);
+ }
+ var backdrop=document.createElement('div');backdrop.id='ump-backdrop';document.body.appendChild(backdrop);
+ function tileList(){return [].slice.call(document.querySelectorAll('.tileGrid .tile'))}
+ function buildFoot(tile){
+  var back=tile.querySelector('.tile-back');if(!back)return;
+  var old=back.querySelector('.ump-mfoot');if(old)old.remove();
+  var all=tileList(),i=all.indexOf(tile),next=all[i+1];
+  var foot=document.createElement('div');foot.className='ump-mfoot';
+  var close=document.createElement('button');close.type='button';close.className='ump-mbtn';close.textContent='Κλείσιμο';
+  close.addEventListener('click',function(){closeTile(tile)});
+  var prog=document.createElement('span');prog.className='ump-mprog';prog.textContent='Πρόκληση '+(i+1)+' από '+all.length;
+  var nx=document.createElement('button');nx.type='button';nx.className='ump-mbtn ump-mnext';
+  nx.textContent=next?'Επόμενη πρόκληση →':'Τέλος — πίσω στον σταθμό';
+  nx.addEventListener('click',function(){closeTile(tile);if(!next)return;
+   setTimeout(function(){openTile(next);setTimeout(function(){if(!next.classList.contains('expanded'))openTile(next)},260)},900)});
+  foot.appendChild(close);foot.appendChild(prog);foot.appendChild(nx);back.appendChild(foot);
+ }
+ function flush(tile){if(!tile)return;var inner=tile.querySelector('.tile-inner');
+  ['transform','width','height','opacity'].forEach(function(p){try{
+   tile.dispatchEvent(new TransitionEvent('transitionend',{bubbles:true,propertyName:p}));
+   if(inner)inner.dispatchEvent(new TransitionEvent('transitionend',{bubbles:true,propertyName:p}));}catch(e){}})}
+ function settleClosed(tile){if(!tile)return;clearTimeout(tile.__umpT);setTimeout(function(){flush(tile)},700);
+  tile.__umpT=setTimeout(function(){tile.classList.remove('flipped','expanded','animating');
+   tile.style.transform='';tile.style.height='';tile.style.width='';tile.style.top='';tile.style.left='';tile.style.transition='';
+   var f=tile.querySelector('.ump-mfoot');if(f)f.remove();},820)}
+ function settleOpen(tile){if(!tile)return;clearTimeout(tile.__umpO);setTimeout(function(){flush(tile)},700);
+  tile.__umpO=setTimeout(function(){tile.classList.remove('animating')},820)}
+ var _open=window.openTile,_close=window.closeTile;
+ window.openTile=function(tile){var r=_open.apply(this,arguments);try{buildFoot(tile);document.body.classList.add('ump-modal');settleOpen(tile)}catch(e){}return r};
+ window.closeTile=function(tile){var r=_close.apply(this,arguments);document.body.classList.remove('ump-modal');settleClosed(tile);
+  setTimeout(function(){var idx=window.__umpStation;if(idx!=null)enhanceTiles(idx)},900);return r};
+ backdrop.addEventListener('click',function(){var t=document.querySelector('.tile.expanded');if(t)closeTile(t)});
+ document.addEventListener('keydown',function(e){if(e.key==='Escape'){var t=document.querySelector('.tile.expanded');if(t){e.preventDefault();closeTile(t)}}});
+ document.addEventListener('keydown',function(e){if(e.key!=='Enter'&&e.key!==' ')return;var t=document.activeElement;
+  if(t&&t.classList&&t.classList.contains('tile')&&!t.classList.contains('expanded')){e.preventDefault();openTile(t)}});
+ var _os=window.openStation;window.openStation=function(i){var r=_os.apply(this,arguments);window.__umpStation=i;try{enhanceTiles(i)}catch(e){}return r};
+ var _gm=window.goMap;window.goMap=function(){var r=_gm.apply(this,arguments);document.body.classList.remove('ump-modal');try{enhanceMap()}catch(e){}return r};
+ var _rm=window.renderMap;if(_rm)window.renderMap=function(){var r=_rm.apply(this,arguments);try{enhanceMap()}catch(e){}return r};
+ var _ms=window.markSolved;if(_ms)window.markSolved=function(){var r=_ms.apply(this,arguments);setTimeout(function(){var idx=window.__umpStation;
+   if(idx!=null){[].forEach.call(document.querySelectorAll('.tileGrid .tile'),function(t){t.classList.toggle('is-done',isDone(t))});cacheProgress(idx)}},60);return r};
+ function boot(){try{enhanceMap()}catch(e){}}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
+})();
+</script>
+<!-- ==== /UI MODERN PASS 2026-09 ==== -->
+</body>
 </html>
