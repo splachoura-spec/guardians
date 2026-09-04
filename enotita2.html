@@ -400,13 +400,13 @@
 
   <section class="screen" data-phase="S">
     <div class="inner">
-      <img class="sym" src="σύμβολο_αρκούδα.png" alt="Σύμβολο Αρκούδας">
+      <img class="sym" src="symbol_bear.webp" alt="Σύμβολο Αρκούδας">
       <h1 class="big" style="color:var(--forest)">Μπράβο!</h1>
       <p class="lead">Κέρδισες το <b>σύμβολο της Αρκούδας</b> για την ασπίδα σου.</p>
       <div class="shieldrow">
-        <div class="slot filled"><img src="σύμβολο_κουκουβάγια.png" alt="Κουκουβάγια"></div>
-        <div class="slot filled"><img src="σύμβολο_αρκούδα.png" alt="Αρκούδα"></div>
-        <div class="slot"><img src="σύμβολο_ελάφι.png" alt="Ελάφι"></div><div class="slot"><img src="σύμβολο_λαγός.png" alt="Λαγός"></div><div class="slot"><img src="σύμβολο_χελώνα.png" alt="Χελώνα"></div>
+        <div class="slot filled"><img src="symbol_owl.webp" alt="Κουκουβάγια"></div>
+        <div class="slot filled"><img src="symbol_bear.webp" alt="Αρκούδα"></div>
+        <div class="slot"><img src="symbol_deer.webp" alt="Ελάφι"></div><div class="slot"><img src="symbol_hare.webp" alt="Λαγός"></div><div class="slot"><img src="symbol_turtle.webp" alt="Χελώνα"></div>
       </div>
     </div>
   </section>
@@ -735,5 +735,188 @@
   setTimeout(fit, 900); setTimeout(fit, 2200);
 })();
 </script>
+<!-- ==== UI MODERN PASS · ΜΑΘΗΤΕΣ 2026-09 (Cowork) ==== -->
+<style>
+/* ═══ 0. ΑΤΜΟΣΦΑΙΡΑ: κάθε Φύλακας = δικό του δωμάτιο ═══ */
+.stage{
+  background:
+    radial-gradient(120% 78% at 50% -14%, color-mix(in srgb, var(--c) 19%, transparent) 0%, transparent 68%),
+    radial-gradient(80% 55% at 92% 104%, color-mix(in srgb, var(--c) 11%, transparent) 0%, transparent 62%),
+    linear-gradient(180deg, color-mix(in srgb, var(--c) 6%, var(--cream)) 0%, var(--cream) 58%);
+}
+.topbar, .segbar{border-bottom-color:color-mix(in srgb, var(--c) 16%, var(--cream-2))}
+.navbar{
+  background:linear-gradient(to top, var(--cream) 46%, color-mix(in srgb, var(--cream) 72%, transparent) 100%);
+  border-top:0;
+  backdrop-filter:blur(8px);
+}
+
+/* ═══ 1. ΚΛΙΜΑΚΑ: το περιεχόμενο να γεμίζει την οθόνη ═══ */
+@media (min-width:900px) and (min-height:790px){
+  html{font-size:clamp(16px, 2.32vh, 26px)}
+  .inner{max-width:min(1460px,93vw)!important; gap:clamp(14px,1.8vh,28px)!important}
+  .screen .inner:has(> .text-col){width:min(1480px,94vw)!important; max-width:94vw!important; gap:clamp(40px,3.4vw,80px)!important}
+  .screen .inner:has(> .text-col) > .owlwrap{
+    flex:0 0 clamp(340px,56vh,660px)!important;
+    height:clamp(340px,56vh,660px)!important;
+    min-height:0!important;
+  }
+  .scene{max-height:min(70vh,860px)!important; max-width:min(48vw,860px)!important}
+  .owl{max-height:min(64vh,600px)!important}
+  .facebox, .facebox img, .deck .facebox, .deck .facebox img{max-height:min(46vh,460px)!important}
+  .scenecard{max-width:38ch}
+  .inner.autosplit{width:min(1620px,95vw)!important}
+  .inner.autosplit > .autocol{max-width:49%!important}
+  .inner.autosplit .scene{max-height:min(66vh,840px)!important; max-width:100%!important}
+  .screen .inner > .text-col .story{max-width:24ch!important}
+  .screen .inner > .text-col{gap:clamp(10px,1.4vh,20px)!important}
+  .screen .inner > .text-col .lead{max-width:30ch!important}
+}
+@media (min-width:1500px) and (min-height:860px){
+  html{font-size:clamp(18px, 2.58vh, 30px)}
+  .inner{max-width:min(1640px,92vw)!important}
+  .screen .inner:has(> .text-col){width:min(1700px,93vw)!important; max-width:93vw!important}
+  .screen .inner:has(> .text-col) > .owlwrap{
+    flex:0 0 clamp(460px,64vh,860px)!important;
+    height:clamp(460px,64vh,860px)!important;
+    min-height:0!important;
+  }
+  .scene{max-height:min(72vh,980px)!important; max-width:min(46vw,980px)!important}
+  .owl{max-height:min(66vh,700px)!important}
+}
+
+/* ═══ 2. ΕΙΚΟΝΕΣ ΧΩΡΙΣ ΚΟΥΤΙ ═══ */
+/* οι εικόνες έγιναν διαφανείς· η σκιά πρέπει να ακολουθεί το σχήμα, όχι το ορθογώνιο */
+.scene, .facebox img, .deck .facebox img, .sym{
+  box-shadow:none!important;
+  background:transparent!important;
+  filter:drop-shadow(0 26px 34px rgba(58,42,34,.26)) drop-shadow(0 6px 10px rgba(58,42,34,.16));
+}
+.scene{border-radius:clamp(20px,2.2vw,36px)!important}
+.facebox{background:transparent!important; border:0!important; box-shadow:none!important; padding:0!important}
+.owl{filter:drop-shadow(0 30px 44px rgba(58,42,34,.24))}
+/* «προβολέας» πίσω από τον χαρακτήρα — δίνει βάθος και παιχνιδιάρικο τόνο */
+.owlwrap:has(> .owl)::before{
+  content:""; position:absolute; inset:auto 0 6% 0; margin:auto;
+  width:82%; aspect-ratio:1/1; left:9%; bottom:2%;
+  border-radius:50%; z-index:0; pointer-events:none;
+  background:radial-gradient(circle, color-mix(in srgb, var(--c) 30%, transparent) 0%, transparent 68%);
+}
+.owlwrap > .owl, .owlwrap > .scene{position:relative; z-index:1}
+
+/* ═══ 3. «ΑΦΙΣΑ»: οι οθόνες με μόνο κείμενο γίνονται τυπογραφική στιγμή ═══ */
+.screen.poster{
+  background:
+    radial-gradient(115% 88% at 50% 8%, color-mix(in srgb, var(--c) 15%, transparent) 0%, transparent 68%);
+}
+.screen.poster .inner{width:min(1400px,90vw)!important; max-width:90vw!important; gap:clamp(18px,2.6vh,38px)!important}
+.screen.poster .qbig,
+.screen.poster h2,
+.screen.poster h1.big{
+  font-size:clamp(2.4rem, 5.0vw, 5.6rem)!important;
+  line-height:1.08!important; max-width:19ch; letter-spacing:-.015em;
+  text-wrap:balance;
+}
+.screen.poster .scenehint{font-size:clamp(1.5rem,2.7vw,2.9rem)!important; max-width:30ch}
+.screen.poster .lead, .screen.poster .story{font-size:clamp(1.2rem,1.9vw,2.2rem)!important; max-width:32ch!important}
+.screen.poster .phase-tag{font-size:clamp(.78rem,1vw,1.2rem)!important; padding:.55em 1.4em!important; letter-spacing:.12em}
+/* διακοσμητικό εισαγωγικό πίσω από την ερώτηση */
+.screen.poster .inner::before{
+  content:"“"; position:absolute; z-index:0; pointer-events:none;
+  font-family:"Nunito",system-ui,sans-serif; font-weight:1000;
+  font-size:min(52vh,44vw); line-height:.62; top:.02em; left:50%; transform:translateX(-50%);
+  color:color-mix(in srgb, var(--c) 7%, transparent);
+}
+.screen.poster .inner{position:relative}
+.screen.poster .inner > *{position:relative; z-index:1}
+
+/* ═══ 3β. WIDGETS ΔΡΑΣΤΗΡΙΟΤΗΤΩΝ: να πιάνουν την οθόνη ═══ */
+@media (min-width:900px) and (min-height:790px){
+  .breathring{width:min(40vh,360px)!important; height:min(40vh,360px)!important}
+  .breathcore{font-size:clamp(2.6rem,4.6vh,4.4rem)!important}
+  .breathlabel{font-size:clamp(1.4rem,2.4vh,2.4rem)!important}
+  .scenecard,.situ{font-size:clamp(1.05rem,1.2vw,1.5rem)!important; max-width:40ch!important;
+    padding:.85em 1.25em!important; border-radius:clamp(18px,1.6vw,26px)!important; border-width:2px!important}
+  .nfr{height:clamp(14px,1.7vh,24px)!important}
+  .fmchip{font-size:clamp(.95rem,1.05vw,1.3rem)!important; padding:.5em 1.15em!important}
+  .thermo{width:min(560px,100%)!important}
+  .branch{width:min(760px,94%)!important}
+}
+
+/* ═══ 4. ΧΕΙΡΙΣΤΗΡΙΑ: μεγαλύτερα, πιο απτά, με σωστή κατάσταση ═══ */
+.opt,.lvl,.tool,.match-opt,.deckopt{
+  border-radius:999px!important;
+  border-width:2px!important;
+  border-color:color-mix(in srgb, var(--c) 26%, var(--cream-2))!important;
+  min-height:clamp(48px,5.4vh,64px)!important;
+  padding:.62em 1.5em!important;
+  font-size:clamp(1rem,1.15vw,1.35rem)!important;
+  box-shadow:0 10px 22px -16px rgba(58,42,34,.55);
+  transition:transform .14s ease, box-shadow .14s ease, background .14s ease, border-color .14s ease;
+}
+.lvl{border-radius:20px!important}
+.opt:hover,.lvl:hover,.tool:hover,.match-opt:hover{
+  transform:translateY(-3px);
+  border-color:var(--c)!important;
+  box-shadow:0 18px 30px -18px color-mix(in srgb, var(--c) 70%, transparent);
+}
+.opt.sel,.lvl.sel,.tool.sel,.opt.ok,.tool.on,.match-opt.sel{
+  background:var(--c-deep)!important; color:#fff!important; border-color:var(--c-deep)!important;
+}
+.satrow{border-radius:18px!important; border-width:2px!important; padding:.55em 1em!important}
+.satf{font-size:clamp(1.5rem,1.9vw,2.2rem)!important; padding:.28em .42em!important; border-radius:14px!important}
+.satf.sel{background:color-mix(in srgb, var(--c) 18%, #fff)!important}
+.strat{font-size:clamp(.72rem,.82vw,.95rem)!important; padding:.5em 1.1em!important}
+
+/* ═══ 5. ΚΟΥΜΠΙΑ: contrast AA + σύγχρονο βάρος ═══ */
+.btn{padding:.7em 1.7em!important; font-size:clamp(1rem,1.1vw,1.3rem)!important}
+.btn-next{
+  background:var(--c-deep)!important;
+  box-shadow:0 16px 30px -14px color-mix(in srgb, var(--c-deep) 85%, transparent)!important;
+}
+.btn-next:hover{transform:translateY(-2px)}
+.btn-prev{background:color-mix(in srgb, var(--c) 12%, #fff)!important; color:var(--c-deep)!important}
+.phase-tag{background:var(--c-deep)!important}
+.skill{color:var(--c-deep)!important}
+.dots i{width:10px!important; height:10px!important}
+.dots i.on{transform:scale(1.5)!important}
+
+/* ═══ 6. ΤΟ ΕΠΑΘΛΟ: η ασπίδα γίνεται ο ήρωας της οθόνης ═══ */
+.sym{max-height:min(50vh,420px)!important; mix-blend-mode:multiply}
+.shieldrow .slot img{mix-blend-mode:multiply}
+.shieldrow{gap:clamp(10px,1.4vw,22px)!important; margin-top:clamp(6px,1.4vh,18px)!important}
+.shieldrow .slot{
+  width:clamp(54px,7.2vh,88px)!important; height:clamp(54px,7.2vh,88px)!important;
+  border-width:3px!important;
+}
+.shieldrow .slot.filled{
+  border-style:solid!important; border-color:var(--c)!important;
+  box-shadow:0 0 0 6px color-mix(in srgb, var(--c) 20%, transparent), 0 16px 30px -16px rgba(58,42,34,.5);
+}
+.shieldrow .slot img{width:100%; height:100%; object-fit:contain}
+
+/* ═══ 7. ΤΥΠΟΓΡΑΦΙΑ: ιεραρχία αντί για «όλα βαριά» ═══ */
+.lead{font-weight:600!important; line-height:1.45!important; color:#5A463C}
+.story{line-height:1.28!important; letter-spacing:-.008em}
+.big{letter-spacing:-.02em; text-wrap:balance}
+.qbig{text-wrap:balance}
+
+@media (prefers-reduced-motion: reduce){
+  .opt,.lvl,.tool,.btn-next,.match-opt{transition:none!important; transform:none!important}
+}
+</style>
+<script>
+(function(){
+  var BUSY='.opt,.lvl,.tool,.satf,.deck,.breathring,.breath,.nest,.nfr,.fmchip,.fmap,.branch,.situ,.opts,.satrow,.chip,.match-opt,.step,.thermo,table,input,textarea,select';
+  document.querySelectorAll('.screen').forEach(function(s){
+    var inner=s.querySelector('.inner'); if(!inner) return;
+    if(inner.querySelector('img,svg,canvas,picture,video')) return;
+    if(inner.querySelector(BUSY)) return;
+    s.classList.add('poster');
+  });
+})();
+</script>
+<!-- ==== end UI MODERN PASS · ΜΑΘΗΤΕΣ 2026-09 ==== -->
+
 </body>
 </html>
