@@ -496,9 +496,20 @@ footer{ padding:30px 0 }
   /* ---------- Ο ΧΑΡΤΗΣ: πιο απτός ---------- */
   .map{border-color:color-mix(in srgb, var(--forest-1) 24%, #CDE9D3)!important}
   .node{
-    width:clamp(112px,15vw,190px)!important;
     border-radius:22px; padding:10px 6px 8px!important;
     transition:transform .16s ease, background .16s ease;
+  }
+  /* οι έξι φύλακες πάντα σε ΜΙΑ σειρά — αλλιώς σπάει το μονοπάτι */
+  @media (min-width:780px){
+    .trail{display:grid!important; grid-template-columns:repeat(6,1fr)!important;
+      align-items:start; flex-wrap:nowrap!important}
+    .node{width:100%!important; min-width:0}
+    .node img{max-width:min(100%,168px); height:auto}
+  }
+  @media (max-width:779px){
+    .trail{display:grid!important; grid-template-columns:repeat(3,1fr)!important}
+    .trail::before{display:none}
+    .node{width:100%!important; min-width:0}
   }
   .node img{filter:drop-shadow(0 16px 22px rgba(58,42,34,.26)); transition:transform .16s ease}
   .node:hover{background:rgba(255,255,255,.55)}
