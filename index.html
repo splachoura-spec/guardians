@@ -539,5 +539,26 @@ footer{ padding:30px 0 }
 </style>
 <!-- ==== end UI MODERN PASS · ΧΑΡΤΗΣ 2026-09 ==== -->
 
+<!-- ==== ΔΙΟΡΘΩΣΗ ΣΥΝΝΕΦΑΚΙΟΥ 2026-09 ==== -->
+<style>
+  /* Το συννεφάκι κάθε κάρτας δεν πρέπει να ξεφεύγει από το πλαίσιο του χάρτη
+     (.map έχει overflow:hidden — η πρώτη/τελευταία κάρτα κοβόταν). */
+  .trail .bubble{
+    white-space:normal; width:max-content; max-width:calc(100% + 76px);
+    text-align:center; line-height:1.24;
+  }
+  .trail .node:first-child .bubble{
+    left:0; right:auto; transform:translateX(0) scale(.6); transform-origin:bottom left;
+  }
+  .trail .node:first-child.say .bubble{transform:translateX(0) scale(1)}
+  .trail .node:first-child .bubble::after{left:min(50%,58px); transform:translateX(-50%)}
+  .trail .node:last-child .bubble{
+    left:auto; right:0; transform:translateX(0) scale(.6); transform-origin:bottom right;
+  }
+  .trail .node:last-child.say .bubble{transform:translateX(0) scale(1)}
+  .trail .node:last-child .bubble::after{left:auto; right:min(50%,58px); transform:translateX(50%)}
+</style>
+<!-- ==== end ΔΙΟΡΘΩΣΗ ΣΥΝΝΕΦΑΚΙΟΥ 2026-09 ==== -->
+
 </body>
 </html>
