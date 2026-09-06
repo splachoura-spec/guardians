@@ -539,26 +539,102 @@ footer{ padding:30px 0 }
 </style>
 <!-- ==== end UI MODERN PASS · ΧΑΡΤΗΣ 2026-09 ==== -->
 
-<!-- ==== ΔΙΟΡΘΩΣΗ ΣΥΝΝΕΦΑΚΙΟΥ 2026-09 ==== -->
+<!-- ==== ΠΡΟΟΔΟΣ ΣΤΟΝ ΧΑΡΤΗ 2026-09 (Cowork) ==== -->
 <style>
-  /* Το συννεφάκι κάθε κάρτας δεν πρέπει να ξεφεύγει από το πλαίσιο του χάρτη
-     (.map έχει overflow:hidden — η πρώτη/τελευταία κάρτα κοβόταν). */
-  .trail .bubble{
-    white-space:normal; width:max-content; max-width:calc(100% + 76px);
-    text-align:center; line-height:1.24;
+  .node{position:relative}
+  .node .check{
+    position:absolute; top:2px; right:14px; z-index:3;
+    width:clamp(24px,2vw,32px); height:clamp(24px,2vw,32px); border-radius:50%;
+    background:var(--forest-1); color:#fff; display:grid; place-items:center;
+    font-size:clamp(.8rem,1vw,1rem); font-weight:900;
+    box-shadow:0 8px 16px -8px rgba(58,42,34,.6); border:2.5px solid #fff;
   }
-  .trail .node:first-child .bubble{
-    left:0; right:auto; transform:translateX(0) scale(.6); transform-origin:bottom left;
+  .node.done .name{color:var(--forest-2)}
+  .node.done img{filter:drop-shadow(0 16px 22px rgba(46,125,91,.34))}
+
+  .progbar{
+    display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap;
+    margin:14px auto 0; padding:10px 18px; border-radius:999px;
+    background:rgba(255,255,255,.72); border:2px solid color-mix(in srgb, var(--forest-1) 20%, #fff);
+    font-weight:900; font-size:clamp(.9rem,1.05vw,1.1rem); color:var(--forest-2);
+    width:fit-content; max-width:94%;
   }
-  .trail .node:first-child.say .bubble{transform:translateX(0) scale(1)}
-  .trail .node:first-child .bubble::after{left:min(50%,58px); transform:translateX(-50%)}
-  .trail .node:last-child .bubble{
-    left:auto; right:0; transform:translateX(0) scale(.6); transform-origin:bottom right;
+  .progbar .crest{display:flex; gap:6px}
+  .progbar .crest i{
+    width:clamp(20px,1.7vw,26px); height:clamp(20px,1.7vw,26px); border-radius:50%;
+    background:#EDE0CC; display:inline-block; transition:.3s;
   }
-  .trail .node:last-child.say .bubble{transform:translateX(0) scale(1)}
-  .trail .node:last-child .bubble::after{left:auto; right:min(50%,58px); transform:translateX(50%)}
+  .progbar .crest i.on{background:var(--forest-1); box-shadow:0 0 0 3px color-mix(in srgb, var(--forest-1) 22%, transparent)}
+  .progbar button{
+    font-family:inherit; font-weight:900; font-size:.85em; cursor:pointer;
+    background:none; border:0; color:var(--ink-soft); text-decoration:underline; padding:2px 4px;
+  }
+  .progbar button:hover{color:var(--forest-2)}
 </style>
-<!-- ==== end ΔΙΟΡΘΩΣΗ ΣΥΝΝΕΦΑΚΙΟΥ 2026-09 ==== -->
+<script>
+(function(){
+  var PKEY='fylakes:progress';
+  var KEYS=['keleisma','owl','bear','deer','hare','turtle'];
+  function pread(){ try{ return JSON.parse(localStorage.getItem(PKEY)||'[]'); }catch(e){ return []; } }
+
+  function paint(){
+    var done=pread();
+    var nodes=[].slice.call(document.querySelectorAll('.node'));
+    nodes.forEach(function(nd,i){
+      var isDone = done.indexOf(KEYS[i])>=0;
+      nd.classList.toggle('done', isDone);
+      var c=nd.querySelector('.check');
+      if(isDone && !c){
+        c=document.createElement('span'); c.className='check'; c.textContent='✓';
+        c.setAttribute('aria-hidden','true'); nd.appendChild(c);
+        nd.setAttribute('aria-label', (nd.getAttribute('aria-label')||'')+' — ολοκληρώθηκε');
+      }
+      if(!isDone && c) c.remove();
+    });
+
+    var earned=KEYS.slice(1).filter(function(k){ return done.indexOf(k)>=0; }).length;
+    var bar=document.getElementById('progbar');
+    if(!bar){
+      var trail=document.getElementById('trail'); if(!trail) return;
+      bar=document.createElement('div'); bar.className='progbar'; bar.id='progbar';
+      trail.parentNode.insertBefore(bar, trail.nextSibling);
+    }
+    bar.innerHTML='';
+    var txt=document.createElement('span');
+    txt.textContent = earned===0
+      ? 'Καμία ενότητα ολοκληρωμένη ακόμη — ξεκίνα από Το Κάλεσμα'
+      : (earned===5 ? '🛡️ Και τα πέντε σύμβολα κερδήθηκαν — η ασπίδα είναι έτοιμη!'
+                    : 'Κερδισμένα σύμβολα: ' + earned + ' από 5');
+    bar.appendChild(txt);
+    var crest=document.createElement('span'); crest.className='crest';
+    KEYS.slice(1).forEach(function(k){
+      var d=document.createElement('i');
+      if(done.indexOf(k)>=0) d.className='on';
+      crest.appendChild(d);
+    });
+    bar.appendChild(crest);
+    if(done.length){
+      var rst=document.createElement('button'); rst.type='button'; rst.textContent='μηδενισμός';
+      rst.title='Καθαρίζει την πρόοδο σε αυτόν τον υπολογιστή';
+      rst.addEventListener('click', function(){
+        try{ localStorage.removeItem(PKEY); }catch(e){}
+        paint();
+      });
+      bar.appendChild(rst);
+    }
+    if(earned===5){
+      var a=document.createElement('a'); a.href='aspida-etoimi.html';
+      a.className='btn btn-primary'; a.style.padding='8px 18px'; a.style.fontSize='.9em';
+      a.textContent='Δες την ασπίδα →'; bar.appendChild(a);
+    }
+  }
+
+  function boot(){ document.querySelectorAll('.node').length ? paint() : setTimeout(boot,120); }
+  boot();
+  window.addEventListener('pageshow', paint);
+})();
+</script>
+<!-- ==== end ΠΡΟΟΔΟΣ ΣΤΟΝ ΧΑΡΤΗ 2026-09 ==== -->
 
 </body>
 </html>

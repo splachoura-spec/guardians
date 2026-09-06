@@ -1004,5 +1004,157 @@
 </script>
 <!-- ==== end UI MODERN PASS · ΜΑΘΗΤΕΣ 2026-09 ==== -->
 
+<!-- ==== ΕΠΕΚΤΑΣΕΙΣ ΜΑΘΗΤΗ 2026-09 (Cowork) ==== -->
+<style>
+  /* ---------- 1. ΕΝΔΕΙΞΗ ΠΡΟΟΔΟΥ «3/11» ---------- */
+  .navcount{font-weight:900; font-size:.82rem; color:var(--ink-soft); margin-left:12px; white-space:nowrap}
+  .dots{align-items:center}
+
+  /* ---------- 2. ΠΡΑΓΜΑΤΙΚΟ ΘΕΡΜΟΜΕΤΡΟ ---------- */
+  .thermowrap{display:flex; align-items:stretch; justify-content:center;
+    gap:clamp(16px,1.6vw,30px); width:auto; max-width:min(760px,94%);
+    margin-inline:auto; align-self:center;
+    min-height:clamp(200px,34vh,340px)}
+  .tubecol{display:flex; flex-direction:column; align-items:center; flex:0 0 auto}
+  .tube{
+    position:relative; flex:1 1 auto;
+    width:clamp(34px,3.2vw,52px);
+    border:3px solid color-mix(in srgb, var(--c) 32%, var(--cream-2));
+    border-radius:999px 999px 0 0; background:#fff; overflow:hidden;
+  }
+  .tube .fill{
+    position:absolute; left:0; right:0; bottom:0; height:0;
+    background:linear-gradient(to top, var(--c-deep), var(--c));
+    transition:height .5s cubic-bezier(.3,1.2,.5,1);
+  }
+  .tube .tick{position:absolute; left:0; width:38%; height:3px; border-radius:3px;
+    background:color-mix(in srgb, var(--c) 34%, transparent)}
+  .tube .seg{position:absolute; left:0; right:0; background:var(--sc,#ccc); opacity:.28; transition:.3s}
+  .tube .seg.on{opacity:1; box-shadow:inset 0 0 0 3px #fff}
+  .thermobulb{
+    width:clamp(52px,5vw,80px); height:clamp(52px,5vw,80px); margin-top:-10px;
+    border-radius:50%; border:3px solid color-mix(in srgb, var(--c) 32%, var(--cream-2));
+    background:var(--c-deep); display:grid; place-items:center;
+    font-size:clamp(1.4rem,1.8vw,2rem); box-shadow:0 14px 26px -16px rgba(58,42,34,.6);
+  }
+  .thermowrap .thermo{display:flex; flex-direction:column; justify-content:space-between;
+    gap:clamp(6px,.9vh,14px); flex:0 1 auto}
+  .thermowrap .thermo.rev{flex-direction:column-reverse}
+  .thermowrap .lvl{margin:0}
+  .lvl.sel{background:var(--c-deep)!important; color:#fff!important; border-color:var(--c-deep)!important}
+
+  /* ---------- 4. Η ΟΘΟΝΗ ΤΗΣ ΚΛΙΜΑΚΑΣ: να μη μοιάζει ίδια παντού ---------- */
+  .screen.satscreen .inner::before{
+    content:""; position:absolute; z-index:0; pointer-events:none;
+    width:min(46vh,40vw); aspect-ratio:1; top:50%; left:50%; transform:translate(-50%,-50%);
+    border-radius:50%;
+    background:radial-gradient(circle, color-mix(in srgb, var(--c) 12%, transparent) 0%, transparent 66%);
+  }
+  .screen.satscreen .inner{position:relative}
+  .screen.satscreen .inner > *{position:relative; z-index:1}
+  .satcrest{width:clamp(52px,6vh,84px); height:auto; margin:0 auto; display:block;
+    filter:drop-shadow(0 12px 18px rgba(58,42,34,.24))}
+</style>
+<script>
+(function(){
+  var UNIT='hare';            /* keleisma | owl | bear | deer | hare | turtle */
+  var UNITNAME='ο Λαγός';       /* π.χ. «η Κουκουβάγια» */
+  var THERMO='none';       /* fill | scale | none */
+  var PKEY='fylakes:progress';
+
+  function pread(){ try{ return JSON.parse(localStorage.getItem(PKEY)||'[]'); }catch(e){ return []; } }
+  function pmark(k){ try{ var a=pread(); if(a.indexOf(k)<0){ a.push(k); localStorage.setItem(PKEY, JSON.stringify(a)); } }catch(e){} }
+
+  var dotsWrap=document.getElementById('dots');
+  var screens=document.querySelectorAll('.screen');
+  var total=screens.length;
+
+  /* --- 1. μετρητής «3/11» + 3. σήμανση ολοκλήρωσης --- */
+  if(dotsWrap && total){
+    var count=document.createElement('span');
+    count.className='navcount';
+    dotsWrap.parentNode.insertBefore(count, dotsWrap.nextSibling);
+    var seen=false;
+    function sync(){
+      var list=[].slice.call(dotsWrap.children);
+      var i=list.findIndex(function(d){ return d.classList.contains('on'); });
+      if(i<0) i=0;
+      count.textContent=(i+1)+'/'+total;
+      if(i===total-1 && !seen){ seen=true; pmark(UNIT); }
+    }
+    new MutationObserver(sync).observe(dotsWrap, {subtree:true, attributes:true, attributeFilter:['class']});
+    sync();
+  }
+
+  /* --- 2. θερμόμετρο --- */
+  var th=document.getElementById('thermo');
+  if(th && THERMO!=='none'){
+    var lvls=[].slice.call(th.querySelectorAll('.lvl'));
+    if(lvls.length){
+      var wrap=document.createElement('div'); wrap.className='thermowrap';
+      th.parentNode.insertBefore(wrap, th);
+      var col=document.createElement('div'); col.className='tubecol';
+      var tube=document.createElement('div'); tube.className='tube';
+      var bulb=document.createElement('div'); bulb.className='thermobulb';
+      col.appendChild(tube); col.appendChild(bulb);
+      wrap.appendChild(col); wrap.appendChild(th);
+
+      var n=lvls.length;
+      if(THERMO==='fill'){
+        th.classList.add('rev');                       /* το «λίγο» κάτω, δίπλα στον βολβό */
+        bulb.textContent='🌡️';
+        var fill=document.createElement('div'); fill.className='fill'; tube.appendChild(fill);
+        for(var t=1;t<n;t++){
+          var tk=document.createElement('i'); tk.className='tick';
+          tk.style.bottom=(t*100/n)+'%'; tube.appendChild(tk);
+        }
+      } else {
+        bulb.textContent='🎚️';
+        var COL=['#5FB85B','#8FC94A','#E9B949','#E98A3C','#E0553F'];  /* πάνω → κάτω */
+        for(var s=0;s<n;s++){
+          var sg=document.createElement('div'); sg.className='seg';
+          sg.style.top=(s*100/n)+'%'; sg.style.height=(100/n)+'%';
+          sg.style.setProperty('--sc', COL[s] || '#ccc');
+          tube.appendChild(sg);
+        }
+      }
+
+      function paint(){
+        var i=lvls.findIndex(function(l){ return l.classList.contains('sel'); });
+        if(THERMO==='fill'){
+          var f=tube.querySelector('.fill');
+          f.style.height = (i<0 ? 0 : ((i+1)*100/n)) + '%';
+        } else {
+          var segs=tube.querySelectorAll('.seg');
+          segs.forEach(function(sg,j){ sg.classList.toggle('on', j===i); });
+        }
+      }
+      new MutationObserver(paint).observe(th, {subtree:true, attributes:true, attributeFilter:['class']});
+      paint();
+    }
+  }
+
+  /* --- 4. η οθόνη της κλίμακας ικανοποίησης παίρνει την ταυτότητα της ενότητας --- */
+  var sat=document.querySelector('.satwrap');
+  if(sat){
+    var sc=sat.closest('.screen');
+    if(sc){
+      sc.classList.add('satscreen');
+      var h=sc.querySelector('h2, .big');
+      if(h && UNITNAME) h.textContent='Πώς σου φάνηκε '+UNITNAME+';';
+      var sym=document.querySelector('.sym');
+      if(sym){
+        var crest=document.createElement('img');
+        crest.className='satcrest'; crest.src=sym.getAttribute('src'); crest.alt='';
+        var inner=sc.querySelector('.inner');
+        var tag=inner.querySelector('.phase-tag');
+        inner.insertBefore(crest, tag ? tag.nextSibling : inner.firstChild);
+      }
+    }
+  }
+})();
+</script>
+<!-- ==== end ΕΠΕΚΤΑΣΕΙΣ ΜΑΘΗΤΗ 2026-09 ==== -->
+
 </body>
 </html>

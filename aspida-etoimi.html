@@ -350,6 +350,9 @@
   var home=document.querySelector('.home'); if(home && home.parentNode) home.parentNode.removeChild(home);
 
   var idx=0;
+  var PKEY='fylakes:progress', marked=false;
+  function pmark(k){ try{ var arr=JSON.parse(localStorage.getItem(PKEY)||'[]');
+    if(arr.indexOf(k)<0){ arr.push(k); localStorage.setItem(PKEY, JSON.stringify(arr)); } }catch(e){} }
   function show(i){
     idx=Math.max(0, Math.min(screens.length-1, i));
     screens.forEach(function(s,n){ s.classList.toggle('active', n===idx); });
@@ -357,6 +360,7 @@
     counter.textContent=(idx+1)+'/'+screens.length;
     prev.disabled = idx===0;
     if(idx===screens.length-1){
+      if(!marked){ marked=true; pmark('aspida'); }
       next.textContent='Πίσω στον Χάρτη →';
       next.onclick=function(){ location.href='index.html'; };
     } else {
