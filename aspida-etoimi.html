@@ -198,6 +198,7 @@
   .storybox b{color:var(--c-deep)}
   .signoff{font-size:clamp(1.6rem,3.2vw,3rem)!important; color:var(--c-deep)!important}
   .sath{font-size:clamp(1.6rem,3vw,3.2rem); color:var(--c-deep); letter-spacing:-.015em}
+  .satinstr{font-size:clamp(1rem,1.2vw,1.45rem)!important; font-weight:700!important}
 
   /* ---------- Η ΑΣΠΙΔΑ: ο ήρωας της οθόνης ---------- */
   .shieldimg{
@@ -322,6 +323,9 @@
     var inn2=satScreen.closest('.inner');
     var tag=document.createElement('span'); tag.className='kicker'; tag.textContent='Πώς σου φάνηκε';
     var h2=document.createElement('h2'); h2.className='sath'; h2.textContent='Το ταξίδι με τους Φύλακες';
+    var ins=document.createElement('p'); ins.className='msg satinstr';
+    ins.textContent='Δείξε ένα προσωπάκι για κάθε ερώτηση.';
+    inn2.insertBefore(ins, inn2.firstChild);
     inn2.insertBefore(h2, inn2.firstChild);
     inn2.insertBefore(tag, inn2.firstChild);
   }
