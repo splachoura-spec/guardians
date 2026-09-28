@@ -654,12 +654,29 @@
   function stackH(el){
     var kids=[].slice.call(el.children).filter(function(c){ return c.offsetHeight>0; });
     if(!kids.length) return 0;
+    /* 2026-09-28: σε οριζόντια διάταξη (εικόνα + κείμενο δίπλα-δίπλα) μετράει το ψηλότερο, όχι το άθροισμα */
+    var ecs=getComputedStyle(el);
+    var row=ecs.display.indexOf('flex')>=0 && /^row/.test(ecs.flexDirection) && ecs.flexWrap==='nowrap';
     var h=0;
     kids.forEach(function(c){
       var cs=getComputedStyle(c);
-      h+=c.offsetHeight+(parseFloat(cs.marginTop)||0)+(parseFloat(cs.marginBottom)||0);
+      var ch=c.offsetHeight+(parseFloat(cs.marginTop)||0)+(parseFloat(cs.marginBottom)||0);
+      h=row?Math.max(h,ch):h+ch;
     });
-    return h+gapOf(el)*(kids.length-1);
+    return row?h:h+gapOf(el)*(kids.length-1);
+  }
+  function rowW(el){
+    var ecs=getComputedStyle(el);
+    if(!(ecs.display.indexOf('flex')>=0 && /^row/.test(ecs.flexDirection) && ecs.flexWrap==='nowrap')) return 0;
+    var kids=[].slice.call(el.children).filter(function(c){ return c.offsetWidth>0; });
+    if(!kids.length) return 0;
+    var w=0;
+    kids.forEach(function(c){
+      var cs=getComputedStyle(c);
+      w+=c.offsetWidth+(parseFloat(cs.marginLeft)||0)+(parseFloat(cs.marginRight)||0);
+    });
+    var g=parseFloat(ecs.columnGap); if(isNaN(g)) g=0;
+    return w+g*(kids.length-1);
   }
   function unsplit(inner){
     var cols=[].slice.call(inner.children).filter(function(c){
@@ -699,6 +716,9 @@
   function fitOne(inner){
     var avail=stage.clientHeight-6;
     if(avail<80) return;
+    /* 2026-09-28: ο πραγματικός χώρος αφαιρεί και το padding της οθόνης */
+    var scr=inner.parentElement, scs=scr?getComputedStyle(scr):null;
+    var room=scs ? scr.clientHeight-(parseFloat(scs.paddingTop)||0)-(parseFloat(scs.paddingBottom)||0)-2 : avail;
     var key=stage.clientWidth+'x'+stage.clientHeight+'|'+sig(inner);
     if(inner.__fitkey===key) return;
     inner.style.transform='';
@@ -713,9 +733,19 @@
       h=0;
       cols.forEach(function(c){ h=Math.max(h, stackH(c)); });
     }
-    if(h>avail){
-      var k=Math.max(.62, avail/h);
-      inner.style.transform='scale('+(Math.round(k*1000)/1000)+')';
+    var k=h>room ? room/h : 1;
+    /* 2026-09-28: σε οριζόντια διάταξη μετράει και το πλάτος (π.χ. με ανοιχτό το πάνελ 🎓 σε μικρή οθόνη) */
+    var need=rowW(inner), wroom=scs ? scr.clientWidth-(parseFloat(scs.paddingLeft)||0)-(parseFloat(scs.paddingRight)||0)-2 : 0;
+    if(need>0 && wroom>0 && need>wroom) k=Math.min(k, wroom/need);
+    if(k<1){
+      k=Math.max(.62, k);
+      /* αν το περιεχόμενο είναι πιο φαρδύ από την οθόνη, το ξαναφέρνουμε στο κέντρο */
+      var dx=0;
+      if(scs){
+        var pl=parseFloat(scs.paddingLeft)||0, pr=parseFloat(scs.paddingRight)||0;
+        dx=Math.round(pl+(scr.clientWidth-pl-pr)/2-(inner.offsetLeft+inner.offsetWidth/2));
+      }
+      inner.style.transform=(dx?'translateX('+dx+'px) ':'')+'scale('+(Math.round(k*1000)/1000)+')';
     }
     inner.__fitkey=stage.clientWidth+'x'+stage.clientHeight+'|'+sig(inner);
   }
@@ -1084,6 +1114,58 @@
 })();
 </script>
 <!-- ==== end ΕΠΕΚΤΑΣΕΙΣ ΜΑΘΗΤΗ 2026-09 ==== -->
+
+<!-- ==== UX PASS 2026-09-28: προβολέας & μικρά laptop ==== -->
+<style>
+  /* αντίθεση: λευκά γράμματα πάνω στη σκούρα απόχρωση του Φύλακα (≥ 4,5:1) */
+  .arcs b.on, .seg.on, .qcard .num, .fmcenter{background:var(--c-deep)!important}
+  .arcs b.on{box-shadow:0 6px 14px -6px var(--c-deep)!important}
+  .seg.on{border-color:var(--c-deep)!important; box-shadow:0 6px 14px -6px var(--c-deep)!important}
+  /* κλίμακα ικανοποίησης: έγχρωμα προσωπάκια από την αρχή· μόλις το παιδί διαλέξει, σβήνουν τα άλλα δύο της σειράς */
+  .satf{filter:none!important}
+  .satfaces:has(.satf.sel) .satf:not(.sel){filter:grayscale(1) opacity(.4)!important}
+  @media (max-height:710px){ .satrow .satq{font-size:1rem!important} }
+  /* πλήρης οθόνη (για προβολέα) */
+  .fsbtn{width:38px; height:38px; flex:0 0 auto; display:inline-grid; place-items:center; padding:0; margin:0;
+    border-radius:999px; background:#fff; border:2px solid var(--cream-2); color:var(--ink); cursor:pointer; font:inherit;
+    transition:border-color .15s, color .15s, background .15s}
+  .fsbtn svg{width:18px; height:18px; display:block}
+  .fsbtn:hover{border-color:var(--c-deep); color:var(--c-deep)}
+  .fsbtn.on{background:var(--c-deep); border-color:var(--c-deep); color:#fff}
+  .fsbtn:focus-visible{outline:3px solid var(--c-deep); outline-offset:2px}
+</style>
+<script>
+/* κουμπί πλήρους οθόνης στην πάνω μπάρα — κρύβεται αν ο browser δεν το υποστηρίζει */
+(function(){
+  var de=document.documentElement;
+  var req=de.requestFullscreen||de.webkitRequestFullscreen;
+  var ex=document.exitFullscreen||document.webkitExitFullscreen;
+  if(!req||!ex) return;
+  var bar=document.querySelector('.topbar .toolbar')||document.querySelector('.topbar');
+  if(!bar||bar.querySelector('.fsbtn')) return;
+  var SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="';
+  var IN =SVG+'M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>';
+  var OUT=SVG+'M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg>';
+  var b=document.createElement('button'); b.type='button'; b.className='fsbtn';
+  function isFs(){ return !!(document.fullscreenElement||document.webkitFullscreenElement); }
+  function sync(){
+    var on=isFs(), t=on?'Έξοδος από την πλήρη οθόνη (Esc)':'Πλήρης οθόνη — για τον προβολέα';
+    b.classList.toggle('on',on); b.setAttribute('aria-pressed',on?'true':'false');
+    b.title=t; b.setAttribute('aria-label',t); b.innerHTML=on?OUT:IN;
+  }
+  b.addEventListener('click',function(){
+    try{
+      if(isFs()) ex.call(document);
+      else { var p=req.call(de); if(p&&p.catch) p.catch(function(){}); }
+    }catch(e){}
+    b.blur();
+  });
+  document.addEventListener('fullscreenchange',sync);
+  document.addEventListener('webkitfullscreenchange',sync);
+  sync(); bar.appendChild(b);
+})();
+</script>
+<!-- ==== end UX PASS 2026-09-28 ==== -->
 
 </body>
 </html>
